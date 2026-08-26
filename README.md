@@ -38,3 +38,12 @@ The starter command is available after installing the project:
 ```powershell
 last-asylum-doctor
 ```
+
+Targeted science ingestion requires explicit slugs and never defaults to all nodes:
+
+```powershell
+last-asylum-doctor ingest-science def-boost-iii research-upgrade-iii training-points
+```
+
+See [the ingestion documentation](docs/ingestion.md) for the source pipeline,
+caching behavior, validation rules, and failure modes.
