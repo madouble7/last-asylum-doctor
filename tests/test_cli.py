@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+import pytest
+
 import last_asylum_doctor
 from last_asylum_doctor.cli import main
 from last_asylum_doctor.models import (
@@ -67,6 +69,15 @@ def test_targeted_cli_passes_only_explicit_slugs(monkeypatch, capsys, tmp_path) 
     assert received["output_path"] == output
     assert received["refresh"] is True
     assert "Sitemap science slugs: 348" in capsys.readouterr().out
+
+
+def test_full_corpus_mode_requires_explicit_all_and_database() -> None:
+    with pytest.raises(SystemExit, match="2"):
+        main(["ingest-science"])
+    with pytest.raises(SystemExit, match="2"):
+        main(["ingest-science", "--all"])
+    with pytest.raises(SystemExit, match="2"):
+        main(["ingest-science", "def-boost-iii", "--all", "--store-db"])
 
 
 def test_cli_can_initialize_store_and_show_factual_data(

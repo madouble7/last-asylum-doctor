@@ -25,6 +25,9 @@ class IngestionRunSummary:
     succeeded_count: int
     failed_count: int
     status: str
+    new_source_count: int = 0
+    changed_source_count: int = 0
+    unchanged_source_count: int = 0
 
 
 class ResearchDatabase:
@@ -60,13 +63,23 @@ class ResearchDatabase:
             self.connection = None
 
     def store_research_nodes(
-        self, nodes: Iterable[ResearchNode], requested_slugs: Iterable[str]
+        self,
+        nodes: Iterable[ResearchNode],
+        requested_slugs: Iterable[str],
+        failures: dict[str, str] | None = None,
     ) -> IngestionRunSummary:
-        """Upsert factual nodes and retain one source observation per run/node."""
+        """Upsert accepted nodes and accurately record partial source failures.
+
+        A source-node failure does not make already validated factual records
+        invalid. Those records are committed in one transaction, while the run is
+        marked ``failed`` with explicit succeeded/failed counts. A database write
+        failure still rolls back the factual transaction.
+        """
         connection = self._connection()
         node_list = tuple(nodes)
         requested_slug_list = tuple(requested_slugs)
-        _validate_store_request(node_list, requested_slug_list)
+        failure_map = dict(failures or {})
+        _validate_store_request(node_list, requested_slug_list, failure_map)
 
         started_at = _now()
         with connection:
@@ -83,17 +96,31 @@ class ResearchDatabase:
 
         try:
             with connection:
+                source_changes = self._source_change_counts(connection, node_list)
                 for node in node_list:
                     self._upsert_node(connection, run_id, node, _now())
                 self._assert_foreign_keys(connection)
+                status = "completed" if not failure_map else "failed"
+                error_message = (
+                    None
+                    if not failure_map
+                    else json.dumps({"source_failures": failure_map}, sort_keys=True)
+                )
                 connection.execute(
                     """
-                    UPDATE ingestion_runs
-                    SET completed_at = ?, status = 'completed',
-                        succeeded_count = ?, failed_count = 0
+                    UPDATE ingestion_runs SET
+                        completed_at = ?, status = ?, succeeded_count = ?,
+                        failed_count = ?, error_message = ?
                     WHERE id = ?
                     """,
-                    (_now(), len(node_list), run_id),
+                    (
+                        _now(),
+                        status,
+                        len(node_list),
+                        len(failure_map),
+                        error_message,
+                        run_id,
+                    ),
                 )
         except Exception as error:
             with connection:
@@ -116,9 +143,38 @@ class ResearchDatabase:
             run_id=run_id,
             requested_count=len(requested_slug_list),
             succeeded_count=len(node_list),
-            failed_count=0,
-            status="completed",
+            failed_count=len(failure_map),
+            status="completed" if not failure_map else "failed",
+            new_source_count=source_changes["new"],
+            changed_source_count=source_changes["changed"],
+            unchanged_source_count=source_changes["unchanged"],
         )
+
+    def _source_change_counts(
+        self,
+        connection: sqlite3.Connection,
+        nodes: tuple[ResearchNode, ...],
+    ) -> dict[str, int]:
+        """Compare each accepted asset checksum to its previous observation."""
+        counts = {"new": 0, "changed": 0, "unchanged": 0}
+        for node in nodes:
+            previous = connection.execute(
+                """
+                SELECT o.content_sha256
+                FROM research_source_observations AS o
+                JOIN research_nodes AS n ON n.id = o.research_node_id
+                WHERE n.slug = ?
+                ORDER BY o.id DESC LIMIT 1
+                """,
+                (node.slug,),
+            ).fetchone()
+            if previous is None:
+                counts["new"] += 1
+            elif str(previous[0]) == node.retrieval.sha256:
+                counts["unchanged"] += 1
+            else:
+                counts["changed"] += 1
+        return counts
 
     def get_research(self, slug: str) -> dict[str, Any] | None:
         """Return one stored factual research record with levels and costs."""
@@ -351,7 +407,9 @@ class ResearchDatabase:
 
 
 def _validate_store_request(
-    nodes: tuple[ResearchNode, ...], requested_slugs: tuple[str, ...]
+    nodes: tuple[ResearchNode, ...],
+    requested_slugs: tuple[str, ...],
+    failures: dict[str, str],
 ) -> None:
     if not requested_slugs:
         raise DatabaseError("An ingestion run requires explicitly requested slugs")
@@ -360,8 +418,17 @@ def _validate_store_request(
     node_slugs = [node.slug for node in nodes]
     if len(set(node_slugs)) != len(node_slugs):
         raise DatabaseError("Cannot store duplicate research nodes in one run")
-    if set(node_slugs) != set(requested_slugs):
-        raise DatabaseError("Stored nodes must exactly match requested slugs")
+    failure_slugs = set(failures)
+    if not failure_slugs.issubset(requested_slugs):
+        raise DatabaseError("Source failures must be among requested slugs")
+    if set(node_slugs).intersection(failure_slugs):
+        raise DatabaseError("A source slug cannot be both stored and failed")
+    if set(node_slugs).union(failure_slugs) != set(requested_slugs):
+        raise DatabaseError(
+            "Each requested slug must be either stored or have a source failure"
+        )
+    if any(not reason.strip() for reason in failures.values()):
+        raise DatabaseError("Source failure reasons cannot be blank")
     for node in nodes:
         validate_research_node(node)
 

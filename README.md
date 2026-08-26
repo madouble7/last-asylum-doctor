@@ -67,3 +67,13 @@ last-asylum-doctor audit-science-schema
 
 See [the science schema audit](docs/science_schema_audit.md) for its sampling
 method, source-field findings, and readiness decision.
+
+Full research-corpus ingestion is an explicit factual-data operation. It never
+becomes the default targeted behavior:
+
+```powershell
+last-asylum-doctor ingest-science --all --store-db --output data\processed\research_corpus.json
+```
+
+See [the full science-corpus documentation](docs/science_corpus.md) for source
+reconciliation, partial-failure handling, validation, provenance, and reruns.

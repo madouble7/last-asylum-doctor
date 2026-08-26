@@ -5,7 +5,11 @@ from dataclasses import replace
 
 import pytest
 
-from last_asylum_doctor.database import ResearchDatabase
+from last_asylum_doctor.database import (
+    ResearchDatabase,
+    build_science_corpus_profile,
+    validate_research_corpus,
+)
 from last_asylum_doctor.models import (
     ResearchCost,
     ResearchLevel,
@@ -103,6 +107,52 @@ def test_changed_facts_update_current_rows_and_keep_provenance(tmp_path) -> None
     assert counts["research_levels"] == 2
     assert counts["research_level_costs"] == 3
     assert counts["research_source_observations"] == 2
+
+
+def test_partial_source_failure_keeps_valid_facts_and_marks_run_failed(
+    tmp_path,
+) -> None:
+    node = _node()
+
+    with ResearchDatabase(tmp_path / "facts.db") as database:
+        summary = database.store_research_nodes(
+            [node],
+            [node.slug, "unavailable-node"],
+            {"unavailable-node": "HTTP 404 while fetching source asset"},
+        )
+        counts = database.table_counts()
+        validation = validate_research_corpus(database)
+        profile = build_science_corpus_profile(database, validation)
+
+    assert summary.status == "failed"
+    assert summary.succeeded_count == 1
+    assert summary.failed_count == 1
+    assert counts["research_nodes"] == 1
+    assert validation["valid"]
+    assert validation["latest_ingestion_run"]["status"] == "failed"
+    assert profile["table_counts"]["research_levels"] == 2
+    assert profile["source_parser_schema_anomalies"]["failed_ingestion_runs"]
+
+
+def test_corpus_validation_and_profile_are_factual_and_idempotent(tmp_path) -> None:
+    node = _node()
+
+    with ResearchDatabase(tmp_path / "facts.db") as database:
+        first = database.store_research_nodes([node], [node.slug])
+        before = database.table_counts()
+        second = database.store_research_nodes([node], [node.slug])
+        after = database.table_counts()
+        validation = validate_research_corpus(database)
+        profile = build_science_corpus_profile(database, validation)
+
+    assert first.new_source_count == 1
+    assert second.unchanged_source_count == 1
+    assert before["research_nodes"] == after["research_nodes"] == 1
+    assert before["research_levels"] == after["research_levels"] == 2
+    assert before["research_level_costs"] == after["research_level_costs"] == 3
+    assert validation["valid"]
+    assert profile["resource_identifiers"][0]["resource_identifier"] == "farms"
+    assert profile["cost_shape_counts"]["mixed_costs"] == 1
 
 
 def _node(

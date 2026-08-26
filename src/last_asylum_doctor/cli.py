@@ -12,10 +12,15 @@ from last_asylum_doctor.database import (
     DatabaseError,
     IngestionRunSummary,
     ResearchDatabase,
+    build_science_corpus_profile,
+    validate_research_corpus,
+    write_science_corpus_profile,
 )
 from last_asylum_doctor.scraping import (
     CachedHttpClient,
+    FullCorpusIngestionResult,
     IngestionResult,
+    ScienceCorpusIngestor,
     ScienceIngestionError,
     ScienceIngestor,
     SourceFetchError,
@@ -39,6 +44,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = _build_parser()
     parsed = parser.parse_args(arguments)
     if parsed.command == "ingest-science":
+        if parsed.all_nodes and parsed.slugs:
+            parser.error("--all cannot be combined with explicit science slugs")
+        if not parsed.all_nodes and not parsed.slugs:
+            parser.error("provide explicit science slugs or use --all")
+        if parsed.all_nodes and not parsed.store_db:
+            parser.error("full-corpus ingestion requires --store-db")
+        if parsed.all_nodes:
+            return _run_full_corpus_command(parsed)
         try:
             result = run_science_ingestion(
                 parsed.slugs,
@@ -62,10 +75,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         ) as error:
             print(f"Science ingestion failed: {error}", file=sys.stderr)
             return 1
-        print(
-            f"Ingested {len(result.nodes)} science node(s) to "
-            f"{result.output_path}"
-        )
+        print(f"Ingested {len(result.nodes)} science node(s) to {result.output_path}")
         print(f"Sitemap science slugs: {result.sitemap_science_slug_count}")
         if database_run is not None:
             print(
@@ -153,6 +163,84 @@ def store_ingested_research(
         return database.store_research_nodes(result.nodes, requested_slugs)
 
 
+def run_full_science_ingestion(
+    *,
+    output_path: Path,
+    cache_dir: Path,
+    refresh: bool,
+) -> FullCorpusIngestionResult:
+    """Run the deliberate all-node source retrieval path."""
+    with CachedHttpClient(cache_dir) as client:
+        return ScienceCorpusIngestor(client).ingest(output_path, refresh=refresh)
+
+
+def _run_full_corpus_command(parsed: argparse.Namespace) -> int:
+    """Retrieve, persist, validate, and profile the explicit full corpus."""
+    try:
+        result = run_full_science_ingestion(
+            output_path=parsed.output,
+            cache_dir=parsed.cache_dir,
+            refresh=parsed.refresh,
+        )
+        failure_map = {failure.slug: failure.reason for failure in result.failures}
+        with ResearchDatabase(parsed.database) as database:
+            database_run = database.store_research_nodes(
+                result.nodes, result.requested_slugs, failure_map
+            )
+            validation = validate_research_corpus(database)
+            profile = build_science_corpus_profile(database, validation)
+            write_science_corpus_profile(profile, parsed.profile_output)
+    except (
+        DatabaseError,
+        OSError,
+        ScienceIngestionError,
+        SourceDiscoveryError,
+        SourceFetchError,
+    ) as error:
+        print(f"Full science ingestion failed: {error}", file=sys.stderr)
+        return 1
+
+    _print_reconciliation(result)
+    print(
+        f"Full ingestion accepted {len(result.nodes)} of "
+        f"{len(result.requested_slugs)} science node(s); "
+        f"{len(result.failures)} failed"
+    )
+    for failure in result.failures:
+        print(f"Failed {failure.slug}: {failure.reason}", file=sys.stderr)
+    print(
+        f"Stored factual data in {parsed.database} "
+        f"(ingestion run {database_run.run_id}; {database_run.status}; "
+        f"{database_run.succeeded_count} succeeded, "
+        f"{database_run.failed_count} failed)"
+    )
+    print(
+        "Source content changes: "
+        f"{database_run.new_source_count} new, "
+        f"{database_run.changed_source_count} changed, "
+        f"{database_run.unchanged_source_count} unchanged"
+    )
+    print(f"Wrote normalized corpus to {result.output_path}")
+    print(f"Wrote corpus profile to {parsed.profile_output}")
+    print(f"Corpus validation: {'passed' if validation['valid'] else 'failed'}")
+    return 0 if not result.failures and validation["valid"] else 1
+
+
+def _print_reconciliation(result: FullCorpusIngestionResult) -> None:
+    reconciliation = result.reconciliation
+    print(f"Sitemap science slugs: {reconciliation.sitemap_science_slug_count}")
+    print(f"Import-map science slugs: {reconciliation.import_map_science_slug_count}")
+    print(f"Usable intersection: {reconciliation.intersection_count}")
+    print(
+        "Sitemap-only slugs: "
+        + (", ".join(reconciliation.sitemap_only_slugs) or "(none)")
+    )
+    print(
+        "Import-map-only slugs: "
+        + (", ".join(reconciliation.import_map_only_slugs) or "(none)")
+    )
+
+
 def run_science_schema_audit(
     *,
     output_path: Path,
@@ -174,12 +262,21 @@ def _build_parser() -> argparse.ArgumentParser:
     commands = parser.add_subparsers(dest="command", required=True)
     ingest = commands.add_parser(
         "ingest-science",
-        help="ingest only explicitly listed research slugs",
+        help="ingest explicit research slugs or the deliberate full corpus",
     )
     ingest.add_argument(
         "slugs",
-        nargs="+",
-        help="one or more explicit science slugs; there is no crawl-all default",
+        nargs="*",
+        help="explicit science slugs; omitted only when --all is provided",
+    )
+    ingest.add_argument(
+        "--all",
+        dest="all_nodes",
+        action="store_true",
+        help=(
+            "explicitly ingest the reconciled full science corpus "
+            "(requires --store-db)"
+        ),
     )
     ingest.add_argument(
         "--output",
@@ -208,6 +305,12 @@ def _build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("data/last_asylum.db"),
         help="SQLite database path used with --store-db",
+    )
+    ingest.add_argument(
+        "--profile-output",
+        type=Path,
+        default=Path("data/processed/science_corpus_profile.json"),
+        help="generated factual profile path used with --all",
     )
     init_db = commands.add_parser(
         "init-db",
