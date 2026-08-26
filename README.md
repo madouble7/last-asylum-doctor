@@ -47,3 +47,23 @@ last-asylum-doctor ingest-science def-boost-iii research-upgrade-iii training-po
 
 See [the ingestion documentation](docs/ingestion.md) for the source pipeline,
 caching behavior, validation rules, and failure modes.
+
+Initialize the local factual-data database and persist an explicit ingestion:
+
+```powershell
+last-asylum-doctor init-db
+last-asylum-doctor ingest-science def-boost-iii research-upgrade-iii training-points --store-db
+last-asylum-doctor show-research def-boost-iii
+```
+
+See [the database documentation](docs/database.md) for the factual SQLite schema
+and its provenance behavior.
+
+Before any broad research ingestion, run the bounded compatibility audit:
+
+```powershell
+last-asylum-doctor audit-science-schema
+```
+
+See [the science schema audit](docs/science_schema_audit.md) for its sampling
+method, source-field findings, and readiness decision.

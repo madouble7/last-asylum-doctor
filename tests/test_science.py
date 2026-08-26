@@ -77,6 +77,95 @@ def test_rejects_noncontiguous_levels() -> None:
         )
 
 
+def test_rejects_unrecognized_source_fields() -> None:
+    payload = {
+        "id": "1",
+        "slug": "sample",
+        "name": "Sample",
+        "description": "Effect",
+        "tab": "Tree",
+        "tab_slug": "tree",
+        "max_level": 1,
+        "levels_count": 1,
+        "levels": [_raw_level(1)],
+        "future_source_fact": "do not silently drop",
+    }
+
+    with pytest.raises(ResearchValidationError, match="unrecognized source field"):
+        normalize_research_payload(
+            payload,
+            expected_slug="sample",
+            source_page_url=f"{BASE_URL}science/sample",
+            source_asset_url=f"{BASE_URL}assets/sample-Hash.js",
+            retrieval=_metadata(f"{BASE_URL}assets/sample-Hash.js"),
+        )
+
+
+def test_rejects_conflicting_compatibility_cost_alias() -> None:
+    payload = {
+        "id": "1",
+        "slug": "sample",
+        "name": "Sample",
+        "description": "Effect",
+        "tab": "Tree",
+        "tab_slug": "tree",
+        "max_level": 1,
+        "levels_count": 1,
+        "levels": [
+            {
+                **_raw_level(1),
+                "cost_farms": 2,
+                "costs": [{"resource": "Farms", "amount": 1}],
+            }
+        ],
+    }
+
+    with pytest.raises(ResearchValidationError, match="does not match generic farms"):
+        normalize_research_payload(
+            payload,
+            expected_slug="sample",
+            source_page_url=f"{BASE_URL}science/sample",
+            source_asset_url=f"{BASE_URL}assets/sample-Hash.js",
+            retrieval=_metadata(f"{BASE_URL}assets/sample-Hash.js"),
+        )
+
+
+def test_accepts_new_generic_resource_labels_without_schema_changes() -> None:
+    payload = {
+        "id": "1",
+        "slug": "sample",
+        "name": "Sample",
+        "description": "Effect",
+        "tab": "Tree",
+        "tab_slug": "tree",
+        "max_level": 1,
+        "levels_count": 1,
+        "levels": [
+            {
+                **_raw_level(1),
+                "costs": [
+                    {
+                        "resource": "Mystery Token",
+                        "amount": 5,
+                        "item_id": "mystery_token",
+                    }
+                ],
+            }
+        ],
+    }
+
+    node = normalize_research_payload(
+        payload,
+        expected_slug="sample",
+        source_page_url=f"{BASE_URL}science/sample",
+        source_asset_url=f"{BASE_URL}assets/sample-Hash.js",
+        retrieval=_metadata(f"{BASE_URL}assets/sample-Hash.js"),
+    )
+
+    assert node.levels[0].costs == {"mystery_token": 5}
+    assert node.levels[0].source_costs[0].source_label == "Mystery Token"
+
+
 def test_synthetic_ingestion_pipeline_writes_normalized_json(tmp_path) -> None:
     urls = {
         f"{BASE_URL}robots.txt": "User-agent: *\nAllow: /\n",

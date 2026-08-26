@@ -32,6 +32,46 @@ from .esm import ModuleParseError, parse_research_module
 
 DEFAULT_BASE_URL = "https://lastasylumdatabase.com/"
 MAX_TARGETED_SLUGS = 25
+_ALLOWED_NODE_FIELDS = {
+    "id",
+    "slug",
+    "name",
+    "description",
+    "tab",
+    "tab_slug",
+    "tech_type",
+    "max_level",
+    "levels_count",
+    "levels",
+    "image",
+    "pos",
+}
+_ALLOWED_LEVEL_FIELDS = {
+    "level",
+    "time_sec",
+    "time",
+    "power",
+    "costs",
+    "ability",
+    "raw_id",
+    "cost_farms",
+    "cost_lumber",
+    "cost_herbs",
+    "cost_food",
+    "cost_wood",
+    "cost_iron",
+    "cost_special",
+    "cost_special_name",
+}
+_ALLOWED_COST_FIELDS = {"resource", "amount", "amount_fmt", "item_id"}
+_COST_ALIASES = {
+    "cost_farms": "farms",
+    "cost_lumber": "lumber",
+    "cost_herbs": "herbs",
+    "cost_food": "farms",
+    "cost_wood": "lumber",
+    "cost_iron": "herbs",
+}
 
 
 class ScienceIngestionError(RuntimeError):
@@ -154,6 +194,7 @@ def normalize_research_payload(
     retrieval: RetrievalMetadata,
 ) -> ResearchNode:
     """Normalize one parsed source payload while preserving source semantics."""
+    _validate_keys(payload, _ALLOWED_NODE_FIELDS, f"{expected_slug}: node")
     research_id = _required_text(payload, "id")
     slug = _required_text(payload, "slug")
     if slug != expected_slug:
@@ -205,6 +246,7 @@ def _normalize_level(
 ) -> ResearchLevel:
     if not isinstance(raw_level, dict):
         raise ResearchValidationError(f"{slug}: each level must be an object")
+    _validate_keys(raw_level, _ALLOWED_LEVEL_FIELDS, f"{slug}: level")
     level_number = _required_int(raw_level, "level")
     raw_costs = raw_level.get("costs")
     if not isinstance(raw_costs, list):
@@ -219,6 +261,11 @@ def _normalize_level(
             raise ResearchValidationError(
                 f"{slug} level {level_number}: each cost must be an object"
             )
+        _validate_keys(
+            raw_cost,
+            _ALLOWED_COST_FIELDS,
+            f"{slug} level {level_number}: cost",
+        )
         source_label = _required_text(raw_cost, "resource")
         resource = _resource_identifier(source_label)
         amount = _required_int(raw_cost, "amount")
@@ -236,6 +283,8 @@ def _normalize_level(
                 source_amount=_optional_text(raw_cost, "amount_fmt"),
             )
         )
+
+    _validate_compatibility_aliases(slug, level_number, raw_level, costs)
 
     return ResearchLevel(
         research_id=research_id,
@@ -313,3 +362,59 @@ def _resource_identifier(source_label: str) -> str:
             f"Cannot create a source-preserving identifier for {source_label!r}"
         )
     return identifier
+
+
+def _validate_keys(
+    values: dict[str, Any], allowed: set[str], context: str
+) -> None:
+    unexpected = sorted(set(values).difference(allowed))
+    if unexpected:
+        raise ResearchValidationError(
+            f"{context}: unrecognized source field(s): {', '.join(unexpected)}"
+        )
+
+
+def _validate_compatibility_aliases(
+    slug: str,
+    level_number: int,
+    raw_level: dict[str, Any],
+    costs: dict[str, int],
+) -> None:
+    if "ability" in raw_level and raw_level["ability"] != raw_level["power"]:
+        raise ResearchValidationError(
+            f"{slug} level {level_number}: ability does not match power"
+        )
+    for alias, resource in _COST_ALIASES.items():
+        if alias not in raw_level:
+            continue
+        amount = _optional_int(raw_level, alias)
+        if amount is None:
+            raise ResearchValidationError(
+                f"{slug} level {level_number}: {alias} cannot be null"
+            )
+        if amount != costs.get(resource, 0):
+            raise ResearchValidationError(
+                f"{slug} level {level_number}: {alias} does not match "
+                f"generic {resource} cost"
+            )
+
+    if "cost_special" not in raw_level:
+        return
+    special_amount = _optional_int(raw_level, "cost_special")
+    special_name = raw_level.get("cost_special_name")
+    if special_amount is None:
+        if special_name is not None:
+            raise ResearchValidationError(
+                f"{slug} level {level_number}: special cost name without amount"
+            )
+        return
+    if not isinstance(special_name, str) or not special_name.strip():
+        raise ResearchValidationError(
+            f"{slug} level {level_number}: special cost requires a source name"
+        )
+    resource = _resource_identifier(special_name)
+    if special_amount != costs.get(resource, 0):
+        raise ResearchValidationError(
+            f"{slug} level {level_number}: special cost does not match "
+            f"generic {resource} cost"
+        )
