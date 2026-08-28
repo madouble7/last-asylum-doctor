@@ -71,9 +71,22 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def capture(args: argparse.Namespace) -> int:
-    adb = Path(args.adb)
-    serial = detect_device(adb, args.serial)
+def safe_label(label: str) -> str:
+    cleaned = re.sub(r"[^A-Za-z0-9._-]+", "-", label.strip()).strip("-._")
+    if not cleaned:
+        raise ValueError("label must contain at least one filename-safe character")
+    return cleaned[:80]
+
+
+def capture_frame(
+    adb: Path,
+    requested_serial: str | None,
+    server: str,
+    output_dir: Path,
+    label: str | None = None,
+    manifest_path: Path | None = None,
+) -> dict[str, Any]:
+    serial = detect_device(adb, requested_serial)
     version = package_version(adb, serial)
     if version != {"version_name": "1.0.97", "version_code": "97"}:
         raise RuntimeError(f"unexpected client version: {version}")
@@ -81,9 +94,9 @@ def capture(args: argparse.Namespace) -> int:
     digest = sha256(png)
     captured_at = datetime.now(timezone.utc)
     stamp = captured_at.strftime("%Y%m%dT%H%M%SZ")
-    output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    image_path = output_dir / f"{stamp}_{digest[:12]}.png"
+    label_prefix = f"{safe_label(label)}_" if label is not None else ""
+    image_path = output_dir / f"{stamp}_{label_prefix}{digest[:12]}.png"
     metadata_path = image_path.with_suffix(".json")
     image_path.write_bytes(png)
     metadata = {
@@ -92,12 +105,28 @@ def capture(args: argparse.Namespace) -> int:
         "package": PACKAGE,
         "client_version_name": version["version_name"],
         "client_version_code": int(version["version_code"]),
-        "server": args.server,
+        "server": server,
         "sha256": digest,
         "screenshot_path": str(image_path),
         "adb_operation": "exec-out screencap -p",
     }
+    if label is not None:
+        metadata["label"] = label
     metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+    if manifest_path is not None:
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        with manifest_path.open("a", encoding="utf-8", newline="\n") as manifest:
+            manifest.write(json.dumps(metadata, ensure_ascii=True) + "\n")
+    return metadata
+
+
+def capture(args: argparse.Namespace) -> int:
+    metadata = capture_frame(
+        adb=Path(args.adb),
+        requested_serial=args.serial,
+        server=args.server,
+        output_dir=Path(args.output_dir),
+    )
     print(json.dumps(metadata, indent=2))
     return 0
 

@@ -35,6 +35,22 @@ input/event operation path.
 The local capture directory is `data/raw/probe/screenshots/`, covered by the
 existing `data/raw/*` ignore rule. PNGs and OCR JSON sidecars are not tracked.
 
+### Guided manual capture workflow
+
+Matt manually navigates BlueStacks to exactly one requested screen. Once the
+screen is ready, run:
+
+```text
+python tools/probe_capture.py --label research-lab-upgrade
+```
+
+The command captures only the current framebuffer; it does not navigate or
+send input. It writes a labeled PNG and metadata sidecar under
+`data/raw/probe/screenshots/`, and appends one record to
+`data/raw/probe/screenshots/capture_manifest.jsonl`. The command prints the
+saved filename and SHA-256. Use a new descriptive label for each manually
+prepared screen. OCR is a separate, later command.
+
 ## 2. Capture provenance
 
 | Field | Observation |
