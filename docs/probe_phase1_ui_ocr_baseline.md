@@ -21,7 +21,7 @@ lower-level technology and is not evidence about S27 progression.
 
 ## 1. Reusable capture utility
 
-[tools/probe_phase1_ui_ocr.py](/C:/Users/madou/Documents/last-asylum-doctor-probe/tools/probe_phase1_ui_ocr.py)
+[tools/probe_phase1_ui_ocr.py](../tools/probe_phase1_ui_ocr.py)
 provides two bounded commands:
 
 - `capture`: detects the ready device, reads package version metadata, runs
@@ -50,6 +50,17 @@ send input. It writes a labeled PNG and metadata sidecar under
 `data/raw/probe/screenshots/capture_manifest.jsonl`. The command prints the
 saved filename and SHA-256. Use a new descriptive label for each manually
 prepared screen. OCR is a separate, later command.
+
+### Capture-only dependency boundary
+
+Shared ADB discovery, package-version checks, hashing, labeling, and
+framebuffer capture live in
+[tools/probe_capture_core.py](../tools/probe_capture_core.py). This module uses
+only the Python standard library. The guided
+[tools/probe_capture.py](../tools/probe_capture.py) entry point therefore does
+not require OpenCV, NumPy, ONNX Runtime, or RapidOCR merely to capture a
+screenshot. The combined OCR tool imports the same core plus the dependencies
+declared by the `probe` optional extra in `pyproject.toml`.
 
 ## 2. Capture provenance
 
