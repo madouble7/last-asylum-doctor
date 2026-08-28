@@ -1,5 +1,6 @@
 """Domain models for Last Asylum Doctor."""
 
+from .economic import ShopDoctorWorkbook
 from .research import (
     ResearchCost,
     ResearchLevel,
@@ -16,4 +17,5 @@ __all__ = [
     "ResearchValidationError",
     "RetrievalMetadata",
     "validate_research_node",
+    "ShopDoctorWorkbook",
 ]

@@ -5,16 +5,22 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from dataclasses import asdict
 from pathlib import Path
 from typing import Sequence
 
 from last_asylum_doctor.database import (
     DatabaseError,
+    EconomicDatabase,
     IngestionRunSummary,
     ResearchDatabase,
     build_science_corpus_profile,
     validate_research_corpus,
     write_science_corpus_profile,
+)
+from last_asylum_doctor.economic import (
+    ShopDoctorWorkbookError,
+    inspect_shop_doctor_workbook,
 )
 from last_asylum_doctor.scraping import (
     CachedHttpClient,
@@ -110,6 +116,56 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Research slug not found: {parsed.slug}", file=sys.stderr)
             return 1
         print(json.dumps(research, indent=2, ensure_ascii=False))
+        return 0
+    if parsed.command == "inspect-shop-doctor":
+        try:
+            workbook = inspect_shop_doctor_workbook(parsed.path)
+        except (OSError, ShopDoctorWorkbookError) as error:
+            print(f"Shop Doctor inspection failed: {error}", file=sys.stderr)
+            return 1
+        print(json.dumps(_shop_doctor_summary(workbook), indent=2, ensure_ascii=False))
+        return 0
+    if parsed.command == "ingest-shop-doctor":
+        if not parsed.store_db:
+            parser.error("Shop Doctor ingestion requires --store-db")
+        try:
+            workbook = inspect_shop_doctor_workbook(parsed.path)
+            with EconomicDatabase(parsed.database) as database:
+                summary = database.store_shop_doctor(workbook)
+                validation = database.validate_economic_data()
+        except (DatabaseError, OSError, ShopDoctorWorkbookError) as error:
+            print(f"Shop Doctor ingestion failed: {error}", file=sys.stderr)
+            return 1
+        print(
+            json.dumps(
+                {"ingestion": asdict(summary), "validation": validation},
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+        return 0 if validation["valid"] else 1
+    if parsed.command in {"show-item", "show-item-prices"}:
+        if not parsed.database.exists():
+            print(
+                f"Database does not exist: {parsed.database}. "
+                "Run ingest-shop-doctor first.",
+                file=sys.stderr,
+            )
+            return 1
+        try:
+            with EconomicDatabase(parsed.database) as database:
+                result = (
+                    database.get_item(parsed.item)
+                    if parsed.command == "show-item"
+                    else database.get_item_prices(parsed.item)
+                )
+        except (DatabaseError, OSError) as error:
+            print(f"Could not read economic data: {error}", file=sys.stderr)
+            return 1
+        if result is None:
+            print(f"Item not found: {parsed.item}", file=sys.stderr)
+            return 1
+        print(json.dumps(result, indent=2, ensure_ascii=False))
         return 0
     if parsed.command == "audit-science-schema":
         try:
@@ -274,8 +330,7 @@ def _build_parser() -> argparse.ArgumentParser:
         dest="all_nodes",
         action="store_true",
         help=(
-            "explicitly ingest the reconciled full science corpus "
-            "(requires --store-db)"
+            "explicitly ingest the reconciled full science corpus (requires --store-db)"
         ),
     )
     ingest.add_argument(
@@ -360,4 +415,65 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="refresh source responses instead of using a recent cache entry",
     )
+    inspect_shop = commands.add_parser(
+        "inspect-shop-doctor",
+        help="validate and summarize a Shop Doctor XLSX without writing SQLite",
+    )
+    inspect_shop.add_argument("path", type=Path, help="local Shop Doctor .xlsx source")
+    ingest_shop = commands.add_parser(
+        "ingest-shop-doctor",
+        help="ingest a validated Shop Doctor XLSX into the factual economic layer",
+    )
+    ingest_shop.add_argument("path", type=Path, help="local Shop Doctor .xlsx source")
+    ingest_shop.add_argument(
+        "--store-db",
+        action="store_true",
+        help="required explicit database write confirmation",
+    )
+    ingest_shop.add_argument(
+        "--database",
+        type=Path,
+        default=Path("data/last_asylum.db"),
+        help="SQLite database path",
+    )
+    for command, help_text in (
+        (
+            "show-item",
+            "show one canonical item, aliases, packs, conversions, and bridges",
+        ),
+        ("show-item-prices", "show raw historical price observations for one item"),
+    ):
+        item_command = commands.add_parser(command, help=help_text)
+        item_command.add_argument(
+            "item", help="canonical item name, key, or known alias"
+        )
+        item_command.add_argument(
+            "--database",
+            type=Path,
+            default=Path("data/last_asylum.db"),
+            help="SQLite database path",
+        )
     return parser
+
+
+def _shop_doctor_summary(workbook: object) -> dict[str, object]:
+    """Return factual workbook inventory without exposing workbook internals."""
+    from last_asylum_doctor.models.economic import ShopDoctorWorkbook
+
+    assert isinstance(workbook, ShopDoctorWorkbook)
+    return {
+        "filename": workbook.filename,
+        "sha256": workbook.sha256,
+        "size_bytes": workbook.size_bytes,
+        "sheet_names": workbook.sheet_names,
+        "snapshot_date": workbook.snapshot_date.isoformat(),
+        "counts": {
+            "items": len(workbook.items),
+            "offers": len(workbook.offers),
+            "cash_packs": len(workbook.cash_packs),
+            "pack_components": len(workbook.pack_components),
+            "relationships": len(workbook.relationships),
+            "currency_assumptions": len(workbook.currency_assumptions),
+            "economic_model_observations": len(workbook.model_observations),
+        },
+    }

@@ -49,5 +49,9 @@ data/processed/*
 data/exports/*
 !data/exports/.gitkeep
 
+# Local source workbooks
+data/imports/*
+!data/imports/.gitkeep
+
 # Python package metadata
 *.egg-info/

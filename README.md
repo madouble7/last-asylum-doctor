@@ -59,6 +59,17 @@ last-asylum-doctor show-research def-boost-iii
 See [the database documentation](docs/database.md) for the factual SQLite schema
 and its provenance behavior.
 
+The local Shop Doctor workbook can populate the separate factual economic layer:
+
+```powershell
+last-asylum-doctor inspect-shop-doctor data\imports\shop_doctor_v5_2_2026-08-27.xlsx
+last-asylum-doctor ingest-shop-doctor data\imports\shop_doctor_v5_2_2026-08-27.xlsx --store-db
+last-asylum-doctor show-item gearstone
+```
+
+See [the Shop Doctor ingestion documentation](docs/shop_doctor_ingestion.md) for
+source safety, provenance, normalization, and idempotency.
+
 Before any broad research ingestion, run the bounded compatibility audit:
 
 ```powershell
