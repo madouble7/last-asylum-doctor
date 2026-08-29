@@ -24,6 +24,17 @@ Each wrapper opens the same canonical folder with a different window title:
 
 In each window, select the matching custom agent from the Copilot agent picker.
 
+## Architect state and Agents window
+
+The durable orientation documents are [Architect State](architect_state.md) and
+[Architecture Decisions](architecture_decisions.md). ARCHITECT should read
+both, plus relevant implementation and evidence, before major planning.
+
+The VS Code Agents window provides **ENGINEER**, a specialist lab for difficult
+technical investigation, benchmarking, prototyping, and independent review.
+ENGINEER does not replace the standing ARCHITECT, ATLAS, SCOUT, or PROBE roles;
+promising experiments are handed to ATLAS for clean production integration.
+
 ## Ownership
 
 ATLAS normally owns `src/`, `tests/`, database and schema work, the CLI,
@@ -78,6 +89,8 @@ workspace-local `Doctor PowerShell` profile using
 `C:\Program Files\PowerShell\7\pwsh.exe`, and points Python at
 `.venv\Scripts\python.exe`. The profile has no startup arguments and does not
 change directory to `C:\kortana`; the workspace cwd supplies the repo location.
+The three-window launcher remains a supported fallback when using the VS Code
+Agents window for ENGINEER work.
 
 ## Safety and settings
 
