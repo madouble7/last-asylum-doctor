@@ -24,6 +24,7 @@
 - Preserve canonical data integrity and avoid unrelated refactors or cleanup.
 - Add focused tests for changed behavior, run focused checks followed by the full suite when appropriate, and run `git diff --check` before committing.
 - The canonical development repository is `C:\Users\madou\Documents\last-asylum-doctor` on `main`.
+- Use the Doctor's Companion virtual environment for project commands: `.\.venv\Scripts\python.exe -m pytest`, `.\.venv\Scripts\python.exe -m ruff`, and `.\.venv\Scripts\python.exe tools\...` when run from the repository root. Bare `python`, `pytest`, or `ruff` is permitted only after positively verifying that the active interpreter is this repository's `.venv`.
 - During parallel specialist work, do not run `git add`, `git commit`, `git reset`, `git checkout`, `git switch`, `git stash`, `git merge`, or `git cherry-pick` unless the mission explicitly designates the agent as INTEGRATOR.
 - Only an explicitly designated ATLAS INTEGRATOR inspects all changes, detects overlap, runs the appropriate checks, reconciles authorized shared changes, and commits a coherent checkpoint to `main`.
 

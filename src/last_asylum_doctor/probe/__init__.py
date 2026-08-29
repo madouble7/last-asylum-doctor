@@ -15,6 +15,18 @@ from .navigation import (
     SessionJournal,
     StateRecognizer,
 )
+from .shadow_observer import (
+    DEFAULT_EVIDENCE_DIR,
+    DEFAULT_OUTPUT,
+    AdbShadowFrameSource,
+    ObservationStore,
+    ShadowObserver,
+    ShadowObserverConfig,
+    ShadowObserverError,
+    change_score,
+    extract_candidate_values,
+    perceptual_fingerprint,
+)
 
 __all__ = [
     "AdbFrameSource",
@@ -30,4 +42,14 @@ __all__ = [
     "ScreenState",
     "SessionJournal",
     "StateRecognizer",
+    "AdbShadowFrameSource",
+    "DEFAULT_EVIDENCE_DIR",
+    "DEFAULT_OUTPUT",
+    "ObservationStore",
+    "ShadowObserver",
+    "ShadowObserverConfig",
+    "ShadowObserverError",
+    "change_score",
+    "extract_candidate_values",
+    "perceptual_fingerprint",
 ]

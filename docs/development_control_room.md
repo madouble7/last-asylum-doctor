@@ -73,9 +73,11 @@ Doctor` profile. To inspect the commands without opening windows:
 .\scripts\open-control-room.ps1 -DryRun
 ```
 
-Each workspace sets terminal cwd to the canonical workspace folder and points
-Python at `.venv\Scripts\python.exe`. It does not change directory to
-`C:\kortana`.
+Each workspace sets terminal cwd to the canonical workspace folder, selects a
+workspace-local `Doctor PowerShell` profile using
+`C:\Program Files\PowerShell\7\pwsh.exe`, and points Python at
+`.venv\Scripts\python.exe`. The profile has no startup arguments and does not
+change directory to `C:\kortana`; the workspace cwd supplies the repo location.
 
 ## Safety and settings
 
