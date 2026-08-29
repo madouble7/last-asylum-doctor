@@ -28,6 +28,13 @@ from last_asylum_doctor.planner import (
     render_report,
     report_as_dict,
 )
+from last_asylum_doctor.probe import (
+    AdbFrameSource,
+    AdbInputDriver,
+    NavigationAgent,
+    NavigationGraph,
+    SessionJournal,
+)
 from last_asylum_doctor.scraping import (
     CachedHttpClient,
     FullCorpusIngestionResult,
@@ -55,6 +62,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     parser = _build_parser()
     parsed = parser.parse_args(arguments)
+    if parsed.command == "probe":
+        return _run_probe_command(parsed)
     if parsed.command == "ingest-science":
         if parsed.all_nodes and parsed.slugs:
             parser.error("--all cannot be combined with explicit science slugs")
@@ -330,9 +339,92 @@ def run_science_schema_audit(
         )
 
 
+def _run_probe_command(parsed: argparse.Namespace) -> int:
+    """Run one bounded, account-state-preserving probe goal."""
+    frame_source = AdbFrameSource(
+        adb=Path(parsed.adb),
+        serial=parsed.serial,
+        server=parsed.server,
+        output_dir=Path(parsed.output_dir),
+    )
+    graph = NavigationGraph(Path(parsed.graph))
+    journal = SessionJournal(
+        Path(parsed.session_dir),
+        goal=parsed.goal,
+        client_version="detected at capture",
+        server=parsed.server,
+    )
+    agent = NavigationAgent(
+        frame_source,
+        AdbInputDriver(Path(parsed.adb), parsed.serial),
+        graph=graph,
+        journal=journal,
+        dry_run=not parsed.execute_safe_navigation,
+        max_steps=parsed.max_steps,
+        transition_wait=parsed.transition_wait,
+    )
+    try:
+        result = agent.run(parsed.goal)
+    except (OSError, RuntimeError, ValueError) as error:
+        journal.finish("runtime_error", [f"{type(error).__name__}: {error}"])
+        print(f"Probe failed: {error}", file=sys.stderr)
+        print(f"Journal: {journal.json_path}", file=sys.stderr)
+        return 1
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="last-asylum-doctor")
     commands = parser.add_subparsers(dest="command", required=True)
+    probe = commands.add_parser(
+        "probe",
+        help="run bounded, account-state-preserving reconnaissance",
+    )
+    goals = probe.add_subparsers(dest="goal", required=True)
+    for goal, help_text in (
+        ("inspect-current-screen", "capture and classify the current screen"),
+        (
+            "navigate-to-research-lab",
+            "propose or execute one verified safe transition to Research Lab",
+        ),
+    ):
+        goal_parser = goals.add_parser(goal, help=help_text)
+        goal_parser.add_argument(
+            "--adb", default=r"C:\Program Files\BlueStacks_nxt\HD-Adb.exe"
+        )
+        goal_parser.add_argument("--serial")
+        goal_parser.add_argument("--server", default="283")
+        goal_parser.add_argument(
+            "--output-dir",
+            default="data/raw/probe/screenshots",
+            help="ignored screenshot output directory",
+        )
+        goal_parser.add_argument(
+            "--session-dir",
+            default="data/processed/probe/sessions",
+            help="probe journal directory",
+        )
+        goal_parser.add_argument(
+            "--graph",
+            default="data/processed/probe/navigation_graph.json",
+            help="navigation graph JSON path",
+        )
+        goal_parser.add_argument("--max-steps", type=int, default=1)
+        goal_parser.add_argument("--transition-wait", type=float, default=0.5)
+        goal_parser.add_argument(
+            "--dry-run",
+            dest="execute_safe_navigation",
+            action="store_false",
+            help="capture and propose without sending ADB input (default)",
+        )
+        goal_parser.add_argument(
+            "--execute-safe-navigation",
+            dest="execute_safe_navigation",
+            action="store_true",
+            help="experimental; explicitly enable one allowlisted navigation input",
+        )
+        goal_parser.set_defaults(execute_safe_navigation=False)
     ingest = commands.add_parser(
         "ingest-science",
         help="ingest explicit research slugs or the deliberate full corpus",

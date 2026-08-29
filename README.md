@@ -119,3 +119,19 @@ last-asylum-doctor plan-recovery data\imports\account-state.json --json
 
 The planner preserves the confirmed Server 283 milestone provenance and does
 not estimate troop costs, troop training times, or economic optimality.
+
+## PROBE reconnaissance foundation
+
+The retained PROBE foundation provides deterministic state recognition,
+account-state-preserving action allowlists, dry-run behavior, before/after
+transition verification, navigation graph persistence, and session journals:
+
+```powershell
+last-asylum-doctor probe inspect-current-screen --dry-run
+last-asylum-doctor probe navigate-to-research-lab --dry-run
+```
+
+Live ADB input is experimental and is not enabled for normal Server 283
+operation. See [the Phase 2 navigation foundation](docs/probe_phase2_autonomous_navigation_foundation.md),
+[the Shadow Observer design](docs/probe_shadow_observer.md), and
+[the client automation policy](docs/client_automation_policy_recon.md).

@@ -33,9 +33,9 @@ SCOUT normally owns source reconnaissance, evidence reports, strategy claims,
 source lineage, and version research, preferably in Scout-specific docs or
 evidence artifacts.
 
-PROBE normally owns `tools/probe*`, PROBE documentation, client inspection, and
-specifically assigned perception or navigation code. Raw probe evidence remains
-ignored.
+PROBE normally owns `tools/probe*`, `src/last_asylum_doctor/probe/`, PROBE
+documentation, client inspection, and specifically assigned perception or
+navigation code. Raw probe evidence remains ignored.
 
 All roles may read across the repository. A role may edit another role's default
 domain only when the current mission explicitly grants that ownership. If two
