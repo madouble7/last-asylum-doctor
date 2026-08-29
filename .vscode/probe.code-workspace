@@ -1,0 +1,13 @@
+{
+    "folders": [
+        {
+            "path": "C:\\Users\\madou\\Documents\\last-asylum-doctor"
+        }
+    ],
+    "settings": {
+        "window.title": "PROBE — Doctor's Companion",
+        "terminal.integrated.cwd": "${workspaceFolder}",
+        "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+        "python.terminal.activateEnvironment": true
+    }
+}
