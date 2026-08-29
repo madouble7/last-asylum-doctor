@@ -8,12 +8,14 @@ from pathlib import Path
 
 import pytest
 
+from last_asylum_doctor.probe import shadow_observer as shadow_observer_module
 from last_asylum_doctor.probe.navigation import Frame, OCRAnchor
 from last_asylum_doctor.probe.shadow_observer import (
     AdbShadowFrameSource,
     ObservationStore,
     ShadowObserver,
     ShadowObserverConfig,
+    extract_candidate_values,
     perceptual_fingerprint,
 )
 
@@ -43,14 +45,22 @@ def frame(
     *texts: str,
     metadata: dict[str, object] | None = None,
 ) -> Frame:
+    frame_metadata: dict[str, object] = {
+        "client_version_name": "1.0.97",
+        "client_version_code": 97,
+        "package": "com.phs.global",
+        "foreground_package": "com.phs.global",
+        "foreground_status": "confirmed_game",
+    }
+    if metadata:
+        frame_metadata.update(metadata)
     return Frame(
         screenshot=content,
         screenshot_hash="fixture-hash",
         width=100,
         height=100,
         ocr_anchors=tuple(OCRAnchor(text, 0.95) for text in texts),
-        metadata=metadata
-        or {"client_version_name": "1.0.97", "client_version_code": 97},
+        metadata=frame_metadata,
     )
 
 
@@ -123,10 +133,39 @@ def test_duplicate_frame_is_suppressed(tmp_path: Path) -> None:
     assert len(active.store.output.read_text(encoding="utf-8").splitlines()) == 1
 
 
+def test_cumulative_drift_compares_against_last_recorded_frame(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fingerprints = {
+        b"a": "0000000000000000",
+        b"b": "0000000000000001",
+        b"c": "000000000000003f",
+    }
+    monkeypatch.setattr(
+        shadow_observer_module,
+        "perceptual_fingerprint",
+        lambda screenshot: fingerprints[screenshot],
+    )
+    source = FixtureSource(
+        frame(b"a", "Research Lab", "Research"), frame(b"b"), frame(b"c")
+    )
+    active = observer(tmp_path, source, change_threshold=0.08)
+
+    first = active.run_once()
+    second = active.run_once()
+    third = active.run_once()
+
+    assert first is not None
+    assert second is None
+    assert third is not None
+    assert third["change_score"] == 0.09375
+    assert active.suppressed_count == 1
+
+
 def test_meaningful_change_records_transition_and_evidence(tmp_path: Path) -> None:
     source = FixtureSource(
         frame(b"before", "Research Lab", "Research"),
-        frame(b"after", "Training Grounds"),
+        frame(b"after", "Training Grounds", "Current Level", "Next Level", "Back"),
     )
     active = observer(tmp_path, source)
 
@@ -297,3 +336,171 @@ def test_non_game_foreground_skips_ocr(tmp_path: Path) -> None:
     assert observation is not None
     assert observation["current_screen_state"] == "not_game_foreground"
     assert perceiver.calls == 0
+
+
+def test_unknown_foreground_is_review_only_and_skips_ocr(tmp_path: Path) -> None:
+    perceiver = RecordingOcr()
+    active = ShadowObserver(
+        FixtureSource(
+            frame(
+                b"unknown-foreground",
+                "Research Lab",
+                metadata={"foreground_package": None, "foreground_status": "unknown"},
+            )
+        ),
+        ObservationStore(
+            tmp_path / "observations.jsonl",
+            tmp_path / "screenshots",
+            max_captures=10,
+        ),
+        ocr_perceiver=perceiver,
+        session_id="test-session",
+    )
+
+    observation = active.run_once()
+
+    assert observation is not None
+    assert observation["current_screen_state"] == "foreground_unknown"
+    assert observation["validation_status"] == "REVIEW"
+    assert observation["foreground_status"] == "unknown"
+    assert observation["screenshot_path"] is None
+    assert perceiver.calls == 0
+    assert not list((tmp_path / "screenshots").glob("*.png"))
+
+
+def test_malformed_foreground_dump_is_unknown() -> None:
+    screenshot = png(2, 2, (10, 20, 30))
+
+    def runner(adb: Path, *args: str, serial: str | None = None) -> bytes:
+        del adb, serial
+        if args == ("devices", "-l"):
+            return b"emulator-5554\tdevice\n"
+        if args[:3] == ("shell", "dumpsys", "package"):
+            return b"versionName=1.0.97 versionCode=97"
+        if args[:3] == ("shell", "dumpsys", "activity"):
+            return b"activity service returned no resumed activity"
+        return screenshot
+
+    captured = AdbShadowFrameSource(runner=runner).capture()
+
+    assert captured.metadata["foreground_package"] is None
+    assert captured.metadata["foreground_status"] == "unknown"
+    assert captured.metadata["foreground_parser"]["matched"] is False
+
+
+def test_ocr_failure_is_recorded_with_diagnostic(tmp_path: Path) -> None:
+    class FailingOcr:
+        def detect(self, screenshot: bytes) -> list[OCRAnchor]:
+            del screenshot
+            raise ValueError("decoder unavailable")
+
+    active = ShadowObserver(
+        FixtureSource(frame(b"ocr-failure")),
+        ObservationStore(
+            tmp_path / "observations.jsonl",
+            tmp_path / "screenshots",
+            max_captures=10,
+        ),
+        ocr_perceiver=FailingOcr(),
+        session_id="test-session",
+    )
+
+    observation = active.run_once()
+
+    assert observation["error_reason"] == "ocr_failed"
+    assert observation["error_diagnostic"]["stage"] == "ocr"
+    assert observation["error_diagnostic"]["exception_type"] == "ValueError"
+    assert observation["validation_status"] == "FAIL"
+
+
+def test_recognizer_failure_is_recorded_with_diagnostic(tmp_path: Path) -> None:
+    class FailingRecognizer:
+        def recognize(self, frame: Frame) -> None:
+            del frame
+            raise RuntimeError("recognizer unavailable")
+
+    active = ShadowObserver(
+        FixtureSource(frame(b"recognizer-failure")),
+        ObservationStore(
+            tmp_path / "observations.jsonl",
+            tmp_path / "screenshots",
+            max_captures=10,
+        ),
+        recognizer=FailingRecognizer(),
+        session_id="test-session",
+    )
+
+    observation = active.run_once()
+
+    assert observation["error_reason"] == "recognition_failed"
+    assert observation["error_diagnostic"]["stage"] == "recognition"
+    assert observation["current_screen_state"] == "unavailable"
+
+
+def test_storage_failure_is_returned_without_false_persistence(tmp_path: Path) -> None:
+    class FailingStore:
+        def append(self, *args: object, **kwargs: object) -> dict[str, object]:
+            del args, kwargs
+            raise OSError("disk full")
+
+    active = ShadowObserver(
+        FixtureSource(frame(b"storage-failure", "Research Lab", "Research")),
+        FailingStore(),
+        session_id="test-session",
+    )
+
+    observation = active.run_once()
+
+    assert observation["error_reason"] == "storage_failed"
+    assert observation["error_diagnostic"]["stage"] == "storage"
+    assert observation["error_diagnostic"]["original_failure"]["stage"] == "storage"
+
+
+def test_timing_schema_and_run_summary(tmp_path: Path) -> None:
+    active = observer(
+        tmp_path, FixtureSource(frame(b"timed", "Research Lab", "Research"))
+    )
+
+    result = active.run(duration=0)
+    saved = json.loads(active.store.output.read_text(encoding="utf-8"))
+
+    assert set(saved["timing_ms"]) == {
+        "capture_duration_ms",
+        "ocr_duration_ms",
+        "recognition_extraction_duration_ms",
+        "persistence_duration_ms",
+        "total_duration_ms",
+    }
+    assert result["timing_samples"] == 1
+    assert result["timing_ms_total"]["total_duration_ms"] >= 0
+
+
+def test_candidate_extraction_preserves_observed_formats() -> None:
+    candidates = extract_candidate_values(
+        tuple(
+            OCRAnchor(text)
+            for text in (
+                "Lv.100 Wandering Blight",
+                "Lv.25-26",
+                "My Rank: 12",
+                "My Total Points: 120",
+                "00:32:06",
+                "1K Grain",
+            )
+        )
+    )
+
+    assert {item["value"] for item in candidates if item["key"] == "level"} == {
+        "100",
+        "25-26",
+    }
+    values = {item["key"]: item["value"] for item in candidates}
+    assert set(
+        {
+            "rank": "12",
+            "total_points": "120",
+            "time": "00:32:06",
+            "quantity": "1K",
+        }.items()
+    ) <= set(values.items())
+    assert all(item["source_text"] for item in candidates)

@@ -198,7 +198,7 @@ def test_step_limit_handling(tmp_path) -> None:
 
     source = FixtureFrames(
         frame("before", "Research Lab", "Training Grounds"),
-        frame("after", "Training Grounds"),
+        frame("after", "Training Grounds", "Current Level", "Next Level", "Back"),
     )
     result = OneStepAgent(
         source,
@@ -218,3 +218,42 @@ def test_state_recognizer_does_not_claim_unknown_state() -> None:
 
     assert state.state_id == "unknown"
     assert state.confidence == 0.0
+
+
+@pytest.mark.parametrize("text", ["Upgrade", "Training Grounds"])
+def test_map_banners_do_not_claim_detail_states(text: str) -> None:
+    state = StateRecognizer().recognize(frame("map", text))
+
+    assert state.state_id == "unknown"
+    assert state.confidence == 0.0
+
+
+def test_building_detail_requires_panel_evidence() -> None:
+    state = StateRecognizer().recognize(
+        frame("detail", "Upgrade", "Current Level", "Back")
+    )
+
+    assert state.state_id == "building_detail"
+    assert state.confidence > 0.0
+
+
+def test_high_confidence_captured_states_are_recognized() -> None:
+    recognizer = StateRecognizer()
+    fixtures = {
+        "bag_inventory": ("Bag", "Special", "Resource", "Speedup", "Hero", "Gear"),
+        "insufficient_items": (
+            "Insufficient Items",
+            "Owned",
+            "Resource Item",
+            "Use",
+        ),
+        "kingdom_war": ("Kingdom War", "Weekly", "Royal City", "Overview"),
+        "black_ops": ("Black Ops", "Covert Ops Force"),
+        "loot": ("Loot", "Claim All"),
+        "sanctuary_map": ("Upgrade", "Bag", "Hero", "Territory", "Alliance"),
+    }
+
+    for expected, texts in fixtures.items():
+        state = recognizer.recognize(frame(expected, *texts))
+        assert state.state_id == expected
+        assert state.confidence >= 0.9

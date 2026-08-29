@@ -96,8 +96,6 @@ class StateRecognizer:
             ("research lab", "training grounds"),
         ),
         ("research_lab", ("research lab",), ("research", "back")),
-        ("training_grounds", ("training grounds",), ("back",)),
-        ("building_detail", ("upgrade",), ("back",)),
     )
 
     def recognize(self, frame: Frame) -> ScreenState:
@@ -105,31 +103,164 @@ class StateRecognizer:
         present = " ".join(texts)
         now = _utc_now()
         client_version = str(frame.metadata.get("client_version_name", "unknown"))
+
+        if _has_text(texts, "bag") and _count_texts(
+            texts, ("special", "resource", "speedup", "hero", "gear")
+        ) >= 3:
+            return self._state(
+                frame,
+                "bag_inventory",
+                ("bag",),
+                ("back",),
+                now,
+                client_version,
+                confidence=0.95,
+            )
+        if (
+            _has_text(texts, "insufficient items")
+            and _has_text(texts, "owned")
+            and _has_text(texts, "resource item")
+            and _has_text(texts, "use")
+        ):
+            return self._state(
+                frame,
+                "insufficient_items",
+                ("insufficient items", "owned", "resource item", "use"),
+                ("back",),
+                now,
+                client_version,
+                confidence=0.99,
+            )
+        if _has_text(texts, "kingdom war") and _count_texts(
+            texts, ("weekly", "royal city", "overview", "match", "information")
+        ) >= 2:
+            return self._state(
+                frame,
+                "kingdom_war",
+                ("kingdom war",),
+                ("back",),
+                now,
+                client_version,
+                confidence=0.96,
+            )
+        if _has_text(texts, "black ops") and _count_texts(
+            texts, ("covert ops force", "treasure digger")
+        ) >= 1:
+            return self._state(
+                frame,
+                "black_ops",
+                ("black ops",),
+                ("back",),
+                now,
+                client_version,
+                confidence=0.96,
+            )
+        if _has_text(texts, "loot") and _has_text(texts, "claim all"):
+            return self._state(
+                frame,
+                "loot",
+                ("loot", "claim all"),
+                ("back",),
+                now,
+                client_version,
+                confidence=0.99,
+            )
+        if (
+            _has_text(texts, "upgrade")
+            and _count_texts(texts, ("bag", "hero", "territory", "alliance", "mail"))
+            >= 3
+        ):
+            return self._state(
+                frame,
+                "sanctuary_map",
+                ("upgrade",),
+                ("research lab", "training grounds"),
+                now,
+                client_version,
+                confidence=0.92,
+            )
+        if _has_text(texts, "training grounds") and _count_texts(
+            texts,
+            (
+                "upgrade training grounds",
+                "current level",
+                "next level",
+                "soldier training",
+                "requires lv.",
+            ),
+        ) >= 2:
+            return self._state(
+                frame,
+                "training_grounds",
+                ("training grounds",),
+                ("back",),
+                now,
+                client_version,
+                confidence=0.94,
+            )
+        if _has_text(texts, "upgrade") and _count_texts(
+            texts,
+            (
+                "current level",
+                "next level",
+                "building level",
+                "requires",
+                "requirement",
+                "build time",
+                "construction",
+            ),
+        ) >= 1:
+            return self._state(
+                frame,
+                "building_detail",
+                ("upgrade",),
+                ("back",),
+                now,
+                client_version,
+                confidence=0.9,
+            )
         for state_id, required, controls in self._SPECS:
             matched = tuple(term for term in required if term in present)
             if len(matched) != len(required):
                 continue
-            confidence = min(0.99, 0.55 + (0.2 * len(matched)))
-            return ScreenState(
-                state_id=state_id,
-                semantic_name=state_id.replace("_", " "),
-                screenshot_hash=frame.screenshot_hash,
-                perceptual_fingerprint=frame.screenshot_hash[:16],
-                ocr_anchors=matched,
-                expected_controls=controls,
-                confidence=confidence,
-                client_version=client_version,
-                first_seen=now,
-                last_seen=now,
+            return self._state(
+                frame,
+                state_id,
+                matched,
+                controls,
+                now,
+                client_version,
+                confidence=min(0.99, 0.55 + (0.2 * len(matched))),
             )
+        return self._state(
+            frame,
+            "unknown",
+            (),
+            (),
+            now,
+            client_version,
+            confidence=0.0,
+        )
+
+    def _state(
+        self,
+        frame: Frame,
+        state_id: str,
+        matched: tuple[str, ...],
+        controls: tuple[str, ...],
+        now: str,
+        client_version: str,
+        *,
+        confidence: float,
+    ) -> ScreenState:
         return ScreenState(
-            state_id="unknown",
-            semantic_name="unknown",
+            state_id=state_id,
+            semantic_name=state_id.replace("_", " "),
             screenshot_hash=frame.screenshot_hash,
             perceptual_fingerprint=frame.screenshot_hash[:16],
-            ocr_anchors=(),
-            expected_controls=(),
-            confidence=0.0,
+            ocr_anchors=matched,
+            expected_controls=controls,
+            confidence=confidence,
             client_version=client_version,
             first_seen=now,
             last_seen=now,
@@ -701,6 +832,15 @@ def _pixel_point(
 
 def _normalise(text: str) -> str:
     return re.sub(r"\s+", " ", text.casefold()).strip()
+
+
+def _has_text(texts: Sequence[str], term: str) -> bool:
+    normalized_term = _normalise(term)
+    return any(normalized_term in text for text in texts)
+
+
+def _count_texts(texts: Sequence[str], terms: Sequence[str]) -> int:
+    return sum(_has_text(texts, term) for term in terms)
 
 
 def _safe_label(label: str) -> str:

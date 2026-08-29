@@ -37,6 +37,15 @@ class ShadowObserverError(RuntimeError):
         self.reason = reason
 
 
+_TIMING_KEYS = (
+    "capture_duration_ms",
+    "ocr_duration_ms",
+    "recognition_extraction_duration_ms",
+    "persistence_duration_ms",
+    "total_duration_ms",
+)
+
+
 class OCRPerceiver(Protocol):
     def detect(self, png: bytes) -> list[OCRAnchor]: ...
 
@@ -105,7 +114,11 @@ class AdbShadowFrameSource:
                 "client_version_name": version["version_name"],
                 "client_version_code": int(version["version_code"]),
                 "server": self.server,
-                "foreground_package": foreground,
+                "foreground_package": foreground["package"],
+                "foreground_status": _foreground_status(
+                    foreground["package"], self.package
+                ),
+                "foreground_parser": foreground["parser"],
                 "adb_operation": "exec-out screencap -p",
             },
         )
@@ -162,7 +175,7 @@ class AdbShadowFrameSource:
             "version_code": version_code.group(1),
         }
 
-    def _foreground_package(self, serial: str) -> str | None:
+    def _foreground_package(self, serial: str) -> dict[str, Any]:
         try:
             output = self._run(
                 "shell", "dumpsys", "activity", "activities", serial=serial
@@ -170,10 +183,19 @@ class AdbShadowFrameSource:
         except (OSError, subprocess.CalledProcessError) as error:
             raise ShadowObserverError("adb_disconnected", str(error)) from error
         match = re.search(
-            r"(?:mResumedActivity|ResumedActivity):\s+[^\s]+\s+([^/\s]+)/",
+            r"(?:mResumedActivity|ResumedActivity|mCurrentFocus|mFocusedApp)"
+            r"[^\r\n]*?\b([A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)+)/[^\s}]+",
             output,
         )
-        return match.group(1) if match else None
+        return {
+            "package": match.group(1) if match else None,
+            "parser": {
+                "source": "dumpsys activity activities",
+                "matched": match is not None,
+                "raw_output_sha256": hashlib.sha256(output.encode()).hexdigest(),
+                "raw_output_length": len(output),
+            },
+        }
 
 
 class ObservationStore:
@@ -198,7 +220,11 @@ class ObservationStore:
         self,
         observation: dict[str, Any],
         screenshot: bytes | None = None,
+        *,
+        timing_started: float | None = None,
+        clock: Callable[[], float] = time.monotonic,
     ) -> dict[str, Any]:
+        persistence_started = clock()
         if screenshot is not None and self.capture_count < self.max_captures:
             self.evidence_dir.mkdir(parents=True, exist_ok=True)
             digest = observation["screenshot_hash"]
@@ -214,6 +240,13 @@ class ObservationStore:
         else:
             observation["raw_capture_retained"] = False
 
+        timing = observation.get("timing_ms")
+        if isinstance(timing, dict):
+            timing["persistence_duration_ms"] = _elapsed_ms(
+                persistence_started, clock()
+            )
+            if timing_started is not None:
+                timing["total_duration_ms"] = _elapsed_ms(timing_started, clock())
         self.output.parent.mkdir(parents=True, exist_ok=True)
         with self.output.open("a", encoding="utf-8", newline="\n") as stream:
             stream.write(json.dumps(observation, ensure_ascii=True) + "\n")
@@ -244,22 +277,29 @@ class ShadowObserver:
         self.session_id = session_id or uuid.uuid4().hex
         self.clock = clock
         self.sleeper = sleeper
-        self._previous_sample: tuple[str, str] | None = None
+        self._previous_observation_sample: tuple[str, str] | None = None
         self._previous_observation_id: str | None = None
         self._previous_state: str | None = None
         self._sequence = 0
         self.suppressed_count = 0
+        self._timing_samples = 0
+        self._timing_totals = {key: 0.0 for key in _TIMING_KEYS}
 
     def run_once(self) -> dict[str, Any] | None:
+        total_started = self.clock()
+        timing = _new_timing()
+        capture_started = self.clock()
         try:
             frame = self.source.capture("shadow-poll")
         except Exception as error:
-            return self._record_capture_failure(error)
+            timing["capture_duration_ms"] = _elapsed_ms(capture_started, self.clock())
+            return self._record_capture_failure(error, timing, total_started)
+        timing["capture_duration_ms"] = _elapsed_ms(capture_started, self.clock())
 
         screenshot_hash = hashlib.sha256(frame.screenshot).hexdigest()
         fingerprint = perceptual_fingerprint(frame.screenshot)
-        if self._previous_sample is not None:
-            previous_hash, previous_fingerprint = self._previous_sample
+        if self._previous_observation_sample is not None:
+            previous_hash, previous_fingerprint = self._previous_observation_sample
             score = change_score(
                 previous_hash,
                 screenshot_hash,
@@ -268,18 +308,24 @@ class ShadowObserver:
             )
             if score < self.config.change_threshold:
                 self.suppressed_count += 1
-                self._previous_sample = (screenshot_hash, fingerprint)
                 return None
         else:
             score = 1.0
-        self._previous_sample = (screenshot_hash, fingerprint)
 
         package = str(frame.metadata.get("package", self.config.package))
-        foreground = frame.metadata.get("foreground_package")
-        game_is_foreground = foreground is None or foreground == package
+        foreground, _, _ = _foreground_context(frame.metadata, package)
+        game_is_foreground = foreground == "confirmed_game"
         anchors = tuple(frame.ocr_anchors)
         if game_is_foreground and not anchors and self.ocr_perceiver is not None:
-            anchors = tuple(self.ocr_perceiver.detect(frame.screenshot))
+            ocr_started = self.clock()
+            try:
+                anchors = tuple(self.ocr_perceiver.detect(frame.screenshot))
+            except Exception as error:
+                timing["ocr_duration_ms"] = _elapsed_ms(ocr_started, self.clock())
+                return self._record_pipeline_failure(
+                    "ocr", error, frame, timing, total_started, score, fingerprint
+                )
+            timing["ocr_duration_ms"] = _elapsed_ms(ocr_started, self.clock())
         frame = Frame(
             screenshot=frame.screenshot,
             screenshot_hash=screenshot_hash,
@@ -288,13 +334,40 @@ class ShadowObserver:
             ocr_anchors=anchors,
             metadata=frame.metadata,
         )
-        observation = self._build_observation(frame, fingerprint, score)
+        recognition_started = self.clock()
+        try:
+            observation = self._build_observation(
+                frame, fingerprint, score, timing=timing
+            )
+        except Exception as error:
+            timing["recognition_extraction_duration_ms"] = _elapsed_ms(
+                recognition_started, self.clock()
+            )
+            return self._record_pipeline_failure(
+                "recognition", error, frame, timing, total_started, score, fingerprint
+            )
+        timing["recognition_extraction_duration_ms"] = _elapsed_ms(
+            recognition_started, self.clock()
+        )
         evidence = (
             None
-            if observation["current_screen_state"] == "not_game_foreground"
+            if observation["foreground_status"] != "confirmed_game"
             else frame.screenshot
         )
-        return self.store.append(observation, evidence)
+        try:
+            result = self.store.append(
+                observation,
+                evidence,
+                timing_started=total_started,
+                clock=self.clock,
+            )
+        except Exception as error:
+            return self._record_pipeline_failure(
+                "storage", error, frame, timing, total_started, score, fingerprint
+            )
+        self._previous_observation_sample = (screenshot_hash, fingerprint)
+        self._note_timing(result["timing_ms"])
+        return result
 
     def run(self, duration: float | None = None) -> dict[str, Any]:
         if duration is not None and duration < 0:
@@ -316,19 +389,35 @@ class ShadowObserver:
             "duplicates_suppressed": self.suppressed_count,
             "stop_reason": stop_reason,
             "output": str(self.store.output),
+            "timing_samples": self._timing_samples,
+            "timing_ms_total": {
+                key: round(value, 3) for key, value in self._timing_totals.items()
+            },
         }
 
     def _build_observation(
-        self, frame: Frame, fingerprint: str, score: float
+        self,
+        frame: Frame,
+        fingerprint: str,
+        score: float,
+        *,
+        timing: dict[str, float],
     ) -> dict[str, Any]:
         metadata = frame.metadata
         package = str(metadata.get("package", self.config.package))
-        foreground = metadata.get("foreground_package")
-        if foreground is not None and foreground != package:
+        foreground, foreground_package, foreground_parser = _foreground_context(
+            metadata, package
+        )
+        if foreground == "confirmed_non_game":
             current_state = "not_game_foreground"
             validation = "REVIEW"
             anchors: list[dict[str, Any]] = []
             candidates: list[dict[str, str]] = []
+        elif foreground == "unknown":
+            current_state = "foreground_unknown"
+            validation = "REVIEW"
+            anchors = []
+            candidates = []
         else:
             state = self.recognizer.recognize(frame)
             current_state = state.state_id
@@ -347,6 +436,9 @@ class ShadowObserver:
             "client_version_name": metadata.get("client_version_name"),
             "client_version_code": metadata.get("client_version_code"),
             "server": metadata.get("server", self.config.server),
+            "foreground_package": foreground_package,
+            "foreground_status": foreground,
+            "foreground_parser": foreground_parser,
             "screenshot_hash": frame.screenshot_hash,
             "screenshot_path": None,
             "previous_screen_state": self._previous_state,
@@ -363,24 +455,75 @@ class ShadowObserver:
             "change_score": round(score, 6),
             "perceptual_fingerprint": fingerprint,
             "raw_capture_retained": False,
+            "timing_ms": dict(timing),
         }
         self._previous_observation_id = observation_id
         self._previous_state = current_state
         return observation
 
-    def _record_capture_failure(self, error: Exception) -> dict[str, Any]:
+    def _record_capture_failure(
+        self,
+        error: Exception,
+        timing: dict[str, float],
+        total_started: float,
+    ) -> dict[str, Any]:
+        return self._record_failure(
+            _failure_reason(error), error, None, timing, total_started
+        )
+
+    def _record_pipeline_failure(
+        self,
+        stage: str,
+        error: Exception,
+        frame: Frame,
+        timing: dict[str, float],
+        total_started: float,
+        score: float | None,
+        fingerprint: str | None,
+    ) -> dict[str, Any]:
+        return self._record_failure(
+            f"{stage}_failed",
+            error,
+            frame,
+            timing,
+            total_started,
+            score=score,
+            fingerprint=fingerprint,
+            stage=stage,
+        )
+
+    def _record_failure(
+        self,
+        reason: str,
+        error: Exception,
+        frame: Frame | None,
+        timing: dict[str, float],
+        total_started: float,
+        *,
+        score: float | None = None,
+        fingerprint: str | None = None,
+        stage: str = "capture",
+    ) -> dict[str, Any]:
         self._sequence += 1
-        reason = getattr(error, "reason", _failure_reason(error))
+        reason = getattr(error, "reason", reason)
+        metadata = frame.metadata if frame is not None else {}
+        package = str(metadata.get("package", self.config.package))
+        foreground, foreground_package, foreground_parser = _foreground_context(
+            metadata, package
+        )
         timestamp = _utc_now()
         observation = {
             "observation_id": f"{self.session_id}-{self._sequence:06d}",
             "timestamp": timestamp,
             "session_id": self.session_id,
-            "package": self.config.package,
-            "client_version_name": None,
-            "client_version_code": None,
-            "server": self.config.server,
-            "screenshot_hash": None,
+            "package": package,
+            "client_version_name": metadata.get("client_version_name"),
+            "client_version_code": metadata.get("client_version_code"),
+            "server": metadata.get("server", self.config.server),
+            "foreground_package": foreground_package,
+            "foreground_status": foreground,
+            "foreground_parser": foreground_parser,
+            "screenshot_hash": frame.screenshot_hash if frame else None,
             "screenshot_path": None,
             "previous_screen_state": self._previous_state,
             "current_screen_state": "unavailable",
@@ -393,15 +536,83 @@ class ShadowObserver:
                 "method": "adb_read_failure",
                 "previous_observation_id": self._previous_observation_id,
             },
-            "change_score": None,
-            "perceptual_fingerprint": None,
+            "change_score": score,
+            "perceptual_fingerprint": fingerprint,
             "raw_capture_retained": False,
             "error_reason": reason,
             "error": str(error),
+            "error_diagnostic": {
+                "stage": stage,
+                "exception_type": type(error).__name__,
+                "message": str(error),
+            },
+            "timing_ms": dict(timing),
         }
         self._previous_observation_id = observation["observation_id"]
         self._previous_state = "unavailable"
-        return self.store.append(observation)
+        _complete_timing(observation["timing_ms"], total_started, self.clock())
+        try:
+            result = self.store.append(
+                observation,
+                timing_started=total_started,
+                clock=self.clock,
+            )
+        except Exception as storage_error:
+            storage_observation = self._failure_without_persistence(
+                "storage_failed",
+                storage_error,
+                observation,
+                original_error=error,
+                original_stage=stage,
+            )
+            self._note_timing(storage_observation["timing_ms"])
+            return storage_observation
+        self._note_timing(result["timing_ms"])
+        return result
+
+    def _failure_without_persistence(
+        self,
+        reason: str,
+        error: Exception,
+        original: dict[str, Any],
+        *,
+        original_error: Exception,
+        original_stage: str,
+    ) -> dict[str, Any]:
+        self._sequence += 1
+        timing = dict(original["timing_ms"])
+        observation = {
+            **original,
+            "observation_id": f"{self.session_id}-{self._sequence:06d}",
+            "current_screen_state": "unavailable",
+            "validation_status": "FAIL",
+            "screenshot_path": None,
+            "raw_capture_retained": False,
+            "error_reason": reason,
+            "error": str(error),
+            "error_diagnostic": {
+                "stage": "storage",
+                "exception_type": type(error).__name__,
+                "message": str(error),
+                "original_failure": {
+                    "stage": original_stage,
+                    "exception_type": type(original_error).__name__,
+                    "message": str(original_error),
+                },
+            },
+            "timing_ms": timing,
+        }
+        _complete_timing(timing, None, self.clock())
+        self._previous_observation_id = observation["observation_id"]
+        self._previous_state = "unavailable"
+        return observation
+
+    def _note_timing(self, timing: dict[str, Any]) -> None:
+        self._timing_samples += 1
+        for key in _TIMING_KEYS:
+            value = timing.get(key)
+            if isinstance(value, (int, float)):
+                self._timing_totals[key] += float(value)
 
 
 def perceptual_fingerprint(png: bytes) -> str:
@@ -446,6 +657,8 @@ def extract_candidate_values(anchors: tuple[OCRAnchor, ...]) -> list[dict[str, s
     candidates: list[dict[str, str]] = []
     patterns = (
         ("level", r"\blevel\s*[:#]?\s*(\d+)"),
+        ("rank", r"\bmy\s+rank\s*[:#]?\s*(\d+)"),
+        ("total_points", r"\bmy\s+total\s+points\s*[:#]?\s*(\d+)"),
         ("effect", r"\beffect\s*[:#]?\s*([+-]?\d+(?:[.,]\d+)?%?)"),
         ("power", r"\bpower\s*[:#]?\s*([+-]?\d+(?:[.,]\d+)?%?)"),
         ("cost", r"\bcost\s*[:#]?\s*([+-]?\d+(?:[.,]\d+)?%?)"),
@@ -459,6 +672,33 @@ def extract_candidate_values(anchors: tuple[OCRAnchor, ...]) -> list[dict[str, s
                 candidates.append(
                     {"key": key, "value": match.group(1), "source_text": anchor.text}
                 )
+        level_match = re.search(r"\blv\.?\s*(\d+)(?:\s*[-/]\s*(\d+))?\b", normalized)
+        if level_match:
+            value = level_match.group(1)
+            if level_match.group(2):
+                value = f"{value}-{level_match.group(2)}"
+            candidates.append(
+                {"key": "level", "value": value, "source_text": anchor.text}
+            )
+        if re.fullmatch(r"(?:\d+:)?\d{1,2}:\d{2}", normalized):
+            candidates.append(
+                {
+                    "key": "time",
+                    "value": anchor.text.strip(),
+                    "source_text": anchor.text,
+                }
+            )
+        quantity_match = re.fullmatch(
+            r"(\d+(?:[.,]\d+)?[km])\s+([a-z][a-z ]*)", normalized
+        )
+        if quantity_match:
+            candidates.append(
+                {
+                    "key": "quantity",
+                    "value": quantity_match.group(1).upper(),
+                    "source_text": anchor.text,
+                }
+            )
     return candidates
 
 
@@ -569,3 +809,41 @@ def _failure_reason(error: Exception) -> str:
     if isinstance(error, (OSError, subprocess.CalledProcessError)):
         return "adb_disconnected"
     return "capture_failed"
+
+
+def _new_timing() -> dict[str, float]:
+    return {key: 0.0 for key in _TIMING_KEYS}
+
+
+def _elapsed_ms(started: float, finished: float) -> float:
+    return round(max(0.0, finished - started) * 1000, 3)
+
+
+def _complete_timing(
+    timing: dict[str, float], started: float | None, finished: float
+) -> None:
+    if started is not None:
+        timing["total_duration_ms"] = _elapsed_ms(started, finished)
+
+
+def _foreground_status(foreground_package: Any, package: str) -> str:
+    if not foreground_package:
+        return "unknown"
+    if foreground_package == package:
+        return "confirmed_game"
+    return "confirmed_non_game"
+
+
+def _foreground_context(
+    metadata: dict[str, Any], package: str
+) -> tuple[str, str | None, dict[str, Any] | None]:
+    foreground_package = metadata.get("foreground_package")
+    parser = metadata.get("foreground_parser")
+    declared_status = metadata.get("foreground_status")
+    if declared_status == "confirmed_game" and foreground_package == package:
+        status = "confirmed_game"
+    elif declared_status == "confirmed_non_game" and foreground_package:
+        status = "confirmed_non_game"
+    else:
+        status = _foreground_status(foreground_package, package)
+    return status, foreground_package, parser

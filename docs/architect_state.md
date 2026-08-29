@@ -48,10 +48,13 @@ Role names describe responsibilities, not models or providers.
   anchors, state recognition, bounded safe-navigation fixtures, dry-run mode,
   transition verification, and session journals exist. Experimental ADB input
   is isolated from normal operation.
-- **Shadow Observer v0.1**: passive ADB/display polling records novel frames in
-  append-only JSONL, suppresses duplicates, retains bounded evidence, preserves
-  installed client metadata, and fails safely on unknown screens or a missing
-  emulator.
+- **Shadow Observer v0.2**: passive ADB/display polling records novel frames in
+  append-only JSONL, compares change against the last recorded frame, requires
+  explicit foreground confirmation before OCR, retains bounded evidence only
+  for confirmed game frames, preserves parser diagnostics, reports structured
+  OCR/recognition/storage failures, and records per-stage timing totals. State
+  recognition uses conservative multi-anchor rules so map labels do not claim
+  building detail states.
 - **Account observation contract**: v0.1 defines raw observations, normalized
   facts, and PASS-only account snapshots with provenance, review/fail handling,
   and historical supersession.
@@ -106,7 +109,7 @@ Role names describe responsibilities, not models or providers.
 
 - Complete the first bounded Shadow Observer live acceptance and assess actual
   foreground detection, OCR quality, screen classification, evidence retention,
-  and safe failure behavior.
+  timing quality, and safe failure behavior against the v0.2 schema.
 - Build the eventual narrow adapter from validated raw observations to
   normalized facts and account snapshots; do not bypass the evidence boundary.
 - Expand direct client verification of research effects, prerequisite edges,

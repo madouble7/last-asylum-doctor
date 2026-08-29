@@ -1,4 +1,4 @@
-# PROBE Shadow Observer v0.1
+# PROBE Shadow Observer v0.2
 
 Matt can play normally while the observer polls the BlueStacks framebuffer.
 The observer is passive: its ADB calls are limited to device discovery,
@@ -33,22 +33,27 @@ pure-standard-library 64-bit average perceptual hash is calculated from an
 the configured threshold (`0.08` by default). Therefore duplicate frames do
 not produce OCR, PNGs, or JSONL records. The first frame is always recorded.
 
-OCR is run only for a novel game-foreground frame when a perceiver is
-configured. The optional RapidOCR adapter already used by PROBE returns no
-anchors when its optional dependencies are unavailable; the observer still
-records the screen safely.
-The current recognizer classifies explicit known OCR states and reports other
-screens as `unknown` for review. Animation is rate-limited by polling and
-bounded by `--max-captures`; no popup is dismissed.
+OCR is run only for a novel frame whose foreground package is explicitly
+confirmed as the game package. Missing or malformed foreground metadata is
+`unknown`, skips OCR, and does not retain a screenshot. The optional RapidOCR
+adapter already used by PROBE returns no anchors when its optional dependencies
+are unavailable; OCR, recognition, and storage exceptions become structured
+`FAIL` observations with stage diagnostics.
+The recognizer uses multi-anchor rules for the captured inventory, item dialog,
+Kingdom War, Black Ops, Loot, map, and building states. Weak labels such as
+`Upgrade` or `Training Grounds` remain `unknown` for review. Animation is
+rate-limited by polling and bounded by `--max-captures`; no popup is dismissed.
 
 ## Account-observation boundary
 
 The JSONL emitted here is a PROBE-specific raw observation stream. It is
-evidence for the v0.1 account-observation contract, not a normalized account
+evidence for the v0.2 account-observation contract, not a normalized account
 snapshot. An eventual adapter can map `observation_id`, `timestamp`,
 `screenshot_hash`, client/server metadata, and `validation_status` to the
 contract's raw-observation provenance, then validate OCR candidates into
 normalized facts. This observer does not emit canonical facts or snapshots.
+Candidate extraction is deliberately narrow and preserves original OCR source
+text for review.
 
 ## Observation schema
 
@@ -78,7 +83,16 @@ Each JSONL line is one observation with these fields:
   },
   "change_score": 1.0,
   "perceptual_fingerprint": "...",
-  "raw_capture_retained": true
+  "raw_capture_retained": true,
+  "foreground_status": "confirmed_game",
+  "foreground_parser": {},
+  "timing_ms": {
+    "capture_duration_ms": 0.0,
+    "ocr_duration_ms": 0.0,
+    "recognition_extraction_duration_ms": 0.0,
+    "persistence_duration_ms": 0.0,
+    "total_duration_ms": 0.0
+  }
 }
 ```
 
@@ -89,14 +103,22 @@ observed transition trail. `PASS` means a known state was recognized;
 `REVIEW` means unknown, overlay, or non-game foreground; `FAIL` means capture
 availability failed.
 
-## Failure and storage behavior
+## Failure, storage, and timing behavior
 
 - No ready emulator, missing ADB, or a disconnected bridge creates one
   `unavailable` / `FAIL` record and stops the session without writing a PNG.
 - A different foreground package creates a `not_game_foreground` / `REVIEW`
   record and does not retain that screen's raw PNG.
+- Missing or malformed foreground metadata creates a `foreground_unknown` /
+  `REVIEW` record, skips OCR, and does not retain that screen's raw PNG.
 - Unknown screens and ambiguous OCR remain `unknown` / `REVIEW`; the observer
   never attempts to dismiss an overlay.
+- OCR, local recognition/extraction, and persistence failures produce `FAIL`
+  diagnostics with an `error_reason`, exception type, message, and stage. A
+  persistence failure is returned to the caller without claiming that a JSONL
+  record was written.
+- Every recorded observation includes per-stage elapsed milliseconds. The run
+  summary includes timing sample count and totals.
 - Only retained novel frames count against `--max-captures`. After the bound,
   observations remain in JSONL with `raw_capture_retained: false` and a
   retention note.
@@ -105,7 +127,7 @@ availability failed.
 
 ## Learning boundary
 
-v0.1 learning is append-only observational knowledge:
+v0.2 learning is append-only observational knowledge:
 
 ```text
 screen fingerprint + OCR anchors + observed state transition + evidence hash
