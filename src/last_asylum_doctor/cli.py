@@ -22,6 +22,12 @@ from last_asylum_doctor.economic import (
     ShopDoctorWorkbookError,
     inspect_shop_doctor_workbook,
 )
+from last_asylum_doctor.planner import (
+    load_account,
+    plan_recovery,
+    render_report,
+    report_as_dict,
+)
 from last_asylum_doctor.scraping import (
     CachedHttpClient,
     FullCorpusIngestionResult,
@@ -124,6 +130,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Shop Doctor inspection failed: {error}", file=sys.stderr)
             return 1
         print(json.dumps(_shop_doctor_summary(workbook), indent=2, ensure_ascii=False))
+        return 0
+    if parsed.command == "plan-recovery":
+        try:
+            report = plan_recovery(load_account(parsed.input))
+        except (OSError, TypeError, ValueError, json.JSONDecodeError) as error:
+            print(f"Recovery planning failed: {error}", file=sys.stderr)
+            return 1
+        if parsed.json_output:
+            print(json.dumps(report_as_dict(report), indent=2, ensure_ascii=False))
+        else:
+            print(render_report(report))
         return 0
     if parsed.command == "ingest-shop-doctor":
         if not parsed.store_db:
@@ -420,6 +437,17 @@ def _build_parser() -> argparse.ArgumentParser:
         help="validate and summarize a Shop Doctor XLSX without writing SQLite",
     )
     inspect_shop.add_argument("path", type=Path, help="local Shop Doctor .xlsx source")
+    planner = commands.add_parser(
+        "plan-recovery",
+        help="calculate deterministic T9 readiness and post-war recovery status",
+    )
+    planner.add_argument("input", type=Path, help="account-state JSON input path")
+    planner.add_argument(
+        "--json",
+        dest="json_output",
+        action="store_true",
+        help="print the machine-readable planner report",
+    )
     ingest_shop = commands.add_parser(
         "ingest-shop-doctor",
         help="ingest a validated Shop Doctor XLSX into the factual economic layer",

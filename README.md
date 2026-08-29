@@ -88,3 +88,34 @@ last-asylum-doctor ingest-science --all --store-db --output data\processed\resea
 
 See [the full science-corpus documentation](docs/science_corpus.md) for source
 reconciliation, partial-failure handling, validation, provenance, and reruns.
+
+## Recovery and progression planner
+
+The deterministic Doctor's Companion planner accepts an extensible account-state
+JSON object. Unknown additional fields are ignored for forward compatibility:
+
+```json
+{
+	"antitoxin": 56000000,
+	"grain": 252000000,
+	"timber": 252000000,
+	"herbs": 107000000,
+	"sanctuary_27_remaining_seconds": 1200000,
+	"construction_speedup_minutes": 180,
+	"training_speedup_minutes": 60,
+	"universal_speedup_minutes": 30,
+	"current_t8_troops": 125000,
+	"recoverable_or_wounded_troops": null,
+	"desired_combat_ready_troops": 150000
+}
+```
+
+Run the human-readable report or machine-readable JSON report:
+
+```powershell
+last-asylum-doctor plan-recovery data\imports\account-state.json
+last-asylum-doctor plan-recovery data\imports\account-state.json --json
+```
+
+The planner preserves the confirmed Server 283 milestone provenance and does
+not estimate troop costs, troop training times, or economic optimality.
