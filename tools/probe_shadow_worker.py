@@ -17,6 +17,7 @@ from last_asylum_doctor.probe.shadow_observer import (
     ObservationStore,
     ShadowObserverConfig,
     ShadowSpool,
+    ShadowSpoolError,
     ShadowSpoolWorker,
 )
 
@@ -47,7 +48,11 @@ def main(argv: list[str] | None = None) -> int:
         ),
         ocr_perceiver=RapidOcrPerceiver(),
     )
-    result = worker.process_pending(args.limit)
+    try:
+        result = worker.process_pending(args.limit)
+    except ShadowSpoolError as error:
+        print(f"Shadow Spool worker refused: {error}", file=sys.stderr)
+        return 2
     print(result)
     return 1 if result["failed"] else 0
 

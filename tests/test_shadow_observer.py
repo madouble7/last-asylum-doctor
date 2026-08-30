@@ -15,10 +15,13 @@ from last_asylum_doctor.probe.navigation import Frame, OCRAnchor
 from last_asylum_doctor.probe.shadow_observer import (
     AdbShadowFrameSource,
     ObservationStore,
+    ObservationStoreCorruptionError,
     ShadowObserver,
     ShadowObserverConfig,
     ShadowSpool,
+    ShadowSpoolError,
     ShadowSpoolWorker,
+    _SingleWorkerLock,
     extract_candidate_values,
     perceptual_fingerprint,
 )
@@ -523,8 +526,8 @@ def spool_capture(
         "session_id": "capture-session",
         "captured_at_utc": "2026-08-29T12:00:00+00:00",
         "capture_duration_ms": 1.0,
+        "capture_staging_duration_ms": 1.0,
         "spool_write_duration_ms": 1.0,
-        "capture_total_duration_ms": 2.0,
         "package": "com.phs.global",
         "foreground_package": "com.phs.global",
         "foreground_status": "confirmed_game",
@@ -570,11 +573,37 @@ def test_spool_commit_exposes_complete_capture_directory_without_ocr(
     assert result["status"] == "SPOOLED"
     assert perceiver.calls == 0
     inbox = spool.root / "inbox" / result["capture_id"]
+    sidecar = json.loads((inbox / "capture.json").read_text(encoding="utf-8"))
     assert sorted(path.name for path in inbox.iterdir()) == [
         "capture.json",
         "frame.png",
     ]
+    assert result["capture_total_duration_ms"] >= 0
+    assert "capture_total_duration_ms" not in sidecar
+    assert sidecar["capture_staging_duration_ms"] >= 0
     assert not list((spool.root / "tmp").iterdir())
+
+
+def test_spool_precommit_failure_stays_out_of_inbox_with_marker(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+
+    def fail_commit(source: Path, destination: Path) -> None:
+        del source, destination
+        raise OSError("commit unavailable")
+
+    monkeypatch.setattr(shadow_observer_module.os, "replace", fail_commit)
+
+    with pytest.raises(OSError, match="commit unavailable"):
+        spool_capture(spool, "uncommitted", png(2, 2, (1, 2, 3)))
+
+    temporary = next((spool.root / "tmp").iterdir())
+    assert not (spool.root / "inbox" / "uncommitted").exists()
+    assert (temporary / "failure.json").exists()
+    assert json.loads((temporary / "failure.json").read_text())["failure_class"] == (
+        "uncommitted_capture"
+    )
 
 
 def test_worker_success_lifecycle_preserves_capture_and_separates_timing(
@@ -600,8 +629,8 @@ def test_worker_success_lifecycle_preserves_capture_and_separates_timing(
     assert "timing_ms" not in saved
     assert set(saved["capture_timing_ms"]) == {
         "capture_duration_ms",
+        "capture_staging_duration_ms",
         "spool_write_duration_ms",
-        "capture_total_duration_ms",
     }
     assert saved["processing_timing_ms"]["queue_latency_ms"] >= 0
 
@@ -652,11 +681,35 @@ def test_worker_ocr_failure_is_terminal_and_retains_evidence(tmp_path: Path) -> 
     )
 
     assert result["failed"] == 1
-    assert failure["error_reason"] == "worker_failed"
+    assert failure["error_reason"] == "processing_failed"
+    assert failure["failure_class"] == "validated_capture_processing_failure"
     assert failure["error_diagnostic"]["stage"] == "worker"
     assert (
         spool.root / "failed" / path.name / "frame.png"
     ).read_bytes() == original_png
+
+
+def test_worker_rejects_same_id_with_different_payload_after_processing(
+    tmp_path: Path,
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    first_path = spool_capture(spool, "same-id", png(2, 2, (1, 2, 3)))
+    active, store = worker(tmp_path, spool)
+    assert active.process_pending()["processed"] == 1
+    second_path = spool_capture(spool, "same-id", png(2, 2, (9, 8, 7)))
+
+    result = active.process_pending()
+    failure = json.loads(
+        (spool.root / "failed" / second_path.name / "failure.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert result["failed"] == 1
+    assert failure["error_reason"] == "capture_id_collision"
+    assert failure["failure_class"] == "validated_capture_processing_failure"
+    assert (spool.root / "processed" / first_path.name).exists()
+    assert store.observation_count == 1
 
 
 def test_worker_recovers_processing_and_does_not_duplicate_jsonl_after_restart(
@@ -682,3 +735,107 @@ def test_worker_recovers_processing_and_does_not_duplicate_jsonl_after_restart(
     assert result["already_processed"] == 1
     assert len(store.output.read_text(encoding="utf-8").splitlines()) == 1
     assert (spool.root / "processed" / path.name).exists()
+
+
+def test_observation_append_flushes_and_fsynchronizes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    sync_calls = 0
+
+    def record_fsync(file_descriptor: int) -> None:
+        nonlocal sync_calls
+        assert file_descriptor >= 0
+        sync_calls += 1
+
+    monkeypatch.setattr(shadow_observer_module.os, "fsync", record_fsync)
+    store = ObservationStore(tmp_path / "observations.jsonl", tmp_path, max_captures=1)
+
+    store.append({"capture_id": "durable", "timestamp": "now"})
+
+    assert sync_calls == 1
+
+
+@pytest.mark.parametrize(
+    "damaged", [b'{"capture_id":"abc"', b'{"capture_id":"abc"\n', b"\xff\xfe"]
+)
+def test_final_jsonl_tail_is_quarantined_and_truncated(
+    tmp_path: Path, damaged: bytes
+) -> None:
+    output = tmp_path / "observations.jsonl"
+    valid = b'{"capture_id":"good","timestamp":"now"}\n'
+    output.write_bytes(valid + damaged)
+
+    store = ObservationStore(output, tmp_path / "screenshots", max_captures=1)
+
+    assert output.read_bytes() == valid
+    artifacts = list(tmp_path.glob("observations.jsonl.corrupt-tail.*.bin"))
+    assert len(artifacts) == 1
+    assert artifacts[0].read_bytes() == damaged
+    assert store.contains_capture_id("good")
+
+
+def test_valid_jsonl_without_final_newline_gets_clean_boundary_on_append(
+    tmp_path: Path,
+) -> None:
+    output = tmp_path / "observations.jsonl"
+    output.write_bytes(b'{"capture_id":"good","timestamp":"now"}')
+    store = ObservationStore(output, tmp_path / "screenshots", max_captures=1)
+
+    store.append({"capture_id": "next", "timestamp": "later"})
+
+    assert len(output.read_text(encoding="utf-8").splitlines()) == 2
+    assert store.contains_capture_id("next")
+
+
+def test_malformed_middle_jsonl_record_fails_clearly(tmp_path: Path) -> None:
+    output = tmp_path / "observations.jsonl"
+    output.write_bytes(
+        b'{"capture_id":"first"}\n{not-json}\n{"capture_id":"last"}\n'
+    )
+
+    with pytest.raises(ObservationStoreCorruptionError, match="final tail"):
+        ObservationStore(output, tmp_path / "screenshots", max_captures=1)
+
+    assert output.read_bytes().count(b"{not-json}") == 1
+
+
+def test_capture_id_idempotence_survives_tail_recovery(tmp_path: Path) -> None:
+    output = tmp_path / "observations.jsonl"
+    output.write_bytes(
+        b'{"capture_id":"stable","screenshot_hash":"hash"}\n'
+        b'{"capture_id":"torn"'
+    )
+    store = ObservationStore(output, tmp_path / "screenshots", max_captures=1)
+
+    result = store.append(
+        {"capture_id": "stable", "screenshot_hash": "hash", "timestamp": "later"}
+    )
+
+    assert result["capture_id"] == "stable"
+    assert len(output.read_text(encoding="utf-8").splitlines()) == 1
+
+
+def test_spool_rejects_capture_id_collision_without_replacing_existing_payload(
+    tmp_path: Path,
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    first = spool_capture(spool, "collision", png(2, 2, (1, 2, 3)))
+    original_png = (first / "frame.png").read_bytes()
+
+    with pytest.raises(ShadowSpoolError, match="already exists"):
+        spool_capture(spool, "collision", png(2, 2, (9, 8, 7)))
+
+    assert (first / "frame.png").read_bytes() == original_png
+    assert len(spool.inbox_items()) == 1
+
+
+def test_second_worker_refuses_to_operate_while_lock_is_held(tmp_path: Path) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    first, _ = worker(tmp_path, spool)
+    second, _ = worker(tmp_path, spool)
+
+    with _SingleWorkerLock(spool.root):
+        with pytest.raises(ShadowSpoolError, match="another Shadow Spool worker"):
+            second.process_pending()
+
+    assert first.process_pending()["processed"] == 0

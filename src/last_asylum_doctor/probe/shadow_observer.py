@@ -16,6 +16,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Protocol
 
+try:
+    import fcntl
+except ImportError:  # pragma: no cover - Windows uses msvcrt below.
+    fcntl = None
+
+if fcntl is None:  # pragma: no cover - exercised on Windows.
+    import msvcrt
+
 from .navigation import (
     DEFAULT_ADB,
     DEFAULT_SERVER,
@@ -38,6 +46,18 @@ class ShadowObserverError(RuntimeError):
     def __init__(self, reason: str, message: str) -> None:
         super().__init__(message)
         self.reason = reason
+
+
+class ShadowSpoolError(RuntimeError):
+    """A filesystem spool lifecycle or ownership failure."""
+
+    def __init__(self, reason: str, message: str) -> None:
+        super().__init__(message)
+        self.reason = reason
+
+
+class ObservationStoreCorruptionError(RuntimeError):
+    """Canonical JSONL contains malformed data before its final tail."""
 
 
 _TIMING_KEYS = (
@@ -92,7 +112,6 @@ class ShadowSpool:
         screenshot: bytes,
         metadata: dict[str, Any],
         *,
-        capture_started: float | None = None,
         capture_duration_ms: float | None = None,
         clock: Callable[[], float] = time.monotonic,
     ) -> Path:
@@ -101,14 +120,18 @@ class ShadowSpool:
         self.prepare()
         temporary = self.paths["tmp"] / f".{capture_id}.{uuid.uuid4().hex}"
         destination = self.paths["inbox"] / capture_id
+        if destination.exists():
+            raise ShadowSpoolError(
+                "capture_id_collision",
+                f"inbox capture already exists: {capture_id}",
+            )
         temporary.mkdir()
         try:
             spool_started = clock()
             _write_durable_bytes(temporary / "frame.png", screenshot)
-            if capture_started is not None:
-                metadata["capture_total_duration_ms"] = _elapsed_ms(
-                    capture_started, clock()
-                )
+            metadata["capture_staging_duration_ms"] = _elapsed_ms(
+                spool_started, clock()
+            )
             metadata["spool_write_duration_ms"] = _elapsed_ms(
                 spool_started, clock()
             )
@@ -118,7 +141,7 @@ class ShadowSpool:
             os.replace(temporary, destination)
         except Exception:
             if temporary.exists():
-                _remove_directory(temporary)
+                _write_failure_marker(temporary, capture_id)
             raise
         return destination
 
@@ -130,6 +153,11 @@ class ShadowSpool:
         self.prepare()
         source = self.paths["inbox"] / capture_id
         destination = self.paths["processing"] / capture_id
+        if destination.exists():
+            raise ShadowSpoolError(
+                "capture_already_processing",
+                f"capture is already processing: {capture_id}",
+            )
         source.replace(destination)
         return destination
 
@@ -139,6 +167,11 @@ class ShadowSpool:
         source = self.paths["processing"] / capture_id
         destination = self.paths[state] / capture_id
         self.prepare()
+        if destination.exists():
+            raise ShadowSpoolError(
+                "capture_terminal_collision",
+                f"terminal capture already exists: {destination}",
+            )
         source.replace(destination)
         return destination
 
@@ -154,6 +187,47 @@ class ShadowSpool:
             path.replace(destination)
             recovered.append(path.name)
         return recovered
+
+
+class _SingleWorkerLock:
+    def __init__(self, root: Path) -> None:
+        self.path = root / ".worker.lock"
+        self._stream: Any | None = None
+
+    def __enter__(self) -> _SingleWorkerLock:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        stream = self.path.open("a+b")
+        if self.path.stat().st_size == 0:
+            stream.write(b"0")
+            stream.flush()
+        stream.seek(0)
+        try:
+            if fcntl is not None:
+                fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            else:
+                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+        except (OSError, PermissionError) as error:
+            stream.close()
+            raise ShadowSpoolError(
+                "worker_already_running",
+                f"another Shadow Spool worker owns {self.path}",
+            ) from error
+        self._stream = stream
+        return self
+
+    def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any) -> None:
+        del exc_type, exc_value, traceback
+        if self._stream is None:
+            return
+        try:
+            if fcntl is not None:
+                fcntl.flock(self._stream.fileno(), fcntl.LOCK_UN)
+            else:
+                self._stream.seek(0)
+                msvcrt.locking(self._stream.fileno(), msvcrt.LK_UNLCK, 1)
+        finally:
+            self._stream.close()
+            self._stream = None
 
 
 class AdbShadowFrameSource:
@@ -303,15 +377,7 @@ class ObservationStore:
         self.observation_count = 0
         self._persisted_by_capture_id: dict[str, dict[str, Any]] = {}
         if output.exists():
-            for line in output.read_text(encoding="utf-8").splitlines():
-                try:
-                    saved = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
-                self.observation_count += 1
-                capture_id = saved.get("capture_id")
-                if isinstance(capture_id, str):
-                    self._persisted_by_capture_id[capture_id] = saved
+            self._load_existing()
 
     def contains_capture_id(self, capture_id: str) -> bool:
         return capture_id in self._persisted_by_capture_id
@@ -366,11 +432,58 @@ class ObservationStore:
             observation["processing_timing_ms"] = dict(processing_timing)
         self.output.parent.mkdir(parents=True, exist_ok=True)
         with self.output.open("a", encoding="utf-8", newline="\n") as stream:
+            if self.output.stat().st_size and not self.output.read_bytes().endswith(
+                b"\n"
+            ):
+                stream.write("\n")
             stream.write(json.dumps(observation, ensure_ascii=True) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
         self.observation_count += 1
         if isinstance(capture_id, str):
             self._persisted_by_capture_id[capture_id] = dict(observation)
         return observation
+
+    def _load_existing(self) -> None:
+        content = self.output.read_bytes()
+        offset = 0
+        for line in content.splitlines(keepends=True):
+            line_end = offset + len(line)
+            payload = line.rstrip(b"\r\n")
+            if not payload:
+                offset = line_end
+                continue
+            try:
+                saved = json.loads(payload.decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError) as error:
+                if line_end == len(content):
+                    self._recover_tail(content[offset:], offset)
+                    return
+                raise ObservationStoreCorruptionError(
+                    f"malformed JSONL record before final tail at byte {offset}"
+                ) from error
+            if not isinstance(saved, dict):
+                if line_end == len(content):
+                    self._recover_tail(content[offset:], offset)
+                    return
+                raise ObservationStoreCorruptionError(
+                    f"non-object JSONL record before final tail at byte {offset}"
+                )
+            self.observation_count += 1
+            capture_id = saved.get("capture_id")
+            if isinstance(capture_id, str):
+                self._persisted_by_capture_id[capture_id] = saved
+            offset = line_end
+
+    def _recover_tail(self, damaged: bytes, offset: int) -> None:
+        artifact = self.output.with_name(
+            f"{self.output.name}.corrupt-tail.{uuid.uuid4().hex}.bin"
+        )
+        _write_durable_bytes(artifact, damaged)
+        with self.output.open("r+b") as stream:
+            stream.truncate(offset)
+            stream.flush()
+            os.fsync(stream.fileno())
 
 
 class ShadowObserver:
@@ -489,10 +602,10 @@ class ShadowObserver:
                 capture_id,
                 frame.screenshot,
                 capture_metadata,
-                capture_started=total_started,
                 capture_duration_ms=capture_duration,
                 clock=self.clock,
             )
+            capture_total_duration = _elapsed_ms(total_started, self.clock())
         except Exception as error:
             return {
                 "status": "FAIL",
@@ -510,6 +623,7 @@ class ShadowObserver:
             "status": "SPOOLED",
             "capture_id": capture_id,
             "spool_path": str(path),
+            "capture_total_duration_ms": capture_total_duration,
             **capture_metadata,
         }
 
@@ -951,6 +1065,7 @@ class ShadowSpoolWorker:
         "framebuffer_width",
         "framebuffer_height",
         "png_byte_length",
+        "capture_staging_duration_ms",
         "spool_enqueued_at_utc",
     }
 
@@ -980,10 +1095,11 @@ class ShadowSpoolWorker:
     def process_pending(self, limit: int | None = None) -> dict[str, Any]:
         if limit is not None and limit < 1:
             raise ValueError("limit must be at least 1")
-        recovered = self.spool.recover_processing()
-        results: list[dict[str, Any]] = []
-        for item in self.spool.inbox_items()[:limit]:
-            results.append(self.process_one(item.name))
+        with _SingleWorkerLock(self.spool.root):
+            recovered = self.spool.recover_processing()
+            results: list[dict[str, Any]] = []
+            for item in self.spool.inbox_items()[:limit]:
+                results.append(self._process_one(item.name))
         return {
             "processed": sum(item["status"] == "PROCESSED" for item in results),
             "already_processed": sum(
@@ -995,13 +1111,26 @@ class ShadowSpoolWorker:
         }
 
     def process_one(self, capture_id: str) -> dict[str, Any]:
+        with _SingleWorkerLock(self.spool.root):
+            return self._process_one(capture_id)
+
+    def _process_one(self, capture_id: str) -> dict[str, Any]:
+        metadata: dict[str, Any] | None = None
         try:
             processing_path = self.spool.claim(capture_id)
         except FileNotFoundError:
             return {"capture_id": capture_id, "status": "MISSING"}
         try:
             metadata, frame = self._load(processing_path)
-            if self.store.contains_capture_id(capture_id):
+            existing = self.store.get_capture(capture_id)
+            if existing is not None and existing.get("screenshot_hash") != metadata[
+                "screenshot_hash"
+            ]:
+                raise ShadowSpoolError(
+                    "capture_id_collision",
+                    "capture ID has a different persisted screenshot hash",
+                )
+            if existing is not None:
                 self.spool.move(capture_id, "processed")
                 return {
                     "capture_id": capture_id,
@@ -1015,7 +1144,11 @@ class ShadowSpoolWorker:
                 "observation_id": result["observation_id"],
             }
         except Exception as error:
-            failure = self._write_failure(processing_path, error)
+            failure = self._write_failure(
+                processing_path,
+                error,
+                metadata,
+            )
             try:
                 self.spool.move(capture_id, "failed")
             except FileNotFoundError:
@@ -1095,8 +1228,8 @@ class ShadowSpoolWorker:
             key: metadata.get(key, 0.0)
             for key in (
                 "capture_duration_ms",
+                "capture_staging_duration_ms",
                 "spool_write_duration_ms",
-                "capture_total_duration_ms",
             )
         }
         return self.observer.process_spooled_frame(
@@ -1107,12 +1240,22 @@ class ShadowSpoolWorker:
             queue_latency_ms=queue_latency,
         )
 
-    def _write_failure(self, processing_path: Path, error: Exception) -> dict[str, Any]:
+    def _write_failure(
+        self,
+        processing_path: Path,
+        error: Exception,
+        metadata: dict[str, Any] | None,
+    ) -> dict[str, Any]:
         capture_id = processing_path.name
         payload = {
             "capture_id": capture_id,
             "failed_at_utc": _utc_now(),
-            "error_reason": getattr(error, "reason", "worker_failed"),
+            "error_reason": getattr(error, "reason", "processing_failed"),
+            "failure_class": (
+                "validated_capture_processing_failure"
+                if metadata is not None
+                else "untrusted_spool_evidence"
+            ),
             "error": str(error),
             "error_diagnostic": {
                 "stage": "worker",
@@ -1120,6 +1263,15 @@ class ShadowSpoolWorker:
                 "message": str(error),
             },
         }
+        if metadata is not None:
+            payload["capture_metadata"] = dict(metadata)
+            payload.update(
+                {
+                    "validation_status": "FAIL",
+                    "captured_at_utc": metadata.get("captured_at_utc"),
+                    "screenshot_hash": metadata.get("screenshot_hash"),
+                }
+            )
         try:
             _write_durable_json(processing_path / "failure.json", payload)
         except OSError as write_error:
@@ -1334,6 +1486,21 @@ def _write_durable_json(path: Path, payload: dict[str, Any]) -> None:
     _write_durable_bytes(
         path, (json.dumps(payload, ensure_ascii=True, sort_keys=True) + "\n").encode()
     )
+
+
+def _write_failure_marker(path: Path, capture_id: str) -> None:
+    try:
+        _write_durable_json(
+            path / "failure.json",
+            {
+                "capture_id": capture_id,
+                "failure_class": "uncommitted_capture",
+                "error_reason": "spool_enqueue_failed",
+                "message": "capture directory never reached the inbox commit point",
+            },
+        )
+    except OSError:
+        pass
 
 
 def _remove_directory(path: Path) -> None:

@@ -55,6 +55,8 @@ metadata, integrity failures, OCR failures, and other worker failures retain
 the original evidence and move the directory to `failed/` with an inspectable
 `failure.json` diagnostic. Capture IDs are stable and indexed from the JSONL
 stream, so recovery or restart does not append a duplicate observation.
+Only one worker may own a spool at a time; a small process lock refuses a
+second worker and releases automatically when its process exits.
 
 The internal spool schema is v0.3 and is separate from the account
 observation contract. Asynchronous observations preserve `captured_at_utc`
@@ -62,6 +64,14 @@ and `capture_timing_ms`; worker queue latency, OCR, recognition/extraction,
 persistence, and total processing durations are recorded in
 `processing_timing_ms`. The synchronous `run_once()` path and its v0.2
 `timing_ms` field remain unchanged.
+
+The persisted `capture_staging_duration_ms` covers durable `frame.png` staging
+before the sidecar write, as does the pre-commit `spool_write_duration_ms`, and
+both exclude the durable `capture.json` write and the final directory rename.
+The capture runtime result's
+`capture_total_duration_ms` measures the complete enqueue call, including the
+sidecar write and directory commit, but is not written back into committed
+sidecar evidence.
 
 ## Capture and change detection
 
@@ -165,6 +175,21 @@ availability failed.
 - Async failed spool directories remain inspectable local evidence. The worker
   does not rewrite `frame.png`; terminal transitions move the capture
   directory as one unit.
+- Canonical JSONL appends are flushed and fsynced. On startup, a malformed or
+  invalid-UTF-8 final tail is copied to a `corrupt-tail` artifact and the
+  canonical stream is truncated to the last known-good record. A malformed
+  middle record fails startup rather than being guessed around.
+- A validated capture-processing failure is classified as
+  `validated_capture_processing_failure` and keeps its validated capture
+  metadata in `failure.json`; malformed or integrity-failed spool evidence is
+  `untrusted_spool_evidence` and does not manufacture a canonical observation.
+- Capture-ID reuse is rejected when the persisted screenshot hash differs;
+  equal hashes are idempotent for the same ID, while equal screens under
+  different capture IDs remain separate observations.
+- Directories under `tmp/` never reached the inbox commit point. They are
+  ignored by the worker and a failed current-process enqueue leaves a durable
+  failure marker for later inspection; no temporary-file garbage collector is
+  implied.
 
 ## Learning boundary
 

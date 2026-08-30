@@ -61,7 +61,9 @@ Role names describe responsibilities, not models or providers.
   visibility and no capture-side OCR. A single bounded worker recovers orphaned
   processing directories, validates PNG evidence, reuses one lazy RapidOCR
   engine, persists capture-scoped observations idempotently, and retains failed
-  evidence with diagnostics. Capture and processing timing remain separate.
+  evidence with diagnostics. A process lock enforces one worker, canonical
+  JSONL appends are fsynced with torn-tail quarantine, capture-ID collisions
+  are explicit, and capture/processing timing remain separate.
 - **Account observation contract**: v0.1 defines raw observations, normalized
   facts, and PASS-only account snapshots with provenance, review/fail handling,
   and historical supersession.
@@ -106,6 +108,9 @@ Role names describe responsibilities, not models or providers.
   mode; Matt plays normally while PROBE observes.
 - The v0.3 capture spool is local and broker-free. Capture and worker CLIs are
   bounded independently and have no navigation or game-input coupling.
+- Spool `tmp/` directories are pre-commit evidence only; malformed spool data
+  is retained as untrusted failure evidence and is never promoted to account
+  facts.
 - Shadow Observer generates no game input. It has no tap, swipe, keyevent, or
   text-input path and has no cloud/VLM dependency.
 - The ADB input adapter is an experimental, policy-reviewed fixture and is not
