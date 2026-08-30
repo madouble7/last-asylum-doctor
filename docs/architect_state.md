@@ -56,6 +56,12 @@ Role names describe responsibilities, not models or providers.
   OCR/recognition/storage failures, and records per-stage timing totals. State
   recognition uses conservative multi-anchor rules so map labels do not claim
   building detail states.
+- **Shadow Observer v0.3**: capture-only operation writes durable `frame.png` /
+  `capture.json` directories to a local filesystem spool, with atomic inbox
+  visibility and no capture-side OCR. A single bounded worker recovers orphaned
+  processing directories, validates PNG evidence, reuses one lazy RapidOCR
+  engine, persists capture-scoped observations idempotently, and retains failed
+  evidence with diagnostics. Capture and processing timing remain separate.
 - **Account observation contract**: v0.1 defines raw observations, normalized
   facts, and PASS-only account snapshots with provenance, review/fail handling,
   and historical supersession.
@@ -98,6 +104,8 @@ Role names describe responsibilities, not models or providers.
 
 - Passive observation and OCR are the preferred live-account reconnaissance
   mode; Matt plays normally while PROBE observes.
+- The v0.3 capture spool is local and broker-free. Capture and worker CLIs are
+  bounded independently and have no navigation or game-input coupling.
 - Shadow Observer generates no game input. It has no tap, swipe, keyevent, or
   text-input path and has no cloud/VLM dependency.
 - The ADB input adapter is an experimental, policy-reviewed fixture and is not

@@ -10,6 +10,7 @@ from last_asylum_doctor.probe.navigation import (
     NavigationGraph,
     NavigationPolicy,
     OCRAnchor,
+    RapidOcrPerceiver,
     SafeAction,
     SafeNavigationError,
     SessionJournal,
@@ -257,3 +258,25 @@ def test_high_confidence_captured_states_are_recognized() -> None:
         state = recognizer.recognize(frame(expected, *texts))
         assert state.state_id == expected
         assert state.confidence >= 0.9
+
+
+def test_rapid_ocr_engine_is_constructed_once() -> None:
+    constructions = 0
+
+    def create_engine():
+        nonlocal constructions
+        constructions += 1
+
+        def recognize(image):
+            del image
+            return [([(0, 0), (1, 0), (1, 1), (0, 1)], "Research", 0.9)], None
+
+        return recognize
+
+    perceiver = RapidOcrPerceiver(
+        engine_factory=create_engine, image_decoder=lambda screenshot: screenshot
+    )
+
+    assert perceiver.detect(b"first")[0].text == "Research"
+    assert perceiver.detect(b"second")[0].text == "Research"
+    assert constructions == 1

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import binascii
+import hashlib
 import json
 import struct
 import zlib
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -15,6 +17,8 @@ from last_asylum_doctor.probe.shadow_observer import (
     ObservationStore,
     ShadowObserver,
     ShadowObserverConfig,
+    ShadowSpool,
+    ShadowSpoolWorker,
     extract_candidate_values,
     perceptual_fingerprint,
 )
@@ -504,3 +508,177 @@ def test_candidate_extraction_preserves_observed_formats() -> None:
         }.items()
     ) <= set(values.items())
     assert all(item["source_text"] for item in candidates)
+
+
+def spool_capture(
+    spool: ShadowSpool,
+    capture_id: str,
+    screenshot: bytes,
+    **metadata: object,
+) -> Path:
+    digest = hashlib.sha256(screenshot).hexdigest()
+    values: dict[str, object] = {
+        "spool_schema_version": "0.3",
+        "capture_id": capture_id,
+        "session_id": "capture-session",
+        "captured_at_utc": "2026-08-29T12:00:00+00:00",
+        "capture_duration_ms": 1.0,
+        "spool_write_duration_ms": 1.0,
+        "capture_total_duration_ms": 2.0,
+        "package": "com.phs.global",
+        "foreground_package": "com.phs.global",
+        "foreground_status": "confirmed_game",
+        "foreground_parser": {},
+        "client_version_name": "1.0.97",
+        "client_version_code": 97,
+        "server": "283",
+        "screenshot_hash": digest,
+        "perceptual_fingerprint": "0000000000000000",
+        "change_score": 1.0,
+        "framebuffer_width": 2,
+        "framebuffer_height": 2,
+        "png_byte_length": len(screenshot),
+        "spool_enqueued_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    values.update(metadata)
+    return spool.enqueue(capture_id, screenshot, values)
+
+
+def worker(tmp_path: Path, spool: ShadowSpool, perceiver: object | None = None):
+    store = ObservationStore(
+        tmp_path / "observations.jsonl", tmp_path / "screenshots", max_captures=10
+    )
+    return ShadowSpoolWorker(spool, store, ocr_perceiver=perceiver), store
+
+
+def test_spool_commit_exposes_complete_capture_directory_without_ocr(
+    tmp_path: Path,
+) -> None:
+    perceiver = RecordingOcr()
+    active = ShadowObserver(
+        FixtureSource(frame(png(2, 2, (1, 2, 3)))),
+        ObservationStore(
+            tmp_path / "unused.jsonl", tmp_path / "unused", max_captures=1
+        ),
+        ocr_perceiver=perceiver,
+        session_id="capture-session",
+    )
+    spool = ShadowSpool(tmp_path / "spool")
+
+    result = active.spool_once(spool)
+
+    assert result["status"] == "SPOOLED"
+    assert perceiver.calls == 0
+    inbox = spool.root / "inbox" / result["capture_id"]
+    assert sorted(path.name for path in inbox.iterdir()) == [
+        "capture.json",
+        "frame.png",
+    ]
+    assert not list((spool.root / "tmp").iterdir())
+
+
+def test_worker_success_lifecycle_preserves_capture_and_separates_timing(
+    tmp_path: Path,
+) -> None:
+    class ResearchOcr:
+        def detect(self, screenshot: bytes) -> list[OCRAnchor]:
+            del screenshot
+            return [OCRAnchor("Research Lab", 0.95), OCRAnchor("Research", 0.95)]
+
+    spool = ShadowSpool(tmp_path / "spool")
+    path = spool_capture(spool, "capture-1", png(2, 2, (1, 2, 3)))
+    active, store = worker(tmp_path, spool, ResearchOcr())
+
+    result = active.process_pending()
+    saved = json.loads(store.output.read_text(encoding="utf-8"))
+
+    assert result["processed"] == 1
+    assert (spool.root / "processed" / path.name / "frame.png").exists()
+    assert not (spool.root / "inbox" / path.name).exists()
+    assert saved["capture_id"] == "capture-1"
+    assert saved["timestamp"] == "2026-08-29T12:00:00+00:00"
+    assert "timing_ms" not in saved
+    assert set(saved["capture_timing_ms"]) == {
+        "capture_duration_ms",
+        "spool_write_duration_ms",
+        "capture_total_duration_ms",
+    }
+    assert saved["processing_timing_ms"]["queue_latency_ms"] >= 0
+
+
+@pytest.mark.parametrize(
+    ("mutation", "reason"),
+    [
+        ("metadata", "spool_metadata_invalid"),
+        ("png", "screenshot_integrity_mismatch"),
+    ],
+)
+def test_worker_moves_invalid_evidence_to_failed_with_diagnostic(
+    tmp_path: Path, mutation: str, reason: str
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    path = spool_capture(spool, "bad-capture", png(2, 2, (1, 2, 3)))
+    if mutation == "metadata":
+        (path / "capture.json").write_text("{}", encoding="utf-8")
+    else:
+        (path / "frame.png").write_bytes(png(2, 2, (9, 8, 7)))
+    active, _ = worker(tmp_path, spool)
+
+    result = active.process_pending()
+    failed = spool.root / "failed" / "bad-capture"
+    diagnostic = json.loads((failed / "failure.json").read_text(encoding="utf-8"))
+
+    assert result["failed"] == 1
+    assert diagnostic["error_reason"] == reason
+    assert (failed / "frame.png").exists()
+
+
+def test_worker_ocr_failure_is_terminal_and_retains_evidence(tmp_path: Path) -> None:
+    class FailingOcr:
+        def detect(self, screenshot: bytes) -> list[OCRAnchor]:
+            del screenshot
+            raise RuntimeError("OCR engine unavailable")
+
+    spool = ShadowSpool(tmp_path / "spool")
+    path = spool_capture(spool, "ocr-failure", png(2, 2, (1, 2, 3)))
+    original_png = (path / "frame.png").read_bytes()
+    active, _ = worker(tmp_path, spool, FailingOcr())
+
+    result = active.process_pending()
+    failure = json.loads(
+        (spool.root / "failed" / path.name / "failure.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert result["failed"] == 1
+    assert failure["error_reason"] == "worker_failed"
+    assert failure["error_diagnostic"]["stage"] == "worker"
+    assert (
+        spool.root / "failed" / path.name / "frame.png"
+    ).read_bytes() == original_png
+
+
+def test_worker_recovers_processing_and_does_not_duplicate_jsonl_after_restart(
+    tmp_path: Path,
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    path = spool_capture(spool, "restart-capture", png(2, 2, (1, 2, 3)))
+    first, store = worker(tmp_path, spool)
+    first.process_pending()
+    (spool.root / "processed" / path.name).replace(
+        spool.root / "processing" / path.name
+    )
+
+    second = ShadowSpoolWorker(
+        spool,
+        ObservationStore(
+            store.output, tmp_path / "screenshots-2", max_captures=10
+        ),
+    )
+    result = second.process_pending()
+
+    assert result["recovered"] == ["restart-capture"]
+    assert result["already_processed"] == 1
+    assert len(store.output.read_text(encoding="utf-8").splitlines()) == 1
+    assert (spool.root / "processed" / path.name).exists()

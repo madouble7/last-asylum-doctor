@@ -1,4 +1,4 @@
-# PROBE Shadow Observer v0.2
+# PROBE Shadow Observer v0.3
 
 Matt can play normally while the observer polls the BlueStacks framebuffer.
 The observer is passive: its ADB calls are limited to device discovery,
@@ -24,6 +24,44 @@ short reconnaissance session:
 
 Useful controls are `--adb`, `--serial`, `--server`, `--output`,
 `--evidence-dir`, `--max-captures`, and `--change-threshold`.
+
+## Async capture spool
+
+The v0.3 path separates framebuffer capture from OCR and recognition. Capture
+is passive and spool-only; it never invokes OCR or writes the observation
+JSONL stream. Run a bounded capture batch with:
+
+```text
+.\.venv\Scripts\python.exe tools/probe_shadow_capture.py --count 12 --interval 5
+```
+
+Each accepted frame is written beneath `spool/tmp/<capture-id>/` as
+`frame.png` and `capture.json`, flushed durably, and atomically renamed into
+`spool/inbox/<capture-id>/`. The directory appearance in `inbox/` is the
+commit point, so a worker never sees a partial capture. The spool also has
+`processing/`, `processed/`, and `failed/` directories.
+
+Process a bounded batch locally with one reusable OCR perceiver:
+
+```text
+.\.venv\Scripts\python.exe tools/probe_shadow_worker.py --limit 12
+```
+
+The worker recovers orphaned `processing/` directories on startup, atomically
+claims complete inbox directories, validates the sidecar, PNG hash, byte
+length, and dimensions, then performs OCR, recognition, extraction, and
+JSONL persistence. Successful evidence moves to `processed/`. Malformed
+metadata, integrity failures, OCR failures, and other worker failures retain
+the original evidence and move the directory to `failed/` with an inspectable
+`failure.json` diagnostic. Capture IDs are stable and indexed from the JSONL
+stream, so recovery or restart does not append a duplicate observation.
+
+The internal spool schema is v0.3 and is separate from the account
+observation contract. Asynchronous observations preserve `captured_at_utc`
+and `capture_timing_ms`; worker queue latency, OCR, recognition/extraction,
+persistence, and total processing durations are recorded in
+`processing_timing_ms`. The synchronous `run_once()` path and its v0.2
+`timing_ms` field remain unchanged.
 
 ## Capture and change detection
 
@@ -124,16 +162,20 @@ availability failed.
   retention note.
 - `data/raw/*` is ignored by Git, so raw screenshots and local observation
   streams stay out of normal commits.
+- Async failed spool directories remain inspectable local evidence. The worker
+  does not rewrite `frame.png`; terminal transitions move the capture
+  directory as one unit.
 
 ## Learning boundary
 
-v0.2 learning is append-only observational knowledge:
+v0.3 learning is append-only observational knowledge:
 
 ```text
 screen fingerprint + OCR anchors + observed state transition + evidence hash
 ```
 
 There is no reinforcement learning, embedding database, cloud vision call, or
-new vision dependency in this milestone. The existing safe-navigation engine
-remains a fixture and transition model, while this observer has no action
-driver at all.
+new vision dependency in this milestone. RapidOCR remains optional and is
+constructed lazily once per worker perceiver. The existing safe-navigation
+engine remains a fixture and transition model, while this observer has no
+action driver at all.

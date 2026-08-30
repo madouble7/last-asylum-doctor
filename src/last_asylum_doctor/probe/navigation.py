@@ -11,7 +11,7 @@ import uuid
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Protocol, Sequence
+from typing import Any, Callable, Protocol, Sequence
 
 PACKAGE = "com.phs.global"
 DEFAULT_ADB = Path(r"C:\Program Files\BlueStacks_nxt\HD-Adb.exe")
@@ -738,17 +738,38 @@ class AdbInputDriver:
 class RapidOcrPerceiver:
     """Optional adapter around the already-supported RapidOCR stack."""
 
+    def __init__(
+        self,
+        *,
+        engine_factory: Callable[[], Any] | None = None,
+        image_decoder: Callable[[bytes], Any] | None = None,
+    ) -> None:
+        self._engine_factory = engine_factory
+        self._image_decoder = image_decoder
+        self._engine: Any | None = None
+
     def detect(self, png: bytes) -> list[OCRAnchor]:
-        try:
-            import cv2
-            import numpy as np
-            from rapidocr_onnxruntime import RapidOCR
-        except ImportError:
-            return []
-        image = cv2.imdecode(np.frombuffer(png, dtype=np.uint8), cv2.IMREAD_COLOR)
+        if self._image_decoder is None:
+            try:
+                import cv2
+                import numpy as np
+            except ImportError:
+                return []
+            image = cv2.imdecode(np.frombuffer(png, dtype=np.uint8), cv2.IMREAD_COLOR)
+        else:
+            image = self._image_decoder(png)
         if image is None:
             return []
-        result, _ = RapidOCR()(image)
+        if self._engine is None:
+            if self._engine_factory is not None:
+                self._engine = self._engine_factory()
+            else:
+                try:
+                    from rapidocr_onnxruntime import RapidOCR
+                except ImportError:
+                    return []
+                self._engine = RapidOCR()
+        result, _ = self._engine(image)
         if result is None:
             return []
         return [
