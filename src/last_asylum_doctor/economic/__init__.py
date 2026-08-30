@@ -6,6 +6,7 @@ from .oracle import (
     compare_oracle,
     load_canonical_economics,
     load_fixture,
+    open_read_only_database,
     render_report,
 )
 from .shop_doctor import ShopDoctorWorkbookError, inspect_shop_doctor_workbook
@@ -18,5 +19,6 @@ __all__ = [
     "inspect_shop_doctor_workbook",
     "load_canonical_economics",
     "load_fixture",
+    "open_read_only_database",
     "render_report",
 ]

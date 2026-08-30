@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import sqlite3
 from pathlib import Path
+
+import pytest
 
 from last_asylum_doctor.database import EconomicDatabase
 from last_asylum_doctor.economic import inspect_shop_doctor_workbook
@@ -16,9 +20,11 @@ from last_asylum_doctor.economic.oracle import (
     ExternalOracleSnapshot,
     ExternalPack,
     ExternalPackComponent,
+    OracleError,
     compare_oracle,
     load_canonical_economics,
     load_fixture,
+    open_read_only_database,
     render_report,
 )
 from tests.test_shop_doctor import _workbook
@@ -161,6 +167,61 @@ def test_diff_reads_canonical_database_without_mutation(tmp_path: Path) -> None:
     assert before == after
 
 
+def test_oracle_database_connection_rejects_writes_and_preserves_file(
+    tmp_path: Path,
+) -> None:
+    database_path = tmp_path / "doctor.db"
+    with EconomicDatabase(database_path):
+        pass
+    before_hash = _sha256(database_path)
+    tables = (
+        "items",
+        "item_aliases",
+        "cash_packs",
+        "cash_pack_components",
+        "choice_groups",
+        "choice_options",
+    )
+
+    with open_read_only_database(database_path) as connection:
+        assert connection.execute("PRAGMA query_only").fetchone()[0] == 1
+        before_counts = {
+            table: connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
+            for table in tables
+        }
+        with pytest.raises(sqlite3.OperationalError):
+            connection.execute("CREATE TABLE oracle_write_probe (id INTEGER)")
+
+    with open_read_only_database(database_path) as connection:
+        after_counts = {
+            table: connection.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
+            for table in tables
+        }
+    assert before_counts == after_counts
+    assert _sha256(database_path) == before_hash
+
+
+def test_incomplete_oracle_schema_fails_without_migration(tmp_path: Path) -> None:
+    database_path = tmp_path / "legacy.db"
+    with sqlite3.connect(database_path) as connection:
+        connection.execute("CREATE TABLE items (id INTEGER)")
+    before_hash = _sha256(database_path)
+
+    with pytest.raises(OracleError, match="missing tables"):
+        with open_read_only_database(database_path):
+            pass
+
+    assert _sha256(database_path) == before_hash
+    with sqlite3.connect(database_path) as connection:
+        tables = {
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type = 'table'"
+            )
+        }
+    assert tables == {"items"}
+
+
 def test_report_is_deterministic() -> None:
     diff = compare_oracle(_canonical(), ExternalOracleSnapshot((), (), (), ()))
     assert render_report(diff) == render_report(diff)
@@ -212,6 +273,10 @@ def _canonical() -> CanonicalEconomics:
         ),
         choices=(),
     )
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _pack(

@@ -26,6 +26,7 @@ from last_asylum_doctor.economic import (
     inspect_shop_doctor_workbook,
     load_canonical_economics,
     load_fixture,
+    open_read_only_database,
 )
 from last_asylum_doctor.economic import (
     render_report as render_oracle_report,
@@ -157,10 +158,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             return 1
         try:
-            with EconomicDatabase(parsed.database) as database:
-                if database.connection is None:
-                    raise DatabaseError("economic database connection is unavailable")
-                canonical = load_canonical_economics(database.connection)
+            with open_read_only_database(parsed.database) as connection:
+                canonical = load_canonical_economics(connection)
             external = (
                 load_fixture(parsed.fixture)
                 if parsed.fixture is not None

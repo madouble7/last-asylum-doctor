@@ -7,7 +7,8 @@ import json
 import re
 import sqlite3
 from collections import Counter
-from dataclasses import asdict, dataclass
+from contextlib import contextmanager
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -29,6 +30,26 @@ STATUSES = (
     "CONFLICT",
     "UNKNOWN",
 )
+REQUIRED_CANONICAL_COLUMNS = {
+    "items": {"id", "canonical_key", "name"},
+    "item_aliases": {"item_id", "alias"},
+    "cash_packs": {"id", "original_pack_id", "name"},
+    "cash_pack_components": {
+        "id",
+        "cash_pack_id",
+        "item_id",
+        "normalized_quantity",
+        "speedup_type",
+        "package_display",
+    },
+    "choice_groups": {"id", "container_item_id", "context", "contents_rule"},
+    "choice_options": {
+        "choice_group_id",
+        "option_item_id",
+        "option_index",
+        "quantity",
+    },
+}
 
 
 class OracleError(RuntimeError):
@@ -150,7 +171,30 @@ class OracleDiff:
     counts: dict[str, int]
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        return {
+            "snapshot_metadata": [
+                {
+                    "entity": snapshot.entity,
+                    "endpoint": snapshot.endpoint,
+                    "source_url": snapshot.source_url,
+                    "retrieved_at_utc": snapshot.retrieved_at_utc,
+                    "http_status": snapshot.http_status,
+                    "result_status": snapshot.result_status,
+                    "row_count": snapshot.row_count,
+                    "response_sha256": snapshot.response_sha256,
+                    "schema_keys": list(snapshot.schema_keys),
+                    "oldest_source_timestamp": snapshot.oldest_source_timestamp,
+                    "newest_source_timestamp": snapshot.newest_source_timestamp,
+                }
+                for snapshot in self.snapshot.fetches
+            ],
+            "counts": dict(self.counts),
+            "item_comparisons": list(self.item_comparisons),
+            "complex_item_comparisons": list(self.complex_item_comparisons),
+            "pack_comparisons": list(self.pack_comparisons),
+            "canonical_only_packs": list(self.canonical_only_packs),
+            "choice_mismatches": list(self.choice_mismatches),
+        }
 
 
 class PublicOracleClient:
@@ -373,6 +417,63 @@ def load_canonical_economics(connection: sqlite3.Connection) -> CanonicalEconomi
         for (item_id, context, rule), options in sorted(grouped_choices.items())
     )
     return CanonicalEconomics(items=items, packs=packs, choices=choices)
+
+
+@contextmanager
+def open_read_only_database(path: Path) -> Iterable[sqlite3.Connection]:
+    """Open an existing canonical database without initialization or writes."""
+    if not path.is_file():
+        raise OracleError(f"canonical database does not exist: {path}")
+    try:
+        connection = sqlite3.connect(
+            f"file:{path.resolve().as_posix()}?mode=ro", uri=True
+        )
+    except sqlite3.Error as error:
+        raise OracleError(
+            f"could not open canonical database read-only: {error}"
+        ) from error
+    connection.row_factory = sqlite3.Row
+    try:
+        connection.execute("PRAGMA query_only = ON")
+        _validate_canonical_schema(connection)
+        yield connection
+    except sqlite3.Error as error:
+        raise OracleError(
+            f"canonical database is not compatible with the oracle schema: {error}"
+        ) from error
+    finally:
+        connection.close()
+
+
+def _validate_canonical_schema(connection: sqlite3.Connection) -> None:
+    tables = {
+        str(row[0])
+        for row in connection.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table'"
+        )
+    }
+    missing_tables = sorted(set(REQUIRED_CANONICAL_COLUMNS) - tables)
+    if missing_tables:
+        raise OracleError(
+            "canonical database schema is incomplete; missing tables: "
+            + ", ".join(missing_tables)
+        )
+    missing_columns: dict[str, list[str]] = {}
+    for table, required_columns in REQUIRED_CANONICAL_COLUMNS.items():
+        columns = {
+            str(row[1]) for row in connection.execute(f"PRAGMA table_info({table})")
+        }
+        missing = sorted(required_columns - columns)
+        if missing:
+            missing_columns[table] = missing
+    if missing_columns:
+        details = "; ".join(
+            f"{table}: {', '.join(columns)}"
+            for table, columns in sorted(missing_columns.items())
+        )
+        raise OracleError(
+            "canonical database schema is incompatible; missing columns: " + details
+        )
 
 
 def compare_oracle(

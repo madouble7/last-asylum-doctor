@@ -1,5 +1,9 @@
 """Tests for the starter package and command-line entry point."""
 
+import hashlib
+import json
+import shutil
+import sqlite3
 from pathlib import Path
 
 import pytest
@@ -177,14 +181,27 @@ def test_cli_runs_bounded_schema_audit(monkeypatch, capsys, tmp_path) -> None:
     )
 
 
-def test_cli_runs_read_only_oracle_diff_from_fixture(capsys, tmp_path) -> None:
-    database_path = tmp_path / "economic.db"
+def test_cli_runs_read_only_oracle_diff_from_fixture(
+    monkeypatch, capsys, tmp_path
+) -> None:
+    source_database_path = tmp_path / "economic_source.db"
+    database_path = tmp_path / "economic_copy.db"
     fixture_path = tmp_path / "oracle.json"
     fixture_path.write_text(
-        '{"Item": [], "ComplexItem": [], "Pack": []}', encoding="utf-8"
+        '{"Item": [{"item_id": "sentinel", "item_name": "Sentinel", '
+        '"conversions": [{"to": "hidden"}], "analysis_value": 7}], '
+        '"ComplexItem": [], "Pack": []}',
+        encoding="utf-8",
     )
-    with EconomicDatabase(database_path):
+    with EconomicDatabase(source_database_path):
         pass
+    shutil.copy2(source_database_path, database_path)
+    before_hash = hashlib.sha256(database_path.read_bytes()).hexdigest()
+
+    def fail_initialization(self) -> None:
+        raise AssertionError("oracle command must not initialize EconomicDatabase")
+
+    monkeypatch.setattr(EconomicDatabase, "initialize", fail_initialization)
 
     assert (
         main(
@@ -201,8 +218,42 @@ def test_cli_runs_read_only_oracle_diff_from_fixture(capsys, tmp_path) -> None:
     )
 
     output = capsys.readouterr().out
-    assert '"snapshot"' in output
-    assert '"canonical_only_packs"' in output
+    payload = json.loads(output)
+    assert "snapshot_metadata" in payload
+    assert "snapshot" not in payload
+    assert not {"items", "complex_items", "packs", "fetches"} & payload.keys()
+    assert '"to": "hidden"' not in output
+    assert '"analysis_value": 7' not in output
+    assert hashlib.sha256(database_path.read_bytes()).hexdigest() == before_hash
+
+
+def test_cli_rejects_incomplete_oracle_schema_without_migration(
+    capsys, tmp_path
+) -> None:
+    database_path = tmp_path / "legacy.db"
+    fixture_path = tmp_path / "oracle.json"
+    fixture_path.write_text(
+        '{"Item": [], "ComplexItem": [], "Pack": []}', encoding="utf-8"
+    )
+    with sqlite3.connect(database_path) as connection:
+        connection.execute("CREATE TABLE items (id INTEGER)")
+    before_hash = hashlib.sha256(database_path.read_bytes()).hexdigest()
+
+    assert (
+        main(
+            [
+                "diff-shop-doctor-oracle",
+                "--fixture",
+                str(fixture_path),
+                "--database",
+                str(database_path),
+            ]
+        )
+        == 1
+    )
+
+    assert "missing tables" in capsys.readouterr().err
+    assert hashlib.sha256(database_path.read_bytes()).hexdigest() == before_hash
 
 
 def _cli_node() -> ResearchNode:
