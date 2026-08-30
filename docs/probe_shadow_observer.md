@@ -47,7 +47,7 @@ rate-limited by polling and bounded by `--max-captures`; no popup is dismissed.
 ## Account-observation boundary
 
 The JSONL emitted here is a PROBE-specific raw observation stream. It is
-evidence for the v0.2 account-observation contract, not a normalized account
+evidence for the v0.1 account-observation contract, not a normalized account
 snapshot. An eventual adapter can map `observation_id`, `timestamp`,
 `screenshot_hash`, client/server metadata, and `validation_status` to the
 contract's raw-observation provenance, then validate OCR candidates into

@@ -3,8 +3,9 @@
 ## Canonical checkpoint
 
 - Branch: `main`.
-- State recorded against commit `d597242` (Sprint #1 integration); verify
-  `HEAD` before relying on this field after a later checkpoint.
+- State recorded against commit `813ad4a` (Shadow Observer v0.2 hardening:
+  foreground safety, structured diagnostics, conservative recognition, and
+  timing observability).
 - Canonical repository:
   `C:\Users\madou\Documents\last-asylum-doctor`.
 
