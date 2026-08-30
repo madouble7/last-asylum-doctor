@@ -305,6 +305,7 @@ def test_non_game_foreground_is_review_only(tmp_path: Path, foreground: str) -> 
                 metadata={
                     "package": "com.phs.global",
                     "foreground_package": foreground,
+                        "foreground_status": "confirmed_non_game",
                 },
             )
         ),
@@ -327,6 +328,7 @@ def test_non_game_foreground_skips_ocr(tmp_path: Path) -> None:
                 metadata={
                     "package": "com.phs.global",
                     "foreground_package": "com.other.app",
+                        "foreground_status": "confirmed_non_game",
                 },
             )
         ),
@@ -627,6 +629,8 @@ def test_worker_success_lifecycle_preserves_capture_and_separates_timing(
     assert not (spool.root / "inbox" / path.name).exists()
     assert saved["capture_id"] == "capture-1"
     assert saved["timestamp"] == "2026-08-29T12:00:00+00:00"
+    assert saved["foreground_status"] == "confirmed_game"
+    assert saved["foreground_package"] == saved["package"]
     assert "timing_ms" not in saved
     assert set(saved["capture_timing_ms"]) == {
         "capture_duration_ms",
@@ -654,6 +658,40 @@ def test_exact_replay_of_processed_capture_is_idempotent_and_discarded(
     assert not (spool.root / "processing" / "replay").exists()
     assert (spool.root / "processed" / "replay").exists()
     assert len(store.output.read_text(encoding="utf-8").splitlines()) == 1
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("foreground_parser", {"changed": True}),
+        ("device_serial", "changed-serial"),
+        ("capture_duration_ms", 123.456),
+        ("poll_sequence", 999),
+    ],
+)
+def test_changed_capture_metadata_is_not_an_exact_replay(
+    tmp_path: Path, field: str, value: object
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    spool_capture(spool, "metadata-replay", png(2, 2, (1, 2, 3)))
+    active, _ = worker(tmp_path, spool)
+    assert active.process_pending()["processed"] == 1
+    replay = spool.root / "inbox" / "metadata-replay"
+    shutil.copytree(spool.root / "processed" / "metadata-replay", replay)
+    metadata = json.loads((replay / "capture.json").read_text(encoding="utf-8"))
+    metadata[field] = value
+    (replay / "capture.json").write_text(json.dumps(metadata), encoding="utf-8")
+
+    result = active.process_pending()
+
+    assert result["already_processed"] == 0
+    assert result["failed"] == 1
+    failure = json.loads(
+        (spool.root / "failed" / "metadata-replay" / "failure.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert failure["error_reason"] == "capture_id_collision"
 
 
 @pytest.mark.parametrize(
@@ -742,6 +780,14 @@ def test_worker_rejects_same_id_with_different_payload_after_processing(
             "foreground_status": "confirmed_game",
             "foreground_package": "com.other.app",
         },
+        {
+            "foreground_status": "confirmed_non_game",
+            "foreground_package": "",
+        },
+        {
+            "foreground_status": "confirmed_non_game",
+            "foreground_package": None,
+        },
     ],
 )
 def test_worker_foreground_context_fails_closed(
@@ -780,7 +826,7 @@ def test_valid_unknown_foreground_remains_unknown(tmp_path: Path) -> None:
         spool,
         "unknown-foreground",
         png(2, 2, (1, 2, 3)),
-        foreground_package=None,
+        foreground_package="com.phs.global",
         foreground_status="unknown",
     )
     active, store = worker(tmp_path, spool)
@@ -791,6 +837,26 @@ def test_valid_unknown_foreground_remains_unknown(tmp_path: Path) -> None:
     assert result["processed"] == 1
     assert saved["foreground_status"] == "unknown"
     assert saved["current_screen_state"] == "foreground_unknown"
+
+
+def test_valid_non_game_foreground_remains_non_game(tmp_path: Path) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    spool_capture(
+        spool,
+        "non-game-foreground",
+        png(2, 2, (1, 2, 3)),
+        foreground_package="com.other.app",
+        foreground_status="confirmed_non_game",
+    )
+    active, store = worker(tmp_path, spool)
+
+    result = active.process_pending()
+    saved = json.loads(store.output.read_text(encoding="utf-8"))
+
+    assert result["processed"] == 1
+    assert saved["foreground_status"] == "confirmed_non_game"
+    assert saved["foreground_package"] == "com.other.app"
+    assert saved["current_screen_state"] == "not_game_foreground"
 
 
 def test_worker_recovers_processing_and_does_not_duplicate_jsonl_after_restart(

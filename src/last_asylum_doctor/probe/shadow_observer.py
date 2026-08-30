@@ -1217,18 +1217,19 @@ class ShadowSpoolWorker:
             )
         foreground_package = metadata["foreground_package"]
         package = metadata["package"]
+        if foreground_status in {"confirmed_game", "confirmed_non_game"} and (
+            not isinstance(foreground_package, str) or not foreground_package
+        ):
+            raise ShadowObserverError(
+                "foreground_context_invalid",
+                "confirmed foreground package must be a non-empty string",
+            )
         if foreground_status == "confirmed_game" and foreground_package != package:
             raise ShadowObserverError(
                 "foreground_context_invalid",
                 "confirmed_game foreground does not match captured package",
             )
-        if (
-            foreground_status == "confirmed_non_game"
-            and (
-                not isinstance(foreground_package, str)
-                or foreground_package == package
-            )
-        ):
+        if foreground_status == "confirmed_non_game" and foreground_package == package:
             raise ShadowObserverError(
                 "foreground_context_invalid",
                 "confirmed_non_game foreground is inconsistent with captured package",
@@ -1287,29 +1288,8 @@ class ShadowSpoolWorker:
             terminal_frame = (processed_path / "frame.png").read_bytes()
         except (FileNotFoundError, UnicodeDecodeError, json.JSONDecodeError):
             return False
-        immutable_keys = (
-            "capture_id",
-            "session_id",
-            "captured_at_utc",
-            "package",
-            "foreground_package",
-            "foreground_status",
-            "client_version_name",
-            "client_version_code",
-            "server",
-            "screenshot_hash",
-            "perceptual_fingerprint",
-            "change_score",
-            "framebuffer_width",
-            "framebuffer_height",
-            "png_byte_length",
-        )
         return (
-            isinstance(terminal_metadata, dict)
-            and all(
-                terminal_metadata.get(key) == metadata.get(key)
-                for key in immutable_keys
-            )
+            terminal_metadata == metadata
             and terminal_frame == (processing_path / "frame.png").read_bytes()
         )
 
@@ -1668,10 +1648,8 @@ def _foreground_context(
     foreground_package = metadata.get("foreground_package")
     parser = metadata.get("foreground_parser")
     declared_status = metadata.get("foreground_status")
-    if declared_status == "confirmed_game" and foreground_package == package:
-        status = "confirmed_game"
-    elif declared_status == "confirmed_non_game" and foreground_package:
-        status = "confirmed_non_game"
+    if declared_status in {"confirmed_game", "confirmed_non_game", "unknown"}:
+        status = declared_status
     else:
         status = _foreground_status(foreground_package, package)
     return status, foreground_package, parser

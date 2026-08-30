@@ -89,6 +89,10 @@ confirmed as the game package. Missing or malformed foreground metadata is
 adapter already used by PROBE returns no anchors when its optional dependencies
 are unavailable; OCR, recognition, and storage exceptions become structured
 `FAIL` observations with stage diagnostics.
+For committed spool captures, `foreground_status` is required and authoritative:
+`unknown` remains unknown even when a package string was captured, and confirmed
+statuses require a non-empty package consistent with that status. Direct legacy
+frames without `foreground_status` retain conservative foreground inference.
 The recognizer uses multi-anchor rules for the captured inventory, item dialog,
 Kingdom War, Black Ops, Loot, map, and building states. Weak labels such as
 `Upgrade` or `Training Grounds` remain `unknown` for review. Animation is
@@ -159,8 +163,10 @@ availability failed.
   `unavailable` / `FAIL` record and stops the session without writing a PNG.
 - A different foreground package creates a `not_game_foreground` / `REVIEW`
   record and does not retain that screen's raw PNG.
-- Missing or malformed foreground metadata creates a `foreground_unknown` /
-  `REVIEW` record, skips OCR, and does not retain that screen's raw PNG.
+- Direct frames with missing or malformed foreground metadata create a
+  `foreground_unknown` / `REVIEW` record, skip OCR, and do not retain that
+  screen's raw PNG. Spool captures reject missing or invalid foreground status
+  and inconsistent confirmed package context before OCR.
 - Unknown screens and ambiguous OCR remain `unknown` / `REVIEW`; the observer
   never attempts to dismiss an overlay.
 - OCR, local recognition/extraction, and persistence failures produce `FAIL`
