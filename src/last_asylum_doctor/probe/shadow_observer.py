@@ -175,6 +175,10 @@ class ShadowSpool:
         source.replace(destination)
         return destination
 
+    def discard_processing(self, capture_id: str) -> None:
+        processing = self.paths["processing"] / capture_id
+        _remove_directory(processing)
+
     def recover_processing(self) -> list[str]:
         self.prepare()
         recovered: list[str] = []
@@ -1067,13 +1071,16 @@ class ShadowSpoolWorker:
         "png_byte_length",
         "capture_staging_duration_ms",
         "spool_enqueued_at_utc",
+        "foreground_package",
+        "foreground_status",
     }
 
     def __init__(
         self,
         spool: ShadowSpool,
-        store: ObservationStore,
+        store: ObservationStore | None = None,
         *,
+        store_factory: Callable[[], ObservationStore] | None = None,
         recognizer: StateRecognizer | None = None,
         ocr_perceiver: OCRPerceiver | None = None,
         config: ShadowObserverConfig | None = None,
@@ -1081,21 +1088,20 @@ class ShadowSpoolWorker:
     ) -> None:
         self.spool = spool
         self.store = store
+        if store is None and store_factory is None:
+            raise ValueError("store or store_factory is required")
+        self.store_factory = store_factory
         self.clock = clock
-        self.observer = ShadowObserver(
-            None,
-            store,
-            config=config,
-            recognizer=recognizer,
-            ocr_perceiver=ocr_perceiver,
-            session_id="spool-worker",
-            clock=clock,
-        )
+        self.observer: ShadowObserver | None = None
+        self._observer_config = config
+        self._recognizer = recognizer
+        self._ocr_perceiver = ocr_perceiver
 
     def process_pending(self, limit: int | None = None) -> dict[str, Any]:
         if limit is not None and limit < 1:
             raise ValueError("limit must be at least 1")
         with _SingleWorkerLock(self.spool.root):
+            self._ensure_observer()
             recovered = self.spool.recover_processing()
             results: list[dict[str, Any]] = []
             for item in self.spool.inbox_items()[:limit]:
@@ -1112,7 +1118,24 @@ class ShadowSpoolWorker:
 
     def process_one(self, capture_id: str) -> dict[str, Any]:
         with _SingleWorkerLock(self.spool.root):
+            self._ensure_observer()
             return self._process_one(capture_id)
+
+    def _ensure_observer(self) -> None:
+        if self.observer is not None:
+            return
+        if self.store is None:
+            assert self.store_factory is not None
+            self.store = self.store_factory()
+        self.observer = ShadowObserver(
+            None,
+            self.store,
+            config=self._observer_config,
+            recognizer=self._recognizer,
+            ocr_perceiver=self._ocr_perceiver,
+            session_id="spool-worker",
+            clock=self.clock,
+        )
 
     def _process_one(self, capture_id: str) -> dict[str, Any]:
         metadata: dict[str, Any] | None = None
@@ -1131,7 +1154,18 @@ class ShadowSpoolWorker:
                     "capture ID has a different persisted screenshot hash",
                 )
             if existing is not None:
-                self.spool.move(capture_id, "processed")
+                processed = self.spool.paths["processed"] / capture_id
+                if processed.exists() and not self._same_capture_payload(
+                    processing_path, processed, metadata
+                ):
+                    raise ShadowSpoolError(
+                        "capture_id_collision",
+                        "replayed capture differs from processed evidence",
+                    )
+                if processed.exists():
+                    self.spool.discard_processing(capture_id)
+                else:
+                    self.spool.move(capture_id, "processed")
                 return {
                     "capture_id": capture_id,
                     "status": "ALREADY_PROCESSED",
@@ -1149,6 +1183,8 @@ class ShadowSpoolWorker:
                 error,
                 metadata,
             )
+            if failure["status"] == "DIAGNOSTIC_PERSISTENCE_FAILED":
+                return failure
             try:
                 self.spool.move(capture_id, "failed")
             except FileNotFoundError:
@@ -1173,6 +1209,29 @@ class ShadowSpoolWorker:
         if metadata["spool_schema_version"] != SPOOL_SCHEMA_VERSION:
             raise ShadowObserverError(
                 "spool_metadata_invalid", "unsupported spool schema version"
+            )
+        foreground_status = metadata["foreground_status"]
+        if foreground_status not in {"confirmed_game", "confirmed_non_game", "unknown"}:
+            raise ShadowObserverError(
+                "foreground_context_invalid", "unsupported captured foreground status"
+            )
+        foreground_package = metadata["foreground_package"]
+        package = metadata["package"]
+        if foreground_status == "confirmed_game" and foreground_package != package:
+            raise ShadowObserverError(
+                "foreground_context_invalid",
+                "confirmed_game foreground does not match captured package",
+            )
+        if (
+            foreground_status == "confirmed_non_game"
+            and (
+                not isinstance(foreground_package, str)
+                or foreground_package == package
+            )
+        ):
+            raise ShadowObserverError(
+                "foreground_context_invalid",
+                "confirmed_non_game foreground is inconsistent with captured package",
             )
         capture_id = metadata["capture_id"]
         if capture_id != processing_path.name:
@@ -1216,6 +1275,42 @@ class ShadowSpoolWorker:
             width=width,
             height=height,
             metadata=metadata,
+        )
+
+    def _same_capture_payload(
+        self, processing_path: Path, processed_path: Path, metadata: dict[str, Any]
+    ) -> bool:
+        try:
+            terminal_metadata = json.loads(
+                (processed_path / "capture.json").read_text(encoding="utf-8")
+            )
+            terminal_frame = (processed_path / "frame.png").read_bytes()
+        except (FileNotFoundError, UnicodeDecodeError, json.JSONDecodeError):
+            return False
+        immutable_keys = (
+            "capture_id",
+            "session_id",
+            "captured_at_utc",
+            "package",
+            "foreground_package",
+            "foreground_status",
+            "client_version_name",
+            "client_version_code",
+            "server",
+            "screenshot_hash",
+            "perceptual_fingerprint",
+            "change_score",
+            "framebuffer_width",
+            "framebuffer_height",
+            "png_byte_length",
+        )
+        return (
+            isinstance(terminal_metadata, dict)
+            and all(
+                terminal_metadata.get(key) == metadata.get(key)
+                for key in immutable_keys
+            )
+            and terminal_frame == (processing_path / "frame.png").read_bytes()
         )
 
     def _process(self, metadata: dict[str, Any], frame: Frame) -> dict[str, Any]:
@@ -1275,7 +1370,18 @@ class ShadowSpoolWorker:
         try:
             _write_durable_json(processing_path / "failure.json", payload)
         except OSError as write_error:
-            payload["failure_record_error"] = str(write_error)
+            return {
+                "capture_id": capture_id,
+                "status": "DIAGNOSTIC_PERSISTENCE_FAILED",
+                "error_reason": "failure_diagnostic_persistence_failed",
+                "error": str(write_error),
+                "error_diagnostic": {
+                    "stage": "failure_diagnostic_persistence",
+                    "exception_type": type(write_error).__name__,
+                    "message": str(write_error),
+                    "original_failure": payload,
+                },
+            }
         return {"capture_id": capture_id, "status": "FAILED", **payload}
 
 

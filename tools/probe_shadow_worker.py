@@ -36,12 +36,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.limit < 1:
         parser.error("--limit must be at least 1")
 
-    store = ObservationStore(
-        Path(args.output), Path(args.evidence_dir), max_captures=args.max_captures
-    )
+    spool = ShadowSpool(Path(args.spool_root))
     worker = ShadowSpoolWorker(
-        ShadowSpool(Path(args.spool_root)),
-        store,
+        spool,
+        store_factory=lambda: ObservationStore(
+            Path(args.output),
+            Path(args.evidence_dir),
+            max_captures=args.max_captures,
+        ),
         config=ShadowObserverConfig(
             max_captures=args.max_captures,
             server=args.server,

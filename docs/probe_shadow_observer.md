@@ -53,7 +53,9 @@ length, and dimensions, then performs OCR, recognition, extraction, and
 JSONL persistence. Successful evidence moves to `processed/`. Malformed
 metadata, integrity failures, OCR failures, and other worker failures retain
 the original evidence and move the directory to `failed/` with an inspectable
-`failure.json` diagnostic. Capture IDs are stable and indexed from the JSONL
+`failure.json` diagnostic. If that diagnostic cannot be durably written, the
+worker leaves the capture in `processing/` and reports the persistence failure
+without a terminal move. Capture IDs are stable and indexed from the JSONL
 stream, so recovery or restart does not append a duplicate observation.
 Only one worker may own a spool at a time; a small process lock refuses a
 second worker and releases automatically when its process exits.
@@ -183,9 +185,11 @@ availability failed.
   `validated_capture_processing_failure` and keeps its validated capture
   metadata in `failure.json`; malformed or integrity-failed spool evidence is
   `untrusted_spool_evidence` and does not manufacture a canonical observation.
-- Capture-ID reuse is rejected when the persisted screenshot hash differs;
-  equal hashes are idempotent for the same ID, while equal screens under
-  different capture IDs remain separate observations.
+- Capture-ID reuse is rejected when the persisted screenshot hash differs.
+  Replays are idempotent only when the processed directory's immutable capture
+  metadata and frame bytes match exactly; a same-ID payload mismatch is an
+  explicit collision. Equal screens under different capture IDs remain
+  separate observations.
 - Directories under `tmp/` never reached the inbox commit point. They are
   ignored by the worker and a failed current-process enqueue leaves a durable
   failure marker for later inspection; no temporary-file garbage collector is

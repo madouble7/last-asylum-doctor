@@ -3,6 +3,7 @@ from __future__ import annotations
 import binascii
 import hashlib
 import json
+import shutil
 import struct
 import zlib
 from datetime import datetime, timezone
@@ -635,6 +636,26 @@ def test_worker_success_lifecycle_preserves_capture_and_separates_timing(
     assert saved["processing_timing_ms"]["queue_latency_ms"] >= 0
 
 
+def test_exact_replay_of_processed_capture_is_idempotent_and_discarded(
+    tmp_path: Path,
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    spool_capture(spool, "replay", png(2, 2, (1, 2, 3)))
+    active, store = worker(tmp_path, spool)
+    assert active.process_pending()["processed"] == 1
+    shutil.copytree(
+        spool.root / "processed" / "replay", spool.root / "inbox" / "replay"
+    )
+
+    result = active.process_pending()
+
+    assert result["already_processed"] == 1
+    assert not (spool.root / "inbox" / "replay").exists()
+    assert not (spool.root / "processing" / "replay").exists()
+    assert (spool.root / "processed" / "replay").exists()
+    assert len(store.output.read_text(encoding="utf-8").splitlines()) == 1
+
+
 @pytest.mark.parametrize(
     ("mutation", "reason"),
     [
@@ -710,6 +731,66 @@ def test_worker_rejects_same_id_with_different_payload_after_processing(
     assert failure["failure_class"] == "validated_capture_processing_failure"
     assert (spool.root / "processed" / first_path.name).exists()
     assert store.observation_count == 1
+
+
+@pytest.mark.parametrize(
+    "metadata_update",
+    [
+        {"remove": "foreground_status"},
+        {"foreground_status": "not-a-status"},
+        {
+            "foreground_status": "confirmed_game",
+            "foreground_package": "com.other.app",
+        },
+    ],
+)
+def test_worker_foreground_context_fails_closed(
+    tmp_path: Path, metadata_update: dict[str, object]
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    path = spool_capture(spool, "foreground-check", png(2, 2, (1, 2, 3)))
+    metadata = json.loads((path / "capture.json").read_text(encoding="utf-8"))
+    removed = metadata_update.get("remove")
+    if isinstance(removed, str):
+        metadata.pop(removed)
+    else:
+        metadata.update(metadata_update)
+    (path / "capture.json").write_text(json.dumps(metadata), encoding="utf-8")
+    active, store = worker(tmp_path, spool)
+
+    result = active.process_pending()
+
+    assert result["failed"] == 1
+    assert not store.output.exists()
+    failure = json.loads(
+        (spool.root / "failed" / path.name / "failure.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert failure["error_reason"] == (
+        "spool_metadata_invalid"
+        if removed is not None
+        else "foreground_context_invalid"
+    )
+
+
+def test_valid_unknown_foreground_remains_unknown(tmp_path: Path) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    spool_capture(
+        spool,
+        "unknown-foreground",
+        png(2, 2, (1, 2, 3)),
+        foreground_package=None,
+        foreground_status="unknown",
+    )
+    active, store = worker(tmp_path, spool)
+
+    result = active.process_pending()
+    saved = json.loads(store.output.read_text(encoding="utf-8"))
+
+    assert result["processed"] == 1
+    assert saved["foreground_status"] == "unknown"
+    assert saved["current_screen_state"] == "foreground_unknown"
 
 
 def test_worker_recovers_processing_and_does_not_duplicate_jsonl_after_restart(
@@ -839,3 +920,57 @@ def test_second_worker_refuses_to_operate_while_lock_is_held(tmp_path: Path) -> 
             second.process_pending()
 
     assert first.process_pending()["processed"] == 0
+
+
+def test_second_worker_is_refused_before_store_tail_recovery(tmp_path: Path) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    output = tmp_path / "observations.jsonl"
+    valid = b'{"capture_id":"good","timestamp":"now"}\n'
+    output.write_bytes(valid + b'{"capture_id":"torn"')
+    store_created = False
+
+    def create_store() -> ObservationStore:
+        nonlocal store_created
+        store_created = True
+        return ObservationStore(output, tmp_path / "screenshots", max_captures=1)
+
+    second = ShadowSpoolWorker(spool, store_factory=create_store)
+    original = output.read_bytes()
+    with _SingleWorkerLock(spool.root):
+        with pytest.raises(ShadowSpoolError, match="another Shadow Spool worker"):
+            second.process_pending()
+
+    assert not store_created
+    assert output.read_bytes() == original
+
+
+def test_worker_keeps_processing_item_when_failure_diagnostic_is_not_durable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    spool = ShadowSpool(tmp_path / "spool")
+    spool_capture(spool, "diagnostic-failure", png(2, 2, (1, 2, 3)))
+    active, _ = worker(tmp_path, spool)
+
+    class FailingOcr:
+        def detect(self, screenshot: bytes) -> list[OCRAnchor]:
+            del screenshot
+            raise RuntimeError("OCR failed")
+
+    original_write = shadow_observer_module._write_durable_json
+
+    def fail_failure_json(path: Path, payload: dict[str, object]) -> None:
+        if path.name == "failure.json":
+            raise OSError("diagnostic disk failure")
+        original_write(path, payload)
+
+    monkeypatch.setattr(
+        shadow_observer_module, "_write_durable_json", fail_failure_json
+    )
+    active.observer = None
+    active._ocr_perceiver = FailingOcr()
+    result = active.process_pending()
+
+    assert result["results"][0]["status"] == "DIAGNOSTIC_PERSISTENCE_FAILED"
+    assert result["failed"] == 0
+    assert (spool.root / "processing" / "diagnostic-failure").exists()
+    assert not (spool.root / "failed" / "diagnostic-failure").exists()
