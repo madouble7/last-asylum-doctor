@@ -15,9 +15,13 @@ last-asylum-doctor inspect-shop-doctor data\imports\shop_doctor_v5_2_2026-08-27.
 last-asylum-doctor ingest-shop-doctor data\imports\shop_doctor_v5_2_2026-08-27.xlsx --store-db
 last-asylum-doctor show-item gearstone
 last-asylum-doctor show-item-prices speedup
+last-asylum-doctor diff-shop-doctor-oracle --fixture data\imports\oracle.json --json
+last-asylum-doctor diff-shop-doctor-oracle
 ```
 
 `inspect-shop-doctor` performs no database writes. `ingest-shop-doctor` requires `--store-db` deliberately. Re-ingesting an identical workbook hash creates no duplicate snapshot, offer, pack, component, conversion, or model observation.
+
+`diff-shop-doctor-oracle` is also read-only. It loads canonical data with SELECT-only queries and compares it with anonymous public `Item`, `ComplexItem`, and `Pack` responses. Use `--fixture` for an offline JSON object keyed by those three entity names; without it, the command fetches the public endpoints. External rows are normalized transiently, response hashes and schema/timestamp metadata are retained in the report, and raw responses are never inserted into canonical economic tables. `pack_price` is emitted as opaque source data, while alias and proportional matches remain candidates rather than canonical updates.
 
 ## Raw facts versus workbook model output
 

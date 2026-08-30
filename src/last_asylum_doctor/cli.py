@@ -19,8 +19,16 @@ from last_asylum_doctor.database import (
     write_science_corpus_profile,
 )
 from last_asylum_doctor.economic import (
+    OracleError,
+    PublicOracleClient,
     ShopDoctorWorkbookError,
+    compare_oracle,
     inspect_shop_doctor_workbook,
+    load_canonical_economics,
+    load_fixture,
+)
+from last_asylum_doctor.economic import (
+    render_report as render_oracle_report,
 )
 from last_asylum_doctor.planner import (
     load_account,
@@ -139,6 +147,33 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Shop Doctor inspection failed: {error}", file=sys.stderr)
             return 1
         print(json.dumps(_shop_doctor_summary(workbook), indent=2, ensure_ascii=False))
+        return 0
+    if parsed.command == "diff-shop-doctor-oracle":
+        if not parsed.database.exists():
+            print(
+                f"Database does not exist: {parsed.database}. "
+                "Run ingest-shop-doctor first.",
+                file=sys.stderr,
+            )
+            return 1
+        try:
+            with EconomicDatabase(parsed.database) as database:
+                if database.connection is None:
+                    raise DatabaseError("economic database connection is unavailable")
+                canonical = load_canonical_economics(database.connection)
+            external = (
+                load_fixture(parsed.fixture)
+                if parsed.fixture is not None
+                else PublicOracleClient().fetch()
+            )
+            diff = compare_oracle(canonical, external)
+        except (DatabaseError, OSError, OracleError) as error:
+            print(f"Shop Doctor oracle diff failed: {error}", file=sys.stderr)
+            return 1
+        if parsed.json_output:
+            print(json.dumps(diff.to_dict(), indent=2, ensure_ascii=False))
+        else:
+            print(render_oracle_report(diff))
         return 0
     if parsed.command == "plan-recovery":
         try:
@@ -529,6 +564,27 @@ def _build_parser() -> argparse.ArgumentParser:
         help="validate and summarize a Shop Doctor XLSX without writing SQLite",
     )
     inspect_shop.add_argument("path", type=Path, help="local Shop Doctor .xlsx source")
+    oracle = commands.add_parser(
+        "diff-shop-doctor-oracle",
+        help="compare canonical Shop Doctor data with the public anonymous oracle",
+    )
+    oracle.add_argument(
+        "--fixture",
+        type=Path,
+        help="offline JSON fixture; omit to fetch the three public oracle entities",
+    )
+    oracle.add_argument(
+        "--database",
+        type=Path,
+        default=Path("data/last_asylum.db"),
+        help="SQLite database path containing canonical economic data",
+    )
+    oracle.add_argument(
+        "--json",
+        dest="json_output",
+        action="store_true",
+        help="print the deterministic machine-readable diff",
+    )
     planner = commands.add_parser(
         "plan-recovery",
         help="calculate deterministic T9 readiness and post-war recovery status",

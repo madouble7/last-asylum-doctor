@@ -6,6 +6,7 @@ import pytest
 
 import last_asylum_doctor
 from last_asylum_doctor.cli import main
+from last_asylum_doctor.database import EconomicDatabase
 from last_asylum_doctor.models import (
     ResearchLevel,
     ResearchNode,
@@ -172,9 +173,36 @@ def test_cli_runs_bounded_schema_audit(monkeypatch, capsys, tmp_path) -> None:
     assert received["sample_size"] == 3
     assert received["refresh"] is True
     assert (
-        "Audited 3 science module(s): 3 succeeded, 0 failed"
-        in capsys.readouterr().out
+        "Audited 3 science module(s): 3 succeeded, 0 failed" in capsys.readouterr().out
     )
+
+
+def test_cli_runs_read_only_oracle_diff_from_fixture(capsys, tmp_path) -> None:
+    database_path = tmp_path / "economic.db"
+    fixture_path = tmp_path / "oracle.json"
+    fixture_path.write_text(
+        '{"Item": [], "ComplexItem": [], "Pack": []}', encoding="utf-8"
+    )
+    with EconomicDatabase(database_path):
+        pass
+
+    assert (
+        main(
+            [
+                "diff-shop-doctor-oracle",
+                "--fixture",
+                str(fixture_path),
+                "--database",
+                str(database_path),
+                "--json",
+            ]
+        )
+        == 0
+    )
+
+    output = capsys.readouterr().out
+    assert '"snapshot"' in output
+    assert '"canonical_only_packs"' in output
 
 
 def _cli_node() -> ResearchNode:
