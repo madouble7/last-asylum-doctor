@@ -9,17 +9,24 @@
   state. It is not an independent verification of agent availability,
   execution, or completion.
 
-## Reported roster
+## Reported operational roster
 
-| Agent | Reported status and responsibility |
-| --- | --- |
-| **ARCHITECT** | Standing product and architecture authority; sets direction and resolves consequential tradeoffs. |
-| **ATLAS** | Canonical production builder and explicit integrator; owns implementation, testing, integration, and checkpoints. |
-| **SCOUT** | Public-source reconnaissance and evidence owner; validates source lineage, currentness, and strategy evidence. |
-| **PROBE** | Installed-client and live-account observation owner; performs passive capture, OCR, safe navigation, and evidence collection. |
-| **ENGINEER** | Technical R&D and independent review specialist; investigates difficult questions, benchmarks, prototypes, and reports findings to ATLAS. |
-| **KOR'TANA** | Companion and continuity role; maintains conversational and project continuity across development work. |
-| **Explore** | Read-only codebase exploration specialist; locates relevant implementation context and returns concise findings. |
+The following seven operational sessions are reported in Matt's transition
+handoff. Their routing values are reproduced as reported; `context NOT
+RECORDED` means no context value was supplied in the handoff.
+
+| Operational session | Reported status | Reported routing |
+| --- | --- | --- |
+| **ATLAS Copilot** | REPORTED operational session | GPT-5.6 Luna / Medium / 200k |
+| **SCOUT Copilot** | REPORTED operational session | GPT-5.6 Luna / Medium / 200k |
+| **PROBE Copilot** | REPORTED operational session | GPT-5.6 Luna / Medium / 200k |
+| **ENGINEER** | REPORTED operational session | Claude Sonnet 5 / High / 200k |
+| **ATLAS Codex** | REPORTED operational session | GPT-5.6 sol / ultra / context NOT RECORDED |
+| **SCOUT Codex** | REPORTED operational session | GPT-5.6 terra / high / context NOT RECORDED |
+| **PROBE Codex** | REPORTED operational session | GPT-5.6 terra / high / context NOT RECORDED |
+
+ARCHITECT remains the coordinating authority and a required reader of this
+board; it is not one of the seven operational sessions listed above.
 
 ## Operating boundary
 
