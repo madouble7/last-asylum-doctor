@@ -140,3 +140,6 @@ Before major planning, ARCHITECT should read this briefing, the relevant
 architecture decision records, and the actual current repository evidence. The
 briefing is a compact orientation layer, not a substitute for source records,
 tests, implementation, or current Git state.
+
+ARCHITECT should also read [Agent Status Board](agent_status_board.md) when
+re-grounding or moving to a new chat window.
