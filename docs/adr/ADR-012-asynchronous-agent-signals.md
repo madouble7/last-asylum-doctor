@@ -20,9 +20,15 @@ integration rules.
 
 ## Escalation
 
-Escalate to Matt when a signal reports `DRIFT` or `CONTEXT_HEALTH`. The
-escalation must identify the affected work, the evidence or symptom, and the
-decision or intervention needed from Matt.
+Matt must be notified directly when a signal reports `DRIFT` or
+`CONTEXT_HEALTH`. The notification must identify the affected work, the
+evidence or symptom, and the decision or intervention needed from Matt.
+
+## Runtime constraint
+
+The signaling pattern uses zero daemons and zero runtime polling. Signal files
+are passive Markdown records written during agent work; no background process
+reads or watches them.
 
 ## Rationale
 
