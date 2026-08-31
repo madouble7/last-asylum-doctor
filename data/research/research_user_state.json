@@ -1,0 +1,1223 @@
+{
+  "schema_version": 1,
+  "dataset": "commando_t10",
+  "source_corpus": "data/processed/research_corpus.json",
+  "source_site": "https://lastasylumdatabase.com/",
+  "source_generated_at": "2026-08-26T17:09:15.714326+00:00",
+  "account_scope": "Matt_S283",
+  "state_labels": [
+    "USER-ENTERED",
+    "USER-TARGET"
+  ],
+  "state_record_count": 23,
+  "target_delta_count": 116,
+  "states": [
+    {
+      "node_id": "11001",
+      "current_level": 8,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11002",
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11003",
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11004",
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11005",
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11006",
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11007",
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11008",
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11009",
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11010",
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11011",
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11012",
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11013",
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11014",
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11015",
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11016",
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11017",
+      "current_level": 0,
+      "target_level": 1,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11018",
+      "current_level": 0,
+      "target_level": 1,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11019",
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11020",
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11021",
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11022",
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "node_id": "11023",
+      "current_level": 0,
+      "target_level": 1,
+      "state_label": "USER-ENTERED",
+      "account_scope": "Matt_S283"
+    }
+  ],
+  "target_deltas": [
+    {
+      "delta_id": "11001:09",
+      "node_id": "11001",
+      "level": 9,
+      "current_level": 8,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11001:10",
+      "node_id": "11001",
+      "level": 10,
+      "current_level": 8,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11002:05",
+      "node_id": "11002",
+      "level": 5,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11002:06",
+      "node_id": "11002",
+      "level": 6,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11002:07",
+      "node_id": "11002",
+      "level": 7,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11002:08",
+      "node_id": "11002",
+      "level": 8,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11002:09",
+      "node_id": "11002",
+      "level": 9,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11002:10",
+      "node_id": "11002",
+      "level": 10,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11003:05",
+      "node_id": "11003",
+      "level": 5,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11003:06",
+      "node_id": "11003",
+      "level": 6,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11003:07",
+      "node_id": "11003",
+      "level": 7,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11003:08",
+      "node_id": "11003",
+      "level": 8,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11003:09",
+      "node_id": "11003",
+      "level": 9,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11003:10",
+      "node_id": "11003",
+      "level": 10,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11004:05",
+      "node_id": "11004",
+      "level": 5,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11004:06",
+      "node_id": "11004",
+      "level": 6,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11004:07",
+      "node_id": "11004",
+      "level": 7,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11004:08",
+      "node_id": "11004",
+      "level": 8,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11004:09",
+      "node_id": "11004",
+      "level": 9,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11004:10",
+      "node_id": "11004",
+      "level": 10,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11005:05",
+      "node_id": "11005",
+      "level": 5,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11005:06",
+      "node_id": "11005",
+      "level": 6,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11005:07",
+      "node_id": "11005",
+      "level": 7,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11005:08",
+      "node_id": "11005",
+      "level": 8,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11005:09",
+      "node_id": "11005",
+      "level": 9,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11005:10",
+      "node_id": "11005",
+      "level": 10,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11006:05",
+      "node_id": "11006",
+      "level": 5,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11006:06",
+      "node_id": "11006",
+      "level": 6,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11006:07",
+      "node_id": "11006",
+      "level": 7,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11006:08",
+      "node_id": "11006",
+      "level": 8,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11006:09",
+      "node_id": "11006",
+      "level": 9,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11006:10",
+      "node_id": "11006",
+      "level": 10,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11007:05",
+      "node_id": "11007",
+      "level": 5,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11007:06",
+      "node_id": "11007",
+      "level": 6,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11007:07",
+      "node_id": "11007",
+      "level": 7,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11007:08",
+      "node_id": "11007",
+      "level": 8,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11007:09",
+      "node_id": "11007",
+      "level": 9,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11007:10",
+      "node_id": "11007",
+      "level": 10,
+      "current_level": 4,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:02",
+      "node_id": "11008",
+      "level": 2,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:03",
+      "node_id": "11008",
+      "level": 3,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:04",
+      "node_id": "11008",
+      "level": 4,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:05",
+      "node_id": "11008",
+      "level": 5,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:06",
+      "node_id": "11008",
+      "level": 6,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:07",
+      "node_id": "11008",
+      "level": 7,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:08",
+      "node_id": "11008",
+      "level": 8,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:09",
+      "node_id": "11008",
+      "level": 9,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11008:10",
+      "node_id": "11008",
+      "level": 10,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:02",
+      "node_id": "11009",
+      "level": 2,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:03",
+      "node_id": "11009",
+      "level": 3,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:04",
+      "node_id": "11009",
+      "level": 4,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:05",
+      "node_id": "11009",
+      "level": 5,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:06",
+      "node_id": "11009",
+      "level": 6,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:07",
+      "node_id": "11009",
+      "level": 7,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:08",
+      "node_id": "11009",
+      "level": 8,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:09",
+      "node_id": "11009",
+      "level": 9,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11009:10",
+      "node_id": "11009",
+      "level": 10,
+      "current_level": 1,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11010:02",
+      "node_id": "11010",
+      "level": 2,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11010:03",
+      "node_id": "11010",
+      "level": 3,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11011:02",
+      "node_id": "11011",
+      "level": 2,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11011:03",
+      "node_id": "11011",
+      "level": 3,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11012:02",
+      "node_id": "11012",
+      "level": 2,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11012:03",
+      "node_id": "11012",
+      "level": 3,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11013:02",
+      "node_id": "11013",
+      "level": 2,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11013:03",
+      "node_id": "11013",
+      "level": 3,
+      "current_level": 1,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11014:01",
+      "node_id": "11014",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11014:02",
+      "node_id": "11014",
+      "level": 2,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11014:03",
+      "node_id": "11014",
+      "level": 3,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11015:01",
+      "node_id": "11015",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11015:02",
+      "node_id": "11015",
+      "level": 2,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11015:03",
+      "node_id": "11015",
+      "level": 3,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11016:01",
+      "node_id": "11016",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11016:02",
+      "node_id": "11016",
+      "level": 2,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11016:03",
+      "node_id": "11016",
+      "level": 3,
+      "current_level": 0,
+      "target_level": 3,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11017:01",
+      "node_id": "11017",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 1,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11018:01",
+      "node_id": "11018",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 1,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:01",
+      "node_id": "11019",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:02",
+      "node_id": "11019",
+      "level": 2,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:03",
+      "node_id": "11019",
+      "level": 3,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:04",
+      "node_id": "11019",
+      "level": 4,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:05",
+      "node_id": "11019",
+      "level": 5,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:06",
+      "node_id": "11019",
+      "level": 6,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:07",
+      "node_id": "11019",
+      "level": 7,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:08",
+      "node_id": "11019",
+      "level": 8,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:09",
+      "node_id": "11019",
+      "level": 9,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11019:10",
+      "node_id": "11019",
+      "level": 10,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:01",
+      "node_id": "11020",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:02",
+      "node_id": "11020",
+      "level": 2,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:03",
+      "node_id": "11020",
+      "level": 3,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:04",
+      "node_id": "11020",
+      "level": 4,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:05",
+      "node_id": "11020",
+      "level": 5,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:06",
+      "node_id": "11020",
+      "level": 6,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:07",
+      "node_id": "11020",
+      "level": 7,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:08",
+      "node_id": "11020",
+      "level": 8,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:09",
+      "node_id": "11020",
+      "level": 9,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11020:10",
+      "node_id": "11020",
+      "level": 10,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:01",
+      "node_id": "11021",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:02",
+      "node_id": "11021",
+      "level": 2,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:03",
+      "node_id": "11021",
+      "level": 3,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:04",
+      "node_id": "11021",
+      "level": 4,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:05",
+      "node_id": "11021",
+      "level": 5,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:06",
+      "node_id": "11021",
+      "level": 6,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:07",
+      "node_id": "11021",
+      "level": 7,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:08",
+      "node_id": "11021",
+      "level": 8,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:09",
+      "node_id": "11021",
+      "level": 9,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11021:10",
+      "node_id": "11021",
+      "level": 10,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:01",
+      "node_id": "11022",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:02",
+      "node_id": "11022",
+      "level": 2,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:03",
+      "node_id": "11022",
+      "level": 3,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:04",
+      "node_id": "11022",
+      "level": 4,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:05",
+      "node_id": "11022",
+      "level": 5,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:06",
+      "node_id": "11022",
+      "level": 6,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:07",
+      "node_id": "11022",
+      "level": 7,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:08",
+      "node_id": "11022",
+      "level": 8,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:09",
+      "node_id": "11022",
+      "level": 9,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11022:10",
+      "node_id": "11022",
+      "level": 10,
+      "current_level": 0,
+      "target_level": 10,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    },
+    {
+      "delta_id": "11023:01",
+      "node_id": "11023",
+      "level": 1,
+      "current_level": 0,
+      "target_level": 1,
+      "state_label": "USER-TARGET",
+      "account_scope": "Matt_S283"
+    }
+  ]
+}

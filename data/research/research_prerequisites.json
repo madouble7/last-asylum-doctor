@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "dataset": "commando_t10",
+  "source_corpus": "data/processed/research_corpus.json",
+  "source_site": "https://lastasylumdatabase.com/",
+  "source_generated_at": "2026-08-26T17:09:15.714326+00:00",
+  "evidence_status": "USER-SUPPLIED_CHAIN",
+  "source_note": "The public corpus does not expose prerequisite edges; these rules preserve the supplied chain as separate evidence.",
+  "reported_compact_rule_count": 16,
+  "record_count": 18,
+  "records": [
+    {
+      "rule_id": "prerequisite-01",
+      "target_node_id": "11013",
+      "target_level": 3,
+      "required_node_id": "11010",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-02",
+      "target_node_id": "11013",
+      "target_level": 3,
+      "required_node_id": "11011",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-03",
+      "target_node_id": "11013",
+      "target_level": 3,
+      "required_node_id": "11012",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-04",
+      "target_node_id": "11014",
+      "target_level": 3,
+      "required_node_id": "11013",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-05",
+      "target_node_id": "11015",
+      "target_level": 3,
+      "required_node_id": "11013",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-06",
+      "target_node_id": "11016",
+      "target_level": 3,
+      "required_node_id": "11013",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-07",
+      "target_node_id": "11017",
+      "target_level": 1,
+      "required_node_id": "11014",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-08",
+      "target_node_id": "11017",
+      "target_level": 1,
+      "required_node_id": "11015",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-09",
+      "target_node_id": "11017",
+      "target_level": 1,
+      "required_node_id": "11016",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-10",
+      "target_node_id": "11018",
+      "target_level": 1,
+      "required_node_id": "11014",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-11",
+      "target_node_id": "11018",
+      "target_level": 1,
+      "required_node_id": "11015",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-12",
+      "target_node_id": "11018",
+      "target_level": 1,
+      "required_node_id": "11016",
+      "required_level": 3
+    },
+    {
+      "rule_id": "prerequisite-13",
+      "target_node_id": "11019",
+      "target_level": 10,
+      "required_node_id": "11017",
+      "required_level": 1
+    },
+    {
+      "rule_id": "prerequisite-14",
+      "target_node_id": "11019",
+      "target_level": 10,
+      "required_node_id": "11018",
+      "required_level": 1
+    },
+    {
+      "rule_id": "prerequisite-15",
+      "target_node_id": "11020",
+      "target_level": 10,
+      "required_node_id": "11019",
+      "required_level": 10
+    },
+    {
+      "rule_id": "prerequisite-16",
+      "target_node_id": "11021",
+      "target_level": 10,
+      "required_node_id": "11020",
+      "required_level": 10
+    },
+    {
+      "rule_id": "prerequisite-17",
+      "target_node_id": "11022",
+      "target_level": 10,
+      "required_node_id": "11021",
+      "required_level": 10
+    },
+    {
+      "rule_id": "prerequisite-18",
+      "target_node_id": "11023",
+      "target_level": 1,
+      "required_node_id": "11022",
+      "required_level": 10
+    }
+  ]
+}

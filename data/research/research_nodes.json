@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "dataset": "commando_t10",
+  "source_corpus": "data/processed/research_corpus.json",
+  "source_site": "https://lastasylumdatabase.com/",
+  "source_generated_at": "2026-08-26T17:09:15.714326+00:00",
+  "record_count": 23,
+  "records": [
+    {
+      "node_id": "11001",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "hp-boost-i",
+      "name": "HP Boost I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/hp-boost-i",
+      "retrieved_at": "2026-08-26T17:06:41.507541+00:00"
+    },
+    {
+      "node_id": "11002",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "atk-boost-i",
+      "name": "ATK Boost I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/atk-boost-i",
+      "retrieved_at": "2026-08-26T17:05:06.195334+00:00"
+    },
+    {
+      "node_id": "11003",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-boost-i",
+      "name": "DEF Boost I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-boost-i",
+      "retrieved_at": "2026-08-26T17:05:51.193322+00:00"
+    },
+    {
+      "node_id": "11004",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-skills",
+      "name": "Survival Skills",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-skills",
+      "retrieved_at": "2026-08-26T17:07:52.550422+00:00"
+    },
+    {
+      "node_id": "11005",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-drill-vii-2",
+      "name": "DEF Drill VII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-vii-2",
+      "retrieved_at": "2026-08-26T17:05:55.754534+00:00"
+    },
+    {
+      "node_id": "11006",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "attack-training-vii-2",
+      "name": "Attack Training VII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-vii-2",
+      "retrieved_at": "2026-08-26T17:05:11.426151+00:00"
+    },
+    {
+      "node_id": "11007",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-training-vii-2",
+      "name": "Survival Training VII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-vii-2",
+      "retrieved_at": "2026-08-26T17:07:57.809578+00:00"
+    },
+    {
+      "node_id": "11008",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "training-specialization-i-2",
+      "name": "Training Specialization I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-i-2",
+      "retrieved_at": "2026-08-26T17:08:15.060960+00:00"
+    },
+    {
+      "node_id": "11009",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "training-grounds-expansion-i-2",
+      "name": "Training Grounds Expansion I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/training-grounds-expansion-i-2",
+      "retrieved_at": "2026-08-26T17:08:10.596104+00:00"
+    },
+    {
+      "node_id": "11010",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "hp-boost-ii",
+      "name": "HP Boost II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/hp-boost-ii",
+      "retrieved_at": "2026-08-26T16:44:14.278765+00:00"
+    },
+    {
+      "node_id": "11011",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "atk-boost-ii",
+      "name": "ATK Boost II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/atk-boost-ii",
+      "retrieved_at": "2026-08-26T17:05:06.953714+00:00"
+    },
+    {
+      "node_id": "11012",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-boost-ii",
+      "name": "DEF Boost II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-boost-ii",
+      "retrieved_at": "2026-08-26T17:05:51.995341+00:00"
+    },
+    {
+      "node_id": "11013",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "morale",
+      "name": "Morale",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/morale",
+      "retrieved_at": "2026-08-26T17:06:59.533255+00:00"
+    },
+    {
+      "node_id": "11014",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-drill-viii",
+      "name": "DEF Drill VIII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-viii",
+      "retrieved_at": "2026-08-26T17:05:56.453818+00:00"
+    },
+    {
+      "node_id": "11015",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "attack-training-viii",
+      "name": "Attack Training VIII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-viii",
+      "retrieved_at": "2026-08-26T17:05:12.219918+00:00"
+    },
+    {
+      "node_id": "11016",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-training-viii",
+      "name": "Survival Training VIII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-viii",
+      "retrieved_at": "2026-08-26T17:07:58.597969+00:00"
+    },
+    {
+      "node_id": "11017",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "quick-bandage-i-2",
+      "name": "Quick Bandage I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/quick-bandage-i-2",
+      "retrieved_at": "2026-08-26T17:07:07.013149+00:00"
+    },
+    {
+      "node_id": "11018",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "infirmary-expansion-i-2",
+      "name": "Infirmary Expansion I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/infirmary-expansion-i-2",
+      "retrieved_at": "2026-08-26T17:06:43.748754+00:00"
+    },
+    {
+      "node_id": "11019",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-skills-2",
+      "name": "Survival Skills",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-skills-2",
+      "retrieved_at": "2026-08-26T17:07:53.343393+00:00"
+    },
+    {
+      "node_id": "11020",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "hp-boost-iii",
+      "name": "HP Boost III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/hp-boost-iii",
+      "retrieved_at": "2026-08-26T17:06:42.285743+00:00"
+    },
+    {
+      "node_id": "11021",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "atk-boost-iii",
+      "name": "ATK Boost III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/atk-boost-iii",
+      "retrieved_at": "2026-08-26T17:05:07.712780+00:00"
+    },
+    {
+      "node_id": "11022",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-boost-iii",
+      "name": "DEF Boost III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-boost-iii",
+      "retrieved_at": "2026-08-26T16:11:21.727779+00:00"
+    },
+    {
+      "node_id": "11023",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "lv-10-soldier",
+      "name": "Lv.10 Soldier",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/lv-10-soldier",
+      "retrieved_at": "2026-08-26T17:06:58.763667+00:00"
+    }
+  ]
+}

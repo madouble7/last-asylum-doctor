@@ -70,6 +70,12 @@ Role names describe responsibilities, not models or providers.
 - **Evidence/provenance model**: factual records retain source scope, URLs or
   evidence identifiers, dates, server/version context, hashes, raw values, and
   uncertainty. Research and economic source observations remain auditable.
+- **Asynchronous agent signals**: ADR-012 defines the passive, single-writer
+  Markdown blackboard in [docs/agent_signals/](agent_signals/); `DRIFT` and
+  `CONTEXT_HEALTH` signals require direct escalation to Matt.
+- **Canonical Commando research data**: the verified Elite Troop / Commando
+  slice is normalized into [data/research/](../data/research/) with separate
+  node, upgrade-cost, prerequisite, and Matt_S283 state layers.
 - **Control-room workflow**: one canonical shared-main repository has ATLAS,
   SCOUT, and PROBE workspace wrappers with local `Doctor PowerShell` profiles;
   the three-window launcher remains the supported fallback.
