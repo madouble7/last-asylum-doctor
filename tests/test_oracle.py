@@ -109,6 +109,69 @@ def test_oracle_gold_set_statuses_preserve_opaque_fields_and_nested_choices() ->
     assert raven["price_interpretation"] is None
 
 
+def test_differently_named_pack_uses_deterministic_component_fallback() -> None:
+    external = ExternalOracleSnapshot(
+        items=(),
+        complex_items=(),
+        packs=(_pack("Gear Bundle", "gear-bundle", [("Raven Gear", 3)]),),
+        fetches=(),
+    )
+
+    result = compare_oracle(_canonical(), external)
+
+    assert result.pack_comparisons[0]["canonical_pack"] == "Raven Gear"
+    assert result.pack_comparisons[0]["canonical_pack_id"] == 1
+
+
+def test_proportional_status_requires_full_coverage_and_equal_non_unit_ratios() -> None:
+    canonical = CanonicalEconomics(
+        items=(),
+        packs=(
+            CanonicalPack(
+                1,
+                "two-component-pack",
+                "Two Component Pack",
+                (
+                    CanonicalPackComponent("a", "A", 40, None, None),
+                    CanonicalPackComponent("b", "B", 20, None, None),
+                ),
+            ),
+            CanonicalPack(
+                2,
+                "three-component-pack",
+                "Three Component Pack",
+                (
+                    CanonicalPackComponent("a", "A", 40, None, None),
+                    CanonicalPackComponent("b", "B", 20, None, None),
+                    CanonicalPackComponent("c", "C", 10, None, None),
+                ),
+            ),
+        ),
+        choices=(),
+    )
+
+    mixed_ratios = _pack("Two Component Pack", "mixed", [("A", 40), ("B", 10)])
+    subset = _pack("Three Component Pack", "subset", [("A", 20), ("B", 10)])
+    proportional = _pack("Two Component Pack", "proportional", [("A", 20), ("B", 10)])
+
+    result = compare_oracle(
+        canonical,
+        ExternalOracleSnapshot(
+            items=(),
+            complex_items=(),
+            packs=(mixed_ratios, subset, proportional),
+            fetches=(),
+        ),
+    )
+    statuses = {
+        value["external_id"]: value["status"] for value in result.pack_comparisons
+    }
+
+    assert statuses["mixed"] == "PARTIAL_MATCH"
+    assert statuses["subset"] == "PARTIAL_MATCH"
+    assert statuses["proportional"] == "PROPORTIONAL_TIER_CANDIDATE"
+
+
 def test_alias_candidate_and_analysis_value_are_not_canonicalized() -> None:
     canonical = _canonical()
     external = ExternalOracleSnapshot(

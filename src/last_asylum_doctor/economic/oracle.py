@@ -647,7 +647,7 @@ def _pack_candidates(
     return sorted(
         exact_overlap,
         key=lambda value: (
-            -_component_overlap(pack.components, value.components),
+            -_component_overlap(pack.components, value),
             value.name,
             value.pack_id,
         ),
@@ -717,12 +717,17 @@ def _component_comparison(
                 identity_matches += 1
                 if _number_equal(value.amount, target.quantity):
                     matched += 1
-                elif _positive_number(value.amount) and target.quantity > 0:
+                if _positive_number(value.amount) and target.quantity > 0:
                     ratios.append(float(value.amount) / target.quantity)
                 break
     if matched == len(canonical):
         return "EXACT_COMPONENT_MATCH", matched
-    if identity_matches and ratios and _same_ratio(ratios):
+    if (
+        identity_matches == len(canonical)
+        and len(ratios) == len(canonical)
+        and _same_ratio(ratios)
+        and not _number_equal(ratios[0], 1.0)
+    ):
         return "PROPORTIONAL_TIER_CANDIDATE", identity_matches
     if identity_matches:
         return "PARTIAL_MATCH", identity_matches
