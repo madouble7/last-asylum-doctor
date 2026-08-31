@@ -642,12 +642,16 @@ def _pack_candidates(
     if named:
         return named
     exact_overlap = [
-        value for value in canonical.packs if _component_overlap(pack.components, value)
+        value
+        for value in canonical.packs
+        if value.components
+        and _component_overlap(pack.components, value, canonical.items)
+        == len(value.components)
     ]
     return sorted(
         exact_overlap,
         key=lambda value: (
-            -_component_overlap(pack.components, value),
+            -_component_overlap(pack.components, value, canonical.items),
             value.name,
             value.pack_id,
         ),
@@ -660,10 +664,12 @@ def _compare_pack(
     if not candidates:
         return _pack_result(pack, "EXTERNAL_ONLY", None, 0)
     candidate = max(
-        ((_pack_score(pack, value), value) for value in candidates),
+        ((_pack_score(pack, value, canonical.items), value) for value in candidates),
         key=lambda value: (value[0], value[1].name, -value[1].pack_id),
     )[1]
-    status, matched = _component_comparison(pack.components, candidate.components)
+    status, matched = _component_comparison(
+        pack.components, candidate.components, canonical.items
+    )
     choice_status = _choice_status(pack, candidate, canonical)
     if choice_status == "STRUCTURE_MISMATCH" and status == "EXACT_COMPONENT_MATCH":
         status = "STRUCTURE_MISMATCH"
@@ -698,6 +704,7 @@ def _pack_result(
 def _component_comparison(
     external: tuple[ExternalPackComponent, ...],
     canonical: tuple[CanonicalPackComponent, ...],
+    canonical_items: tuple[CanonicalItem, ...],
 ) -> tuple[str, int]:
     if not canonical:
         return "UNKNOWN", 0
@@ -707,7 +714,7 @@ def _component_comparison(
     used: set[int] = set()
     for value in external:
         for index, target in enumerate(canonical):
-            identity = _component_identity(value) == target.item_key
+            identity = _component_identity(value, canonical_items) == target.item_key
             subtype = (
                 _text(value.item_id) == _text(target.package_display)
                 or not target.speedup_type
@@ -731,7 +738,7 @@ def _component_comparison(
         return "PROPORTIONAL_TIER_CANDIDATE", identity_matches
     if identity_matches:
         return "PARTIAL_MATCH", identity_matches
-    if _same_item_set(external, canonical):
+    if _same_item_set(external, canonical, canonical_items):
         return "CONFLICT", 0
     return "STRUCTURE_MISMATCH", 0
 
@@ -756,35 +763,85 @@ def _choice_status(
     return "UNKNOWN" if external_ids == canonical_ids else "STRUCTURE_MISMATCH"
 
 
-def _component_identity(value: ExternalPackComponent) -> str:
-    return _key(value.item_name or value.item_id)
+def _component_identity(
+    value: ExternalPackComponent, canonical_items: tuple[CanonicalItem, ...]
+) -> str | None:
+    external_forms = {
+        form
+        for term, allow_trailing_level in (
+            (value.item_id, True),
+            (value.item_name, False),
+        )
+        if term
+        for form in _identity_forms(term, allow_trailing_level=allow_trailing_level)
+    }
+    candidates = [
+        item.canonical_key
+        for item in canonical_items
+        if external_forms
+        & {
+            form
+            for term in (item.canonical_key, item.name, *item.aliases)
+            for form in _identity_forms(term)
+        }
+    ]
+    return candidates[0] if len(candidates) == 1 else None
 
 
 def _component_overlap(
-    external: tuple[ExternalPackComponent, ...], canonical: CanonicalPack
+    external: tuple[ExternalPackComponent, ...],
+    canonical: CanonicalPack,
+    canonical_items: tuple[CanonicalItem, ...],
 ) -> int:
     matched = 0
     used: set[int] = set()
     for value in external:
         for index, target in enumerate(canonical.components):
-            if index not in used and _component_identity(value) == target.item_key:
+            if (
+                index not in used
+                and _component_identity(value, canonical_items) == target.item_key
+            ):
                 used.add(index)
                 matched += 1
                 break
     return matched
 
 
-def _pack_score(pack: ExternalPack, candidate: CanonicalPack) -> int:
-    return _component_overlap(pack.components, candidate)
+def _pack_score(
+    pack: ExternalPack,
+    candidate: CanonicalPack,
+    canonical_items: tuple[CanonicalItem, ...],
+) -> int:
+    return _component_overlap(pack.components, candidate, canonical_items)
 
 
 def _same_item_set(
     external: tuple[ExternalPackComponent, ...],
     canonical: tuple[CanonicalPackComponent, ...],
+    canonical_items: tuple[CanonicalItem, ...],
 ) -> bool:
-    return {_component_identity(value) for value in external} == {
+    return {_component_identity(value, canonical_items) for value in external} == {
         value.item_key for value in canonical
     }
+
+
+def _identity_forms(value: str, *, allow_trailing_level: bool = False) -> set[str]:
+    normalized = _key(value)
+    forms = {normalized}
+    level_match = re.search(r"(?:^|-)lv-?(\d+)(?:-|$)", normalized)
+    if level_match:
+        base = (
+            normalized[: level_match.start()] + normalized[level_match.end() :]
+        ).strip("-")
+        forms.add(f"{base}-lv-{level_match.group(1)}")
+        forms.add(f"{_compact(base)}-lv-{level_match.group(1)}")
+    if allow_trailing_level:
+        trailing_level = re.fullmatch(r"([a-z][a-z-]*?)(\d+)", normalized)
+        if trailing_level:
+            forms.add(
+                f"{trailing_level.group(1).rstrip('-')}-lv-{trailing_level.group(2)}"
+            )
+    return forms
 
 
 def _same_ratio(values: list[float]) -> bool:

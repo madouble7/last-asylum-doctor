@@ -99,7 +99,7 @@ def test_oracle_gold_set_statuses_preserve_opaque_fields_and_nested_choices() ->
 
     assert statuses["Raven Gear"] == "EXACT_COMPONENT_MATCH"
     assert statuses["Raven Essence"] == "PROPORTIONAL_TIER_CANDIDATE"
-    assert statuses["Study Scroll"] == "EXACT_COMPONENT_MATCH"
+    assert statuses["Study Scroll"] == "PARTIAL_MATCH"
     assert statuses["Skill Badge Pack"] == "EXTERNAL_ONLY"
     assert statuses["Curio Chest"] == "EXTERNAL_ONLY"
     raven = next(
@@ -110,22 +110,59 @@ def test_oracle_gold_set_statuses_preserve_opaque_fields_and_nested_choices() ->
 
 
 def test_differently_named_pack_uses_deterministic_component_fallback() -> None:
+    canonical = _level_canonical()
     external = ExternalOracleSnapshot(
         items=(),
         complex_items=(),
-        packs=(_pack("Gear Bundle", "gear-bundle", [("Raven Gear", 3)]),),
+        packs=(
+            _external_pack(
+                "Raven Gear Daily",
+                "gear-daily",
+                [
+                    ("RavenGearChest1", "Lv. 1 Raven Gear Chest", 1),
+                    ("RavenGearChest3", "Raven Gear Chest Lv3", 3),
+                    ("Diamond", "Diamond", 100),
+                ],
+            ),
+        ),
         fetches=(),
     )
 
-    result = compare_oracle(_canonical(), external)
+    result = compare_oracle(canonical, external)
 
     assert result.pack_comparisons[0]["canonical_pack"] == "Raven Gear"
     assert result.pack_comparisons[0]["canonical_pack_id"] == 1
+    assert result.pack_comparisons[0]["status"] == "EXACT_COMPONENT_MATCH"
+
+
+def test_component_only_fallback_rejects_incidental_overlap() -> None:
+    canonical = _canonical()
+    external = ExternalOracleSnapshot(
+        items=(),
+        complex_items=(),
+        packs=(
+            _pack("Hero Growth Daily", "hero-growth", [("Gearstone", 1)]),
+            _pack("Surprise Encounter", "surprise", [("Study Scroll", 1)]),
+        ),
+        fetches=(),
+    )
+
+    result = compare_oracle(canonical, external)
+
+    assert [value["canonical_pack"] for value in result.pack_comparisons] == [
+        None,
+        None,
+    ]
+    assert all(value["status"] == "EXTERNAL_ONLY" for value in result.pack_comparisons)
 
 
 def test_proportional_status_requires_full_coverage_and_equal_non_unit_ratios() -> None:
     canonical = CanonicalEconomics(
-        items=(),
+        items=(
+            CanonicalItem("a", "A", ()),
+            CanonicalItem("b", "B", ()),
+            CanonicalItem("c", "C", ()),
+        ),
         packs=(
             CanonicalPack(
                 1,
@@ -331,6 +368,50 @@ def _canonical() -> CanonicalEconomics:
                     CanonicalPackComponent(
                         "study-scroll", "Study Scroll", 60, None, None
                     ),
+                    CanonicalPackComponent(
+                        "raven-essence", "Raven Essence", 20, None, None
+                    ),
+                ),
+            ),
+        ),
+        choices=(),
+    )
+
+
+def _level_canonical() -> CanonicalEconomics:
+    return CanonicalEconomics(
+        items=(
+            CanonicalItem(
+                "raven-gear-chest-lv1",
+                "Raven Gear Chest Lv1",
+                ("Lv1 Raven Gear Chest",),
+            ),
+            CanonicalItem(
+                "raven-gear-chest-lv3",
+                "Raven Gear Chest Lv3",
+                ("Lv3 Raven Gear Chest",),
+            ),
+        ),
+        packs=(
+            CanonicalPack(
+                1,
+                "raven-gear-pack",
+                "Raven Gear",
+                (
+                    CanonicalPackComponent(
+                        "raven-gear-chest-lv1",
+                        "Raven Gear Chest Lv1",
+                        1,
+                        None,
+                        None,
+                    ),
+                    CanonicalPackComponent(
+                        "raven-gear-chest-lv3",
+                        "Raven Gear Chest Lv3",
+                        3,
+                        None,
+                        None,
+                    ),
                 ),
             ),
         ),
@@ -359,6 +440,35 @@ def _pack(
         components=tuple(
             ExternalPackComponent(item, item, "primitive", amount, 100, 0, None)
             for item, amount in components
+        ),
+        choice_items=(),
+        source_timestamps=(),
+    )
+
+
+def _external_pack(
+    name: str,
+    external_id: str,
+    components: list[tuple[str, str, float]],
+) -> ExternalPack:
+    return ExternalPack(
+        external_id=external_id,
+        name=name,
+        location="Pack Shop",
+        pack_price=999,
+        pack_format="Default",
+        note=None,
+        components=tuple(
+            ExternalPackComponent(
+                item_id=item_id,
+                item_name=item_name,
+                item_type="primitive",
+                amount=amount,
+                chance_pct=100,
+                token_cost=0,
+                choice_structure=None,
+            )
+            for item_id, item_name, amount in components
         ),
         choice_items=(),
         source_timestamps=(),
