@@ -177,3 +177,13 @@ Tradeoffs: ENGINEER findings require handoff and clean ATLAS integration rather
 than silently entering production.
 
 Revisit if: The role topology or integration workflow is intentionally changed.
+
+## ADR-012 - Asynchronous agent signals
+
+Status: Accepted
+
+Decision: Use per-agent signal files with a single writer per file. Valid
+signal types are `DRIFT`, `BLOCKER`, `EVIDENCE`, and `CONTEXT_HEALTH`.
+Escalate `DRIFT` and `CONTEXT_HEALTH` signals to Matt.
+
+Details: [ADR-012 asynchronous agent signals](adr/ADR-012-asynchronous-agent-signals.md).
