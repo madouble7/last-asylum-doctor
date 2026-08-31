@@ -3,7 +3,8 @@
 ## Canonical checkpoint
 
 - Branch: `main`.
-- State recorded against commit `813ad4a` (Shadow Observer v0.2 hardening:
+- State recorded against commit `7a64af4` (Commando research dataset and
+  canonical integration checkpoint; prior Shadow Observer v0.2 hardening:
   foreground safety, structured diagnostics, conservative recognition, and
   timing observability).
 - Canonical repository:
