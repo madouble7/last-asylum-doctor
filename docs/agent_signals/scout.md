@@ -144,3 +144,55 @@
 	each lock with retrieval date and URL, but do not import its displayed
 	percentages or named dependencies into canonical facts until a detail-page
 	capture or export provides source-scoped records and provenance.
+
+### LAP Hub `researchNodes` static payload extraction
+
+- **Audit date:** 2026-08-31.
+- **Source:** `https://thelaphub.com/assets/researchNodes-DP2Wec-s.js`;
+	anonymous HTTP status `200`; retrieved payload size `25,409` bytes;
+	UTF-8 response SHA-256
+	`277CF4837E818F2F14230761A8924FDC88DF15ABE90E82C3D947CF3B74F1FC9A`.
+- **Payload classification:** **OBSERVED** static JavaScript module. It
+	exports `names`, `descriptions`, and `benefits` dictionaries, plus a default
+	object containing those dictionaries. The numeric keys correspond to a
+	348-entry ordinal vocabulary (the visible name/description ranges reach
+	node ordinal 348); they are not shown as the canonical source IDs such as
+	`11023`.
+- **Node/effect schema observed:** `names` maps numeric ordinals to node
+	display names, `descriptions` maps ordinals to effect/stat text, and
+	`benefits` maps a subset of ordinals to benefit labels such as Research
+	Speed, Training Speed, resource output, and combat stats. `Lv.10 Soldier`
+	is present in the name dictionary. This is display vocabulary, not a full
+	normalized node record.
+
+| Requested extraction | Result | Classification | Limitation |
+| --- | --- | --- | --- |
+| Cross-tree prerequisite rules in `researchNodes` | No prerequisite field or edge dictionary observed | **UNKNOWN** | The chunk contains names/descriptions/benefits only; do not infer edges from ordinal order. |
+| Branch completion thresholds in `researchNodes` | No threshold field observed | **UNKNOWN** | Visible `40%`/`80%` Elite Troop locks and named locks come from the research index/planner UI, not this node dictionary. |
+| `Extra Training Grounds Lv.1` | Visible on anonymous index as Full Development lock text | **OBSERVED** | UI lock predicate; source node ID and engine condition are not present in this chunk. |
+| `Herb Protection I Lv.1` | Visible on anonymous index as Prosperous Economy lock text | **OBSERVED** | Named research lock; exact source node ID/level relationship is not exposed here. |
+| `Squad 1 25% complete` -> Squad 2 | Visible on anonymous index | **OBSERVED** | Displayed threshold; canonical percentage semantics are not independently verified. |
+| `Squad 2 25% complete` -> Squad 3 | Visible on anonymous index | **OBSERVED** | Same limitation. |
+| `Top Rewards Lv.1` -> Elite Troop | Visible on anonymous index | **OBSERVED** | Named research lock; no building gate shown. |
+| `Elite Troop 40% complete` -> Offensive/Defensive Tactics | Visible on anonymous index | **OBSERVED** | UI threshold only; do not import as a canonical game rule without source-scoped detail evidence. |
+| `Elite Troop 80% complete` -> Warrior/Ranger/Warlock Mastery | Visible on anonymous index | **OBSERVED** | UI threshold only; no Institute/Sanctuary level shown. |
+
+#### Schema comparison with local canonical research records
+
+- **KNOWN/REPO-VERIFIED:** The local canonical `research_nodes.json` model
+	stores one object per node with stable slug/source ID, name, tree/tree slug,
+	effect text, max level, tech type, image, position, source URLs, and
+	provenance timestamps. Its related level/cost records store level, power,
+	time, and resource costs.
+- **OBSERVED:** LAP Hub's inspected chunk stores localization-like numeric
+	dictionaries only: ordinal -> name, ordinal -> description, and partial
+	ordinal -> benefit. It exposes no visible slug, tree slug, source URL,
+	max-level field, level rows, time, cost, power, prerequisite edge, or
+	Research Lab/Sanctuary/Institute field in this module.
+- **UNKNOWN:** Whether the remaining LAP Hub chunks contain the detailed
+	per-level values for each ordinal, how ordinal keys map to Last Asylum
+	source IDs/slugs, and whether account-specific plans add further gates.
+- **Recommended integration action:** Store this payload, if referenced at
+	all, as secondary display-vocabulary evidence with URL, hash, and retrieval
+	date. Do not merge its ordinal dictionaries into canonical node identity or
+	create prerequisite/threshold facts from dictionary order or UI labels.

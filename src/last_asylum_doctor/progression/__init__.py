@@ -1,5 +1,12 @@
 """Deterministic research progression resolution."""
 
+from .deficit import (
+    InventoryState,
+    PathDeficit,
+    TimelineProjection,
+    calculate_deficit,
+    estimate_timeline,
+)
 from .resolver import (
     MissingPrerequisite,
     PathTotals,
@@ -22,4 +29,9 @@ __all__ = [
     "ResearchNode",
     "ResearchUpgradeCost",
     "UpgradeStep",
+    "InventoryState",
+    "PathDeficit",
+    "TimelineProjection",
+    "calculate_deficit",
+    "estimate_timeline",
 ]

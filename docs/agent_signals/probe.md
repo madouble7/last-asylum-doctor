@@ -36,3 +36,12 @@
 - Zero-resource trees: Alliance Duel has 132 rows and Caravan Transport has 43 rows; both have `timber_m=0.0`, `grain_m=0.0`, and `herbs_m=0.0` on every row while retaining valid non-negative scroll and duration integers.
 - Verdict: **CLEAN / COMPLETE**. No declared-count divergence, duplicate IDs, orphan references, negative numeric values, or type/unit violations observed in the canonical full dataset.
 - Worktree note: pre-existing local modifications remain in `data/research/research_nodes.json`, `data/research/research_upgrade_costs.json`, `docs/architect_state.md`, and `docs/agent_signals/scout.md`; those were not reverted or treated as canonical. This PROBE signal file is the only file modified by this audit.
+
+## EVIDENCE — 2026-08-31 Account state capture specification
+
+- Status: **PARTIAL**. Drafted `docs/account_state_capture_spec.md` as a passive, zero-input specification for research, building, resource, and speedup state ingestion.
+- Canonical grounding: repository is on `main` at `02c586f544fd4a9fc4210d83c26046c38a18a0b7`; requested base `3ea55cddb388a8312dfc56e784a18b5460845a82` was not checked out, and no Git state was changed.
+- Implementation evidence: requested `src/last_asylum_doctor/client/shadow_observer.py` is absent. The draft is grounded in the available `src/last_asylum_doctor/probe/shadow_observer.py` and `tools/probe_phase1_ui_ocr.py`, including immutable screenshot hashes, foreground/package metadata, OCR anchors, crop coordinates, preprocessing variants, confidence, validation status, and passive provenance.
+- Current schema evidence: `data/research/research_user_state.json` parses as schema version 1 with 23 states and 116 target deltas for the Commando slice; it has no building or inventory sections. The draft therefore defines the 18-tree/348-node and building/inventory shapes as a proposed versioned extension, not as an existing canonical contract.
+- Specification coverage: all 18 research branches are required by catalog join; research levels require exact node identity plus current-level evidence; Sanctuary, Research Lab, and Training Grounds use a separate building record; resources and speedups require explicit canonical units; `REVIEW`/`FAIL` candidates never mutate canonical state; conflicts remain conflicts; raw evidence remains hash-linked and read-only.
+- Validation: `git diff --check -- docs/account_state_capture_spec.md` passed. No canonical application code, JSON data, or Git history was modified.
