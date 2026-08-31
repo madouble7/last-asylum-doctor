@@ -1,0 +1,3490 @@
+{
+  "schema_version": 1,
+  "dataset": "all_research_trees",
+  "source_corpus": "data/processed/research_corpus.json",
+  "source_site": "https://lastasylumdatabase.com/",
+  "source_generated_at": "2026-08-26T17:09:15.714326+00:00",
+  "record_count": 348,
+  "records": [
+    {
+      "node_id": "1001",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "rapid-construction-i",
+      "name": "Rapid Construction I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-construction-i",
+      "retrieved_at": "2026-08-26T17:07:38.887699+00:00"
+    },
+    {
+      "node_id": "1002",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "infirmary-expansion-i",
+      "name": "Infirmary Expansion I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/infirmary-expansion-i",
+      "retrieved_at": "2026-08-26T17:06:43.008992+00:00"
+    },
+    {
+      "node_id": "1003",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "training-grounds-expansion-i",
+      "name": "Training Grounds Expansion I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-grounds-expansion-i",
+      "retrieved_at": "2026-08-26T17:08:09.829055+00:00"
+    },
+    {
+      "node_id": "1004",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "research-upgrade-i",
+      "name": "Research Upgrade I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/research-upgrade-i",
+      "retrieved_at": "2026-08-26T17:07:42.081892+00:00"
+    },
+    {
+      "node_id": "1005",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "quick-bandage-i",
+      "name": "Quick Bandage I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/quick-bandage-i",
+      "retrieved_at": "2026-08-26T17:07:06.286295+00:00"
+    },
+    {
+      "node_id": "1006",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "training-specialization-i",
+      "name": "Training Specialization I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-i",
+      "retrieved_at": "2026-08-26T17:08:14.374378+00:00"
+    },
+    {
+      "node_id": "1007",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "construction-master",
+      "name": "Construction Master",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/construction-master",
+      "retrieved_at": "2026-08-26T16:44:26.247079+00:00"
+    },
+    {
+      "node_id": "1008",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "rapid-construction-ii",
+      "name": "Rapid Construction II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-construction-ii",
+      "retrieved_at": "2026-08-26T17:07:39.082014+00:00"
+    },
+    {
+      "node_id": "1009",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "infirmary-expansion-ii",
+      "name": "Infirmary Expansion II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/infirmary-expansion-ii",
+      "retrieved_at": "2026-08-26T17:06:45.293318+00:00"
+    },
+    {
+      "node_id": "1010",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "training-grounds-expansion-ii",
+      "name": "Training Grounds Expansion II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-grounds-expansion-ii",
+      "retrieved_at": "2026-08-26T17:08:12.102199+00:00"
+    },
+    {
+      "node_id": "1011",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "research-upgrade-ii",
+      "name": "Research Upgrade II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/research-upgrade-ii",
+      "retrieved_at": "2026-08-26T17:07:42.826567+00:00"
+    },
+    {
+      "node_id": "1012",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "quick-bandage-ii",
+      "name": "Quick Bandage II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/quick-bandage-ii",
+      "retrieved_at": "2026-08-26T17:07:07.767776+00:00"
+    },
+    {
+      "node_id": "1013",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "training-specialization-ii",
+      "name": "Training Specialization II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-ii",
+      "retrieved_at": "2026-08-26T17:08:16.623565+00:00"
+    },
+    {
+      "node_id": "1014",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "extra-training-grounds",
+      "name": "Extra Training Grounds",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/extra-training-grounds",
+      "retrieved_at": "2026-08-26T17:06:07.012622+00:00"
+    },
+    {
+      "node_id": "1015",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "rapid-construction-iii",
+      "name": "Rapid Construction III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-construction-iii",
+      "retrieved_at": "2026-08-26T17:07:39.835433+00:00"
+    },
+    {
+      "node_id": "1016",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "infirmary-expansion-iii",
+      "name": "Infirmary Expansion III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/infirmary-expansion-iii",
+      "retrieved_at": "2026-08-26T17:06:45.895040+00:00"
+    },
+    {
+      "node_id": "1017",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "training-grounds-expansion-iii",
+      "name": "Training Grounds Expansion III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-grounds-expansion-iii",
+      "retrieved_at": "2026-08-26T17:08:12.850899+00:00"
+    },
+    {
+      "node_id": "1018",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "research-upgrade-iii",
+      "name": "Research Upgrade III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/research-upgrade-iii",
+      "retrieved_at": "2026-08-26T16:11:22.454930+00:00"
+    },
+    {
+      "node_id": "1019",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "quick-bandage-iv",
+      "name": "Quick Bandage IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/quick-bandage-iv",
+      "retrieved_at": "2026-08-26T17:07:08.551685+00:00"
+    },
+    {
+      "node_id": "1020",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "training-specialization-iv",
+      "name": "Training Specialization IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-iv",
+      "retrieved_at": "2026-08-26T17:08:18.092976+00:00"
+    },
+    {
+      "node_id": "1021",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "fast-healing",
+      "name": "Fast Healing",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/fast-healing",
+      "retrieved_at": "2026-08-26T17:06:08.492490+00:00"
+    },
+    {
+      "node_id": "1022",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "rapid-construction-iv",
+      "name": "Rapid Construction IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-construction-iv",
+      "retrieved_at": "2026-08-26T17:07:40.577408+00:00"
+    },
+    {
+      "node_id": "1023",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "infirmary-expansion-iv",
+      "name": "Infirmary Expansion IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/infirmary-expansion-iv",
+      "retrieved_at": "2026-08-26T17:06:46.731041+00:00"
+    },
+    {
+      "node_id": "1024",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "training-grounds-expansion-iv",
+      "name": "Training Grounds Expansion IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-grounds-expansion-iv",
+      "retrieved_at": "2026-08-26T17:08:13.606573+00:00"
+    },
+    {
+      "node_id": "1025",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "research-upgrade-iv",
+      "name": "Research Upgrade IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/research-upgrade-iv",
+      "retrieved_at": "2026-08-26T17:07:43.558412+00:00"
+    },
+    {
+      "node_id": "1026",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "quick-bandage-v",
+      "name": "Quick Bandage V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/quick-bandage-v",
+      "retrieved_at": "2026-08-26T16:44:15.022562+00:00"
+    },
+    {
+      "node_id": "1027",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "training-specialization-v",
+      "name": "Training Specialization V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-v",
+      "retrieved_at": "2026-08-26T17:08:18.874113+00:00"
+    },
+    {
+      "node_id": "1028",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "barracks-expansion-i",
+      "name": "Barracks Expansion I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/barracks-expansion-i",
+      "retrieved_at": "2026-08-26T17:05:13.691974+00:00"
+    },
+    {
+      "node_id": "1029",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "battlefield-veteran",
+      "name": "Battlefield Veteran",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/battlefield-veteran",
+      "retrieved_at": "2026-08-26T17:05:16.684582+00:00"
+    },
+    {
+      "node_id": "1030",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "barracks-expansion-ii",
+      "name": "Barracks Expansion II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/barracks-expansion-ii",
+      "retrieved_at": "2026-08-26T17:05:14.434713+00:00"
+    },
+    {
+      "node_id": "1031",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "barracks-expansion-iii",
+      "name": "Barracks Expansion III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/barracks-expansion-iii",
+      "retrieved_at": "2026-08-26T17:05:15.246439+00:00"
+    },
+    {
+      "node_id": "1032",
+      "branch": "Full Development",
+      "source_branch": "Full Development",
+      "slug": "barracks-expansion-iv",
+      "name": "Barracks Expansion IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/barracks-expansion-iv",
+      "retrieved_at": "2026-08-26T17:05:15.961826+00:00"
+    },
+    {
+      "node_id": "1033",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "quick-bandage-iii",
+      "name": "Quick Bandage III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/quick-bandage-iii",
+      "retrieved_at": "2026-08-26T16:44:12.780717+00:00"
+    },
+    {
+      "node_id": "1034",
+      "branch": "Development",
+      "source_branch": "Development",
+      "slug": "training-specialization-iii",
+      "name": "Training Specialization III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-iii",
+      "retrieved_at": "2026-08-26T17:08:17.345896+00:00"
+    },
+    {
+      "node_id": "2001",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "grain-output-i",
+      "name": "Grain Output I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-output-i",
+      "retrieved_at": "2026-08-26T17:06:17.491982+00:00"
+    },
+    {
+      "node_id": "2002",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "timber-output-i",
+      "name": "Timber Output I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-output-i",
+      "retrieved_at": "2026-08-26T17:08:04.596617+00:00"
+    },
+    {
+      "node_id": "2003",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "herb-output-i",
+      "name": "Herb Output I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-output-i",
+      "retrieved_at": "2026-08-26T17:06:28.723838+00:00"
+    },
+    {
+      "node_id": "2004",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "grain-gathering-i",
+      "name": "Grain Gathering I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-gathering-i",
+      "retrieved_at": "2026-08-26T17:06:13.713141+00:00"
+    },
+    {
+      "node_id": "2005",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "timber-gathering-i",
+      "name": "Timber Gathering I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-gathering-i",
+      "retrieved_at": "2026-08-26T17:08:00.850621+00:00"
+    },
+    {
+      "node_id": "2006",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "herb-gathering-i",
+      "name": "Herb Gathering I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-gathering-i",
+      "retrieved_at": "2026-08-26T17:06:26.503390+00:00"
+    },
+    {
+      "node_id": "2007",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "additional-farmland",
+      "name": "Additional Farmland",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/additional-farmland",
+      "retrieved_at": "2026-08-26T17:05:00.970885+00:00"
+    },
+    {
+      "node_id": "2008",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "grain-output-ii",
+      "name": "Grain Output II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-output-ii",
+      "retrieved_at": "2026-08-26T17:06:18.229776+00:00"
+    },
+    {
+      "node_id": "2009",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "timber-output-ii",
+      "name": "Timber Output II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-output-ii",
+      "retrieved_at": "2026-08-26T17:08:05.318545+00:00"
+    },
+    {
+      "node_id": "2010",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "herb-output-ii",
+      "name": "Herb Output II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-output-ii",
+      "retrieved_at": "2026-08-26T17:06:29.466504+00:00"
+    },
+    {
+      "node_id": "2011",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "grain-gathering-ii",
+      "name": "Grain Gathering II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-gathering-ii",
+      "retrieved_at": "2026-08-26T17:06:14.505123+00:00"
+    },
+    {
+      "node_id": "2012",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "timber-gathering-ii",
+      "name": "Timber Gathering II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-gathering-ii",
+      "retrieved_at": "2026-08-26T17:08:01.593580+00:00"
+    },
+    {
+      "node_id": "2013",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "herb-gathering-ii",
+      "name": "Herb Gathering II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-gathering-ii",
+      "retrieved_at": "2026-08-26T17:06:27.241098+00:00"
+    },
+    {
+      "node_id": "2014",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "extra-lumberyard",
+      "name": "Extra Lumberyard",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/extra-lumberyard",
+      "retrieved_at": "2026-08-26T17:06:06.220942+00:00"
+    },
+    {
+      "node_id": "2015",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "grain-output-iv",
+      "name": "Grain Output IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-output-iv",
+      "retrieved_at": "2026-08-26T17:06:19.757326+00:00"
+    },
+    {
+      "node_id": "2016",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "timber-output-iv",
+      "name": "Timber Output IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-output-iv",
+      "retrieved_at": "2026-08-26T17:08:06.845313+00:00"
+    },
+    {
+      "node_id": "2017",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "herb-output-iv",
+      "name": "Herb Output IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-output-iv",
+      "retrieved_at": "2026-08-26T17:06:30.988250+00:00"
+    },
+    {
+      "node_id": "2018",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "grain-gathering-iv",
+      "name": "Grain Gathering IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-gathering-iv",
+      "retrieved_at": "2026-08-26T17:06:16.001266+00:00"
+    },
+    {
+      "node_id": "2019",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "timber-gathering-iv",
+      "name": "Timber Gathering IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-gathering-iv",
+      "retrieved_at": "2026-08-26T17:08:03.105233+00:00"
+    },
+    {
+      "node_id": "2020",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "herb-gathering-iv",
+      "name": "Herb Gathering IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-gathering-iv",
+      "retrieved_at": "2026-08-26T17:06:27.970938+00:00"
+    },
+    {
+      "node_id": "2021",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "extra-herb-garden",
+      "name": "Extra Herb Garden",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/extra-herb-garden",
+      "retrieved_at": "2026-08-26T17:06:04.742719+00:00"
+    },
+    {
+      "node_id": "2022",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "grain-output-v",
+      "name": "Grain Output V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-output-v",
+      "retrieved_at": "2026-08-26T17:06:20.503120+00:00"
+    },
+    {
+      "node_id": "2023",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "timber-output-v",
+      "name": "Timber Output V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-output-v",
+      "retrieved_at": "2026-08-26T17:08:07.574971+00:00"
+    },
+    {
+      "node_id": "2024",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "herb-output-v",
+      "name": "Herb Output V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-output-v",
+      "retrieved_at": "2026-08-26T17:06:31.718997+00:00"
+    },
+    {
+      "node_id": "2025",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "grain-gathering-v",
+      "name": "Grain Gathering V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-gathering-v",
+      "retrieved_at": "2026-08-26T17:06:16.711226+00:00"
+    },
+    {
+      "node_id": "2026",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "timber-gathering-v",
+      "name": "Timber Gathering V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-gathering-v",
+      "retrieved_at": "2026-08-26T17:08:03.850868+00:00"
+    },
+    {
+      "node_id": "2027",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "herb-gathering-v",
+      "name": "Herb Gathering V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-gathering-v",
+      "retrieved_at": "2026-08-26T16:44:17.243737+00:00"
+    },
+    {
+      "node_id": "2028",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "grain-protection-ii",
+      "name": "Grain Protection II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-protection-ii",
+      "retrieved_at": "2026-08-26T17:06:22.009045+00:00"
+    },
+    {
+      "node_id": "2029",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "timber-protection-ii",
+      "name": "Timber Protection II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-protection-ii",
+      "retrieved_at": "2026-08-26T17:08:08.315245+00:00"
+    },
+    {
+      "node_id": "2030",
+      "branch": "Prosperous Economy",
+      "source_branch": "Prosperous Economy",
+      "slug": "herb-protection-ii",
+      "name": "Herb Protection II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-protection-ii",
+      "retrieved_at": "2026-08-26T17:06:33.232976+00:00"
+    },
+    {
+      "node_id": "2031",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "grain-output-iii",
+      "name": "Grain Output III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-output-iii",
+      "retrieved_at": "2026-08-26T17:06:19.008810+00:00"
+    },
+    {
+      "node_id": "2032",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "timber-output-iii",
+      "name": "Timber Output III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-output-iii",
+      "retrieved_at": "2026-08-26T17:08:06.123419+00:00"
+    },
+    {
+      "node_id": "2033",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "herb-output-iii",
+      "name": "Herb Output III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-output-iii",
+      "retrieved_at": "2026-08-26T17:06:30.209068+00:00"
+    },
+    {
+      "node_id": "2034",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "grain-gathering-iii",
+      "name": "Grain Gathering III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-gathering-iii",
+      "retrieved_at": "2026-08-26T17:06:15.244172+00:00"
+    },
+    {
+      "node_id": "2035",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "timber-gathering-iii",
+      "name": "Timber Gathering III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/timber-gathering-iii",
+      "retrieved_at": "2026-08-26T17:08:02.331133+00:00"
+    },
+    {
+      "node_id": "2036",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "herb-gathering-iii",
+      "name": "Herb Gathering III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-gathering-iii",
+      "retrieved_at": "2026-08-26T16:44:13.504345+00:00"
+    },
+    {
+      "node_id": "2037",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "grain-protection-i",
+      "name": "Grain Protection I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/grain-protection-i",
+      "retrieved_at": "2026-08-26T17:06:21.287119+00:00"
+    },
+    {
+      "node_id": "2038",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "protected-timber-i",
+      "name": "Protected Timber I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/protected-timber-i",
+      "retrieved_at": "2026-08-26T17:07:04.735209+00:00"
+    },
+    {
+      "node_id": "2039",
+      "branch": "Economy",
+      "source_branch": "Economy",
+      "slug": "herb-protection-i",
+      "name": "Herb Protection I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/herb-protection-i",
+      "retrieved_at": "2026-08-26T17:06:32.524156+00:00"
+    },
+    {
+      "node_id": "3001",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-mastery-i",
+      "name": "Warrior Mastery I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-mastery-i",
+      "retrieved_at": "2026-08-26T17:08:54.865740+00:00"
+    },
+    {
+      "node_id": "3002",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-atk-i",
+      "name": "Warrior ATK I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-atk-i",
+      "retrieved_at": "2026-08-26T17:08:41.377143+00:00"
+    },
+    {
+      "node_id": "3003",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-hp-i",
+      "name": "Warrior HP I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-hp-i",
+      "retrieved_at": "2026-08-26T17:08:51.873136+00:00"
+    },
+    {
+      "node_id": "3004",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-def-i",
+      "name": "Warrior DEF I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-def-i",
+      "retrieved_at": "2026-08-26T17:08:46.620508+00:00"
+    },
+    {
+      "node_id": "3005",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-mastery-i",
+      "name": "Ranger Mastery I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-mastery-i",
+      "retrieved_at": "2026-08-26T17:07:22.755235+00:00"
+    },
+    {
+      "node_id": "3006",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-atk-i",
+      "name": "Ranger ATK I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-atk-i",
+      "retrieved_at": "2026-08-26T17:07:09.265367+00:00"
+    },
+    {
+      "node_id": "3007",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-def-i",
+      "name": "Ranger DEF I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-def-i",
+      "retrieved_at": "2026-08-26T17:07:14.518942+00:00"
+    },
+    {
+      "node_id": "3008",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-hp-i",
+      "name": "Ranger HP I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-hp-i",
+      "retrieved_at": "2026-08-26T17:07:19.772880+00:00"
+    },
+    {
+      "node_id": "3009",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-mastery-i",
+      "name": "Warlock Mastery I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-mastery-i",
+      "retrieved_at": "2026-08-26T17:08:32.246898+00:00"
+    },
+    {
+      "node_id": "3010",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-atk-i",
+      "name": "Warlock ATK I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-atk-i",
+      "retrieved_at": "2026-08-26T17:08:19.599764+00:00"
+    },
+    {
+      "node_id": "3011",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-def-i",
+      "name": "Warlock DEF I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-def-i",
+      "retrieved_at": "2026-08-26T17:08:24.067655+00:00"
+    },
+    {
+      "node_id": "3012",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-hp-i",
+      "name": "Warlock HP I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-hp-i",
+      "retrieved_at": "2026-08-26T17:08:29.350718+00:00"
+    },
+    {
+      "node_id": "3013",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-mastery-ii",
+      "name": "Warrior Mastery II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-mastery-ii",
+      "retrieved_at": "2026-08-26T17:08:55.631900+00:00"
+    },
+    {
+      "node_id": "3014",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-atk-ii",
+      "name": "Warrior ATK II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-atk-ii",
+      "retrieved_at": "2026-08-26T17:08:42.861992+00:00"
+    },
+    {
+      "node_id": "3015",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-def-ii",
+      "name": "Warrior DEF II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-def-ii",
+      "retrieved_at": "2026-08-26T17:08:48.092031+00:00"
+    },
+    {
+      "node_id": "3016",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warrior-hp-ii",
+      "name": "Warrior HP II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-hp-ii",
+      "retrieved_at": "2026-08-26T17:08:53.353381+00:00"
+    },
+    {
+      "node_id": "3017",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-mastery-ii",
+      "name": "Ranger Mastery II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-mastery-ii",
+      "retrieved_at": "2026-08-26T17:07:23.424615+00:00"
+    },
+    {
+      "node_id": "3018",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-atk-ii",
+      "name": "Ranger ATK II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-atk-ii",
+      "retrieved_at": "2026-08-26T17:07:10.754951+00:00"
+    },
+    {
+      "node_id": "3019",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-def-ii",
+      "name": "Ranger DEF II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-def-ii",
+      "retrieved_at": "2026-08-26T17:07:16.049004+00:00"
+    },
+    {
+      "node_id": "3020",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "ranger-hp-ii",
+      "name": "Ranger HP II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-hp-ii",
+      "retrieved_at": "2026-08-26T17:07:21.306213+00:00"
+    },
+    {
+      "node_id": "3021",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-mastery-ii",
+      "name": "Warlock Mastery II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-mastery-ii",
+      "retrieved_at": "2026-08-26T17:08:33.104035+00:00"
+    },
+    {
+      "node_id": "3022",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-atk-ii",
+      "name": "Warlock ATK II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-atk-ii",
+      "retrieved_at": "2026-08-26T16:44:15.773586+00:00"
+    },
+    {
+      "node_id": "3023",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-def-ii",
+      "name": "Warlock DEF II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-def-ii",
+      "retrieved_at": "2026-08-26T17:08:25.630335+00:00"
+    },
+    {
+      "node_id": "3024",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "warlock-hp-ii",
+      "name": "Warlock HP II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-hp-ii",
+      "retrieved_at": "2026-08-26T17:08:30.855873+00:00"
+    },
+    {
+      "node_id": "3025",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "hero-dmg",
+      "name": "Hero DMG",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/hero-dmg",
+      "retrieved_at": "2026-08-26T17:06:35.495605+00:00"
+    },
+    {
+      "node_id": "3026",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "hero-atk",
+      "name": "Hero ATK",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/hero-atk",
+      "retrieved_at": "2026-08-26T17:06:34.012974+00:00"
+    },
+    {
+      "node_id": "3027",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "hero-def",
+      "name": "Hero DEF",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/hero-def",
+      "retrieved_at": "2026-08-26T17:06:34.758170+00:00"
+    },
+    {
+      "node_id": "3028",
+      "branch": "Hero",
+      "source_branch": "Hero",
+      "slug": "hero-hp",
+      "name": "Hero HP",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/hero-hp",
+      "retrieved_at": "2026-08-26T17:06:36.267091+00:00"
+    },
+    {
+      "node_id": "4001",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "attack-training-iii",
+      "name": "Attack Training III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-iii",
+      "retrieved_at": "2026-08-26T17:05:08.467912+00:00"
+    },
+    {
+      "node_id": "4002",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "def-drill-iii",
+      "name": "DEF Drill III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-iii",
+      "retrieved_at": "2026-08-26T17:05:52.727055+00:00"
+    },
+    {
+      "node_id": "4003",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "survival-training-iii",
+      "name": "Survival Training III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-iii",
+      "retrieved_at": "2026-08-26T17:07:53.993321+00:00"
+    },
+    {
+      "node_id": "4004",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "load-training-iii",
+      "name": "Load Training III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-iii",
+      "retrieved_at": "2026-08-26T17:06:53.477610+00:00"
+    },
+    {
+      "node_id": "4005",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "attack-training-iv",
+      "name": "Attack Training IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-iv",
+      "retrieved_at": "2026-08-26T17:05:09.204265+00:00"
+    },
+    {
+      "node_id": "4006",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "def-drill-iv",
+      "name": "DEF Drill IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-iv",
+      "retrieved_at": "2026-08-26T17:05:53.433305+00:00"
+    },
+    {
+      "node_id": "4007",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "survival-training-iv",
+      "name": "Survival Training IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-iv",
+      "retrieved_at": "2026-08-26T17:07:54.834143+00:00"
+    },
+    {
+      "node_id": "4008",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "load-training-iv",
+      "name": "Load Training IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-iv",
+      "retrieved_at": "2026-08-26T17:06:55.015158+00:00"
+    },
+    {
+      "node_id": "4009",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "attack-training-v",
+      "name": "Attack Training V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-v",
+      "retrieved_at": "2026-08-26T17:05:09.946498+00:00"
+    },
+    {
+      "node_id": "4010",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "def-drill-v",
+      "name": "DEF Drill V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-v",
+      "retrieved_at": "2026-08-26T17:05:54.225465+00:00"
+    },
+    {
+      "node_id": "4011",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "survival-training-v",
+      "name": "Survival Training V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-v",
+      "retrieved_at": "2026-08-26T17:07:55.592300+00:00"
+    },
+    {
+      "node_id": "4012",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "load-training-v",
+      "name": "Load Training V",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-v",
+      "retrieved_at": "2026-08-26T17:06:56.525703+00:00"
+    },
+    {
+      "node_id": "4013",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "attack-training-vi",
+      "name": "Attack Training VI",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-vi",
+      "retrieved_at": "2026-08-26T16:44:24.024936+00:00"
+    },
+    {
+      "node_id": "4014",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "def-drill-vi",
+      "name": "DEF Drill VI",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-vi",
+      "retrieved_at": "2026-08-26T17:05:54.950013+00:00"
+    },
+    {
+      "node_id": "4015",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "survival-training-vi",
+      "name": "Survival Training VI",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-vi",
+      "retrieved_at": "2026-08-26T17:07:56.351942+00:00"
+    },
+    {
+      "node_id": "4016",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "load-training-vi",
+      "name": "Load Training VI",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-vi",
+      "retrieved_at": "2026-08-26T17:06:57.238343+00:00"
+    },
+    {
+      "node_id": "4017",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "attack-training-vii",
+      "name": "Attack Training VII",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-vii",
+      "retrieved_at": "2026-08-26T17:05:10.699249+00:00"
+    },
+    {
+      "node_id": "4018",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "def-drill-vii",
+      "name": "DEF Drill VII",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-vii",
+      "retrieved_at": "2026-08-26T16:44:18.735589+00:00"
+    },
+    {
+      "node_id": "4019",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "survival-training-vii",
+      "name": "Survival Training VII",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-vii",
+      "retrieved_at": "2026-08-26T17:07:57.094711+00:00"
+    },
+    {
+      "node_id": "4020",
+      "branch": "Soldier",
+      "source_branch": "Soldier",
+      "slug": "load-training-vii",
+      "name": "Load Training VII",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-vii",
+      "retrieved_at": "2026-08-26T17:06:58.025977+00:00"
+    },
+    {
+      "node_id": "5001",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "blight-slayer-i",
+      "name": "Blight Slayer I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/blight-slayer-i",
+      "retrieved_at": "2026-08-26T17:05:18.210300+00:00"
+    },
+    {
+      "node_id": "5002",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "boost-res-1",
+      "name": "Boost RES 1",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/boost-res-1",
+      "retrieved_at": "2026-08-26T17:05:25.677760+00:00"
+    },
+    {
+      "node_id": "5003",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "assault-drill-i",
+      "name": "Assault Drill I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/assault-drill-i",
+      "retrieved_at": "2026-08-26T17:05:03.230734+00:00"
+    },
+    {
+      "node_id": "5004",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "load-training-i",
+      "name": "Load Training I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-i",
+      "retrieved_at": "2026-08-26T17:06:52.000414+00:00"
+    },
+    {
+      "node_id": "5005",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "survival-drill-i",
+      "name": "Survival Drill I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-drill-i",
+      "retrieved_at": "2026-08-26T17:07:49.603190+00:00"
+    },
+    {
+      "node_id": "5006",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "resource-gathering-i",
+      "name": "Resource Gathering I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/resource-gathering-i",
+      "retrieved_at": "2026-08-26T17:07:44.306349+00:00"
+    },
+    {
+      "node_id": "5007",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "heavy-duty-1",
+      "name": "Heavy Duty 1",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/heavy-duty-1",
+      "retrieved_at": "2026-08-26T17:06:22.752063+00:00"
+    },
+    {
+      "node_id": "5008",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "bounty-hunter-i",
+      "name": "Bounty Hunter I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bounty-hunter-i",
+      "retrieved_at": "2026-08-26T17:05:28.721540+00:00"
+    },
+    {
+      "node_id": "5009",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "decapitation-tactics-i",
+      "name": "Decapitation Tactics I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/decapitation-tactics-i",
+      "retrieved_at": "2026-08-26T17:05:48.205764+00:00"
+    },
+    {
+      "node_id": "5010",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "gathering-march-i",
+      "name": "Gathering March I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/gathering-march-i",
+      "retrieved_at": "2026-08-26T17:06:10.732985+00:00"
+    },
+    {
+      "node_id": "5011",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "lightning-march-i",
+      "name": "Lightning March I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/lightning-march-i",
+      "retrieved_at": "2026-08-26T17:06:47.509284+00:00"
+    },
+    {
+      "node_id": "5012",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "rapid-assault-i",
+      "name": "Rapid Assault I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-assault-i",
+      "retrieved_at": "2026-08-26T17:07:31.778357+00:00"
+    },
+    {
+      "node_id": "5013",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "counterattack-i",
+      "name": "Counterattack I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/counterattack-i",
+      "retrieved_at": "2026-08-26T17:05:38.483198+00:00"
+    },
+    {
+      "node_id": "5014",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "high-alert-i",
+      "name": "High Alert I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/high-alert-i",
+      "retrieved_at": "2026-08-26T17:06:36.981614+00:00"
+    },
+    {
+      "node_id": "5015",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "defensive-stance-i",
+      "name": "Defensive Stance I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/defensive-stance-i",
+      "retrieved_at": "2026-08-26T16:44:19.528396+00:00"
+    },
+    {
+      "node_id": "5016",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "bloody-battle-i",
+      "name": "Bloody Battle I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bloody-battle-i",
+      "retrieved_at": "2026-08-26T17:05:20.452625+00:00"
+    },
+    {
+      "node_id": "5017",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "burn-the-boats-i",
+      "name": "Burn the Boats I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/burn-the-boats-i",
+      "retrieved_at": "2026-08-26T17:05:31.730009+00:00"
+    },
+    {
+      "node_id": "5018",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "physical-dmg-mastery-i",
+      "name": "Physical DMG Mastery I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/physical-dmg-mastery-i",
+      "retrieved_at": "2026-08-26T17:07:00.257019+00:00"
+    },
+    {
+      "node_id": "5019",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "energy-dmg-mastery-i",
+      "name": "Energy DMG Mastery I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/energy-dmg-mastery-i",
+      "retrieved_at": "2026-08-26T17:06:00.246081+00:00"
+    },
+    {
+      "node_id": "5020",
+      "branch": "Squad 1",
+      "source_branch": "Squad 1",
+      "slug": "critical-strike-i",
+      "name": "Critical Strike I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/critical-strike-i",
+      "retrieved_at": "2026-08-26T17:05:44.502281+00:00"
+    },
+    {
+      "node_id": "6001",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "blight-slayer-ii",
+      "name": "Blight Slayer II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/blight-slayer-ii",
+      "retrieved_at": "2026-08-26T17:05:18.961079+00:00"
+    },
+    {
+      "node_id": "6002",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "boost-res-2",
+      "name": "Boost RES 2",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/boost-res-2",
+      "retrieved_at": "2026-08-26T17:05:26.455993+00:00"
+    },
+    {
+      "node_id": "6003",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "assault-drill-ii",
+      "name": "Assault Drill II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/assault-drill-ii",
+      "retrieved_at": "2026-08-26T17:05:03.930772+00:00"
+    },
+    {
+      "node_id": "6004",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "load-training-ii",
+      "name": "Load Training II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-ii",
+      "retrieved_at": "2026-08-26T17:06:52.758887+00:00"
+    },
+    {
+      "node_id": "6005",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "survival-drill-ii",
+      "name": "Survival Drill II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-drill-ii",
+      "retrieved_at": "2026-08-26T17:07:50.302442+00:00"
+    },
+    {
+      "node_id": "6006",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "resource-gathering-ii",
+      "name": "Resource Gathering II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/resource-gathering-ii",
+      "retrieved_at": "2026-08-26T17:07:45.074041+00:00"
+    },
+    {
+      "node_id": "6007",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "heavy-duty-2",
+      "name": "Heavy Duty 2",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/heavy-duty-2",
+      "retrieved_at": "2026-08-26T17:06:24.257176+00:00"
+    },
+    {
+      "node_id": "6008",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "bounty-hunter-ii",
+      "name": "Bounty Hunter II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bounty-hunter-ii",
+      "retrieved_at": "2026-08-26T16:44:25.516611+00:00"
+    },
+    {
+      "node_id": "6009",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "decapitation-tactics-ii",
+      "name": "Decapitation Tactics II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/decapitation-tactics-ii",
+      "retrieved_at": "2026-08-26T17:05:48.947063+00:00"
+    },
+    {
+      "node_id": "6010",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "gathering-march-ii",
+      "name": "Gathering March II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/gathering-march-ii",
+      "retrieved_at": "2026-08-26T17:06:11.515973+00:00"
+    },
+    {
+      "node_id": "6011",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "lightning-march-ii",
+      "name": "Lightning March II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/lightning-march-ii",
+      "retrieved_at": "2026-08-26T17:06:49.746427+00:00"
+    },
+    {
+      "node_id": "6012",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "rapid-assault-ii",
+      "name": "Rapid Assault II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-assault-ii",
+      "retrieved_at": "2026-08-26T17:07:33.267343+00:00"
+    },
+    {
+      "node_id": "6013",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "counterattack-ii",
+      "name": "Counterattack II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/counterattack-ii",
+      "retrieved_at": "2026-08-26T17:05:39.957155+00:00"
+    },
+    {
+      "node_id": "6014",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "high-alert-ii",
+      "name": "High Alert II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/high-alert-ii",
+      "retrieved_at": "2026-08-26T17:06:37.712490+00:00"
+    },
+    {
+      "node_id": "6015",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "defensive-stance-ii",
+      "name": "Defensive Stance II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/defensive-stance-ii",
+      "retrieved_at": "2026-08-26T16:44:20.285836+00:00"
+    },
+    {
+      "node_id": "6016",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "bloody-battle-ii",
+      "name": "Bloody Battle II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bloody-battle-ii",
+      "retrieved_at": "2026-08-26T17:05:21.983828+00:00"
+    },
+    {
+      "node_id": "6017",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "burn-the-boats-ii",
+      "name": "Burn the Boats II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/burn-the-boats-ii",
+      "retrieved_at": "2026-08-26T17:05:33.211076+00:00"
+    },
+    {
+      "node_id": "6018",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "physical-dmg-mastery-ii",
+      "name": "Physical DMG Mastery II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/physical-dmg-mastery-ii",
+      "retrieved_at": "2026-08-26T17:07:01.039252+00:00"
+    },
+    {
+      "node_id": "6019",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "energy-dmg-mastery-ii",
+      "name": "Energy DMG Mastery II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/energy-dmg-mastery-ii",
+      "retrieved_at": "2026-08-26T17:06:00.990670+00:00"
+    },
+    {
+      "node_id": "6020",
+      "branch": "Squad 2",
+      "source_branch": "Squad 2",
+      "slug": "critical-strike-ii",
+      "name": "Critical Strike II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/critical-strike-ii",
+      "retrieved_at": "2026-08-26T17:05:45.976039+00:00"
+    },
+    {
+      "node_id": "7001",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "blight-slayer-iii",
+      "name": "Blight Slayer III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/blight-slayer-iii",
+      "retrieved_at": "2026-08-26T17:05:19.677540+00:00"
+    },
+    {
+      "node_id": "7002",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "boost-res-3",
+      "name": "Boost RES 3",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/boost-res-3",
+      "retrieved_at": "2026-08-26T17:05:27.280768+00:00"
+    },
+    {
+      "node_id": "7003",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "assault-drill-iii",
+      "name": "Assault Drill III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/assault-drill-iii",
+      "retrieved_at": "2026-08-26T17:05:04.698013+00:00"
+    },
+    {
+      "node_id": "7004",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "load-training-iii-2",
+      "name": "Load Training III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-iii-2",
+      "retrieved_at": "2026-08-26T17:06:54.253588+00:00"
+    },
+    {
+      "node_id": "7005",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "survival-drill-iii",
+      "name": "Survival Drill III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-drill-iii",
+      "retrieved_at": "2026-08-26T17:07:51.091307+00:00"
+    },
+    {
+      "node_id": "7006",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "resource-gathering-iii",
+      "name": "Resource Gathering III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/resource-gathering-iii",
+      "retrieved_at": "2026-08-26T17:07:45.849004+00:00"
+    },
+    {
+      "node_id": "7007",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "heavy-duty-3",
+      "name": "Heavy Duty 3",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/heavy-duty-3",
+      "retrieved_at": "2026-08-26T17:06:24.982272+00:00"
+    },
+    {
+      "node_id": "7008",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "bounty-hunter-iii",
+      "name": "Bounty Hunter III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bounty-hunter-iii",
+      "retrieved_at": "2026-08-26T17:05:29.468280+00:00"
+    },
+    {
+      "node_id": "7009",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "decapitation-tactics-iii",
+      "name": "Decapitation Tactics III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/decapitation-tactics-iii",
+      "retrieved_at": "2026-08-26T17:05:49.725448+00:00"
+    },
+    {
+      "node_id": "7010",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "gathering-march-iii",
+      "name": "Gathering March III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/gathering-march-iii",
+      "retrieved_at": "2026-08-26T17:06:12.241130+00:00"
+    },
+    {
+      "node_id": "7011",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "lightning-march-iii",
+      "name": "Lightning March III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/lightning-march-iii",
+      "retrieved_at": "2026-08-26T17:06:50.505895+00:00"
+    },
+    {
+      "node_id": "7012",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "rapid-assault-iii",
+      "name": "Rapid Assault III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-assault-iii",
+      "retrieved_at": "2026-08-26T17:07:34.743921+00:00"
+    },
+    {
+      "node_id": "7013",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "counterattack-iii",
+      "name": "Counterattack III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/counterattack-iii",
+      "retrieved_at": "2026-08-26T17:05:41.465318+00:00"
+    },
+    {
+      "node_id": "7014",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "high-alert-iii",
+      "name": "High Alert III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/high-alert-iii",
+      "retrieved_at": "2026-08-26T17:06:39.263923+00:00"
+    },
+    {
+      "node_id": "7015",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "defensive-stance-iii",
+      "name": "Defensive Stance III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/defensive-stance-iii",
+      "retrieved_at": "2026-08-26T16:44:21.034518+00:00"
+    },
+    {
+      "node_id": "7016",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "bloody-battle-iii",
+      "name": "Bloody Battle III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bloody-battle-iii",
+      "retrieved_at": "2026-08-26T17:05:23.451316+00:00"
+    },
+    {
+      "node_id": "7017",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "burn-the-boats-iii",
+      "name": "Burn the Boats III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/burn-the-boats-iii",
+      "retrieved_at": "2026-08-26T17:05:34.707592+00:00"
+    },
+    {
+      "node_id": "7018",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "physical-dmg-mastery-iii",
+      "name": "Physical DMG Mastery III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/physical-dmg-mastery-iii",
+      "retrieved_at": "2026-08-26T17:07:01.785930+00:00"
+    },
+    {
+      "node_id": "7019",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "energy-dmg-mastery-iii",
+      "name": "Energy DMG Mastery III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/energy-dmg-mastery-iii",
+      "retrieved_at": "2026-08-26T17:06:01.697738+00:00"
+    },
+    {
+      "node_id": "7020",
+      "branch": "Squad 3",
+      "source_branch": "Squad 3",
+      "slug": "critical-strike-iii",
+      "name": "Critical Strike III",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/critical-strike-iii",
+      "retrieved_at": "2026-08-26T17:05:46.714823+00:00"
+    },
+    {
+      "node_id": "8001",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "blight-slayer-iv",
+      "name": "Blight Slayer IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/blight-slayer-iv",
+      "retrieved_at": "2026-08-26T16:44:24.783419+00:00"
+    },
+    {
+      "node_id": "8002",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "boost-res-4",
+      "name": "Boost RES 4",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/boost-res-4",
+      "retrieved_at": "2026-08-26T17:05:27.928708+00:00"
+    },
+    {
+      "node_id": "8003",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "assault-drill-iv",
+      "name": "Assault Drill IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/assault-drill-iv",
+      "retrieved_at": "2026-08-26T17:05:05.441898+00:00"
+    },
+    {
+      "node_id": "8004",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "load-training-iv-2",
+      "name": "Load Training IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/load-training-iv-2",
+      "retrieved_at": "2026-08-26T17:06:55.748113+00:00"
+    },
+    {
+      "node_id": "8005",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "survival-drill-iv",
+      "name": "Survival Drill IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/survival-drill-iv",
+      "retrieved_at": "2026-08-26T17:07:51.852889+00:00"
+    },
+    {
+      "node_id": "8006",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "resource-gathering-iv",
+      "name": "Resource Gathering IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/resource-gathering-iv",
+      "retrieved_at": "2026-08-26T17:07:46.579386+00:00"
+    },
+    {
+      "node_id": "8007",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "heavy-duty-4",
+      "name": "Heavy Duty 4",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/heavy-duty-4",
+      "retrieved_at": "2026-08-26T17:06:25.764821+00:00"
+    },
+    {
+      "node_id": "8008",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "bounty-hunter-iv",
+      "name": "Bounty Hunter IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bounty-hunter-iv",
+      "retrieved_at": "2026-08-26T17:05:30.216700+00:00"
+    },
+    {
+      "node_id": "8009",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "decapitation-tactics-iv",
+      "name": "Decapitation Tactics IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/decapitation-tactics-iv",
+      "retrieved_at": "2026-08-26T17:05:50.491358+00:00"
+    },
+    {
+      "node_id": "8010",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "gathering-march-iv",
+      "name": "Gathering March IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/gathering-march-iv",
+      "retrieved_at": "2026-08-26T17:06:13.005932+00:00"
+    },
+    {
+      "node_id": "8011",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "lightning-march-iv",
+      "name": "Lightning March IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/lightning-march-iv",
+      "retrieved_at": "2026-08-26T17:06:51.268630+00:00"
+    },
+    {
+      "node_id": "8012",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "rapid-assault-iv",
+      "name": "Rapid Assault IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-assault-iv",
+      "retrieved_at": "2026-08-26T17:07:36.241236+00:00"
+    },
+    {
+      "node_id": "8013",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "counterattack-iv",
+      "name": "Counterattack IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/counterattack-iv",
+      "retrieved_at": "2026-08-26T17:05:42.993037+00:00"
+    },
+    {
+      "node_id": "8014",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "high-alert-iv",
+      "name": "High Alert IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/high-alert-iv",
+      "retrieved_at": "2026-08-26T17:06:40.749746+00:00"
+    },
+    {
+      "node_id": "8015",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "defensive-stance-iv",
+      "name": "Defensive Stance IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/defensive-stance-iv",
+      "retrieved_at": "2026-08-26T16:44:21.737644+00:00"
+    },
+    {
+      "node_id": "8016",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "bloody-battle-iv",
+      "name": "Bloody Battle IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/bloody-battle-iv",
+      "retrieved_at": "2026-08-26T17:05:24.933476+00:00"
+    },
+    {
+      "node_id": "8017",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "burn-the-boats-iv",
+      "name": "Burn the Boats IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/burn-the-boats-iv",
+      "retrieved_at": "2026-08-26T17:05:36.221363+00:00"
+    },
+    {
+      "node_id": "8018",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "physical-dmg-mastery-iv",
+      "name": "Physical DMG Mastery IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/physical-dmg-mastery-iv",
+      "retrieved_at": "2026-08-26T17:07:02.505783+00:00"
+    },
+    {
+      "node_id": "8019",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "energy-dmg-mastery-iv",
+      "name": "Energy DMG Mastery IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/energy-dmg-mastery-iv",
+      "retrieved_at": "2026-08-26T17:06:02.483085+00:00"
+    },
+    {
+      "node_id": "8020",
+      "branch": "Squad 4",
+      "source_branch": "Squad 4",
+      "slug": "critical-strike-iv",
+      "name": "Critical Strike IV",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/critical-strike-iv",
+      "retrieved_at": "2026-08-26T17:05:47.440131+00:00"
+    },
+    {
+      "node_id": "9001",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "falcon-points",
+      "name": "Falcon Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/falcon-points",
+      "retrieved_at": "2026-08-26T17:06:07.748014+00:00"
+    },
+    {
+      "node_id": "9002",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "speedup-points",
+      "name": "Speedup Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/speedup-points",
+      "retrieved_at": "2026-08-26T17:07:48.092033+00:00"
+    },
+    {
+      "node_id": "9003",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "recruitment-points",
+      "name": "Recruitment Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/recruitment-points",
+      "retrieved_at": "2026-08-26T17:07:41.311349+00:00"
+    },
+    {
+      "node_id": "9004",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "super-rewards",
+      "name": "Super Rewards",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/super-rewards",
+      "retrieved_at": "2026-08-26T17:07:48.844489+00:00"
+    },
+    {
+      "node_id": "9005",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "arena-expert",
+      "name": "Arena Expert",
+      "max_level": 20,
+      "source_url": "https://lastasylumdatabase.com/science/arena-expert",
+      "retrieved_at": "2026-08-26T17:05:01.685713+00:00"
+    },
+    {
+      "node_id": "9006",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "building-points",
+      "name": "Building Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/building-points",
+      "retrieved_at": "2026-08-26T17:05:30.982787+00:00"
+    },
+    {
+      "node_id": "9007",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "technology-points",
+      "name": "Technology Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/technology-points",
+      "retrieved_at": "2026-08-26T17:07:59.982798+00:00"
+    },
+    {
+      "node_id": "9008",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "training-points",
+      "name": "Training Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/training-points",
+      "retrieved_at": "2026-08-26T16:11:23.203250+00:00"
+    },
+    {
+      "node_id": "9009",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "kill-points",
+      "name": "Kill Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/kill-points",
+      "retrieved_at": "2026-08-26T16:44:10.536252+00:00"
+    },
+    {
+      "node_id": "9010",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "top-rewards",
+      "name": "Top Rewards",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/top-rewards",
+      "retrieved_at": "2026-08-26T17:08:09.110203+00:00"
+    },
+    {
+      "node_id": "9011",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "caravan-trade-points",
+      "name": "Caravan Trade Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/caravan-trade-points",
+      "retrieved_at": "2026-08-26T17:05:37.707965+00:00"
+    },
+    {
+      "node_id": "9012",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "covert-operation-points",
+      "name": "Covert Operation Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/covert-operation-points",
+      "retrieved_at": "2026-08-26T17:05:43.702643+00:00"
+    },
+    {
+      "node_id": "9013",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "survivor-recruitment-points",
+      "name": "Survivor Recruitment Points",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survivor-recruitment-points",
+      "retrieved_at": "2026-08-26T17:07:59.354529+00:00"
+    },
+    {
+      "node_id": "9014",
+      "branch": "Alliance Duel",
+      "source_branch": "Alliance Duel",
+      "slug": "arena-master",
+      "name": "Arena Master",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/arena-master",
+      "retrieved_at": "2026-08-26T17:05:02.454412+00:00"
+    },
+    {
+      "node_id": "10001",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "caravan-expansion",
+      "name": "Caravan Expansion",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/caravan-expansion",
+      "retrieved_at": "2026-08-26T17:05:36.982309+00:00"
+    },
+    {
+      "node_id": "10002",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "plunder-mastery",
+      "name": "Plunder Mastery",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/plunder-mastery",
+      "retrieved_at": "2026-08-26T17:07:04.001831+00:00"
+    },
+    {
+      "node_id": "10003",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "defense-mastery",
+      "name": "Defense Mastery",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/defense-mastery",
+      "retrieved_at": "2026-08-26T17:05:57.213591+00:00"
+    },
+    {
+      "node_id": "10004",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "rapid-caravan",
+      "name": "Rapid Caravan",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-caravan",
+      "retrieved_at": "2026-08-26T17:07:37.021254+00:00"
+    },
+    {
+      "node_id": "10005",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "plunder",
+      "name": "Plunder",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/plunder",
+      "retrieved_at": "2026-08-26T17:07:03.231829+00:00"
+    },
+    {
+      "node_id": "10006",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "luck",
+      "name": "Luck",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/luck",
+      "retrieved_at": "2026-08-26T16:44:11.262154+00:00"
+    },
+    {
+      "node_id": "10007",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "extra-caravan",
+      "name": "Extra Caravan",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/extra-caravan",
+      "retrieved_at": "2026-08-26T17:06:03.980458+00:00"
+    },
+    {
+      "node_id": "10008",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "defense-measures",
+      "name": "Defense Measures",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/defense-measures",
+      "retrieved_at": "2026-08-26T17:05:57.946253+00:00"
+    },
+    {
+      "node_id": "10009",
+      "branch": "Caravan Transport",
+      "source_branch": "Caravan Transport",
+      "slug": "pumpkin-carriage",
+      "name": "Pumpkin Carriage",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/pumpkin-carriage",
+      "retrieved_at": "2026-08-26T17:07:05.514763+00:00"
+    },
+    {
+      "node_id": "11001",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "hp-boost-i",
+      "name": "HP Boost I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/hp-boost-i",
+      "retrieved_at": "2026-08-26T17:06:41.507541+00:00"
+    },
+    {
+      "node_id": "11002",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "atk-boost-i",
+      "name": "ATK Boost I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/atk-boost-i",
+      "retrieved_at": "2026-08-26T17:05:06.195334+00:00"
+    },
+    {
+      "node_id": "11003",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-boost-i",
+      "name": "DEF Boost I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-boost-i",
+      "retrieved_at": "2026-08-26T17:05:51.193322+00:00"
+    },
+    {
+      "node_id": "11004",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-skills",
+      "name": "Survival Skills",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-skills",
+      "retrieved_at": "2026-08-26T17:07:52.550422+00:00"
+    },
+    {
+      "node_id": "11005",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-drill-vii-2",
+      "name": "DEF Drill VII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-vii-2",
+      "retrieved_at": "2026-08-26T17:05:55.754534+00:00"
+    },
+    {
+      "node_id": "11006",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "attack-training-vii-2",
+      "name": "Attack Training VII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-vii-2",
+      "retrieved_at": "2026-08-26T17:05:11.426151+00:00"
+    },
+    {
+      "node_id": "11007",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-training-vii-2",
+      "name": "Survival Training VII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-vii-2",
+      "retrieved_at": "2026-08-26T17:07:57.809578+00:00"
+    },
+    {
+      "node_id": "11008",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "training-specialization-i-2",
+      "name": "Training Specialization I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-i-2",
+      "retrieved_at": "2026-08-26T17:08:15.060960+00:00"
+    },
+    {
+      "node_id": "11009",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "training-grounds-expansion-i-2",
+      "name": "Training Grounds Expansion I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/training-grounds-expansion-i-2",
+      "retrieved_at": "2026-08-26T17:08:10.596104+00:00"
+    },
+    {
+      "node_id": "11010",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "hp-boost-ii",
+      "name": "HP Boost II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/hp-boost-ii",
+      "retrieved_at": "2026-08-26T16:44:14.278765+00:00"
+    },
+    {
+      "node_id": "11011",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "atk-boost-ii",
+      "name": "ATK Boost II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/atk-boost-ii",
+      "retrieved_at": "2026-08-26T17:05:06.953714+00:00"
+    },
+    {
+      "node_id": "11012",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-boost-ii",
+      "name": "DEF Boost II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-boost-ii",
+      "retrieved_at": "2026-08-26T17:05:51.995341+00:00"
+    },
+    {
+      "node_id": "11013",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "morale",
+      "name": "Morale",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/morale",
+      "retrieved_at": "2026-08-26T17:06:59.533255+00:00"
+    },
+    {
+      "node_id": "11014",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-drill-viii",
+      "name": "DEF Drill VIII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-drill-viii",
+      "retrieved_at": "2026-08-26T17:05:56.453818+00:00"
+    },
+    {
+      "node_id": "11015",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "attack-training-viii",
+      "name": "Attack Training VIII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/attack-training-viii",
+      "retrieved_at": "2026-08-26T17:05:12.219918+00:00"
+    },
+    {
+      "node_id": "11016",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-training-viii",
+      "name": "Survival Training VIII",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-training-viii",
+      "retrieved_at": "2026-08-26T17:07:58.597969+00:00"
+    },
+    {
+      "node_id": "11017",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "quick-bandage-i-2",
+      "name": "Quick Bandage I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/quick-bandage-i-2",
+      "retrieved_at": "2026-08-26T17:07:07.013149+00:00"
+    },
+    {
+      "node_id": "11018",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "infirmary-expansion-i-2",
+      "name": "Infirmary Expansion I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/infirmary-expansion-i-2",
+      "retrieved_at": "2026-08-26T17:06:43.748754+00:00"
+    },
+    {
+      "node_id": "11019",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "survival-skills-2",
+      "name": "Survival Skills",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/survival-skills-2",
+      "retrieved_at": "2026-08-26T17:07:53.343393+00:00"
+    },
+    {
+      "node_id": "11020",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "hp-boost-iii",
+      "name": "HP Boost III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/hp-boost-iii",
+      "retrieved_at": "2026-08-26T17:06:42.285743+00:00"
+    },
+    {
+      "node_id": "11021",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "atk-boost-iii",
+      "name": "ATK Boost III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/atk-boost-iii",
+      "retrieved_at": "2026-08-26T17:05:07.712780+00:00"
+    },
+    {
+      "node_id": "11022",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "def-boost-iii",
+      "name": "DEF Boost III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/def-boost-iii",
+      "retrieved_at": "2026-08-26T16:11:21.727779+00:00"
+    },
+    {
+      "node_id": "11023",
+      "branch": "Commando",
+      "source_branch": "Elite Troop",
+      "slug": "lv-10-soldier",
+      "name": "Lv.10 Soldier",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/lv-10-soldier",
+      "retrieved_at": "2026-08-26T17:06:58.763667+00:00"
+    },
+    {
+      "node_id": "12001",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "heavy-duty-1-2",
+      "name": "Heavy Duty 1",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/heavy-duty-1-2",
+      "retrieved_at": "2026-08-26T17:06:23.508226+00:00"
+    },
+    {
+      "node_id": "12002",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "bloody-battle-i-2",
+      "name": "Bloody Battle I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/bloody-battle-i-2",
+      "retrieved_at": "2026-08-26T17:05:21.213911+00:00"
+    },
+    {
+      "node_id": "12003",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "rapid-assault-i-2",
+      "name": "Rapid Assault I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-assault-i-2",
+      "retrieved_at": "2026-08-26T17:07:32.525026+00:00"
+    },
+    {
+      "node_id": "12004",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "high-alert-i-2",
+      "name": "High Alert I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/high-alert-i-2",
+      "retrieved_at": "2026-08-26T16:44:16.507200+00:00"
+    },
+    {
+      "node_id": "12005",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "extra-barracks",
+      "name": "Extra Barracks",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/extra-barracks",
+      "retrieved_at": "2026-08-26T17:06:03.271509+00:00"
+    },
+    {
+      "node_id": "12006",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "training-grounds-expansion-i-3",
+      "name": "Training Grounds Expansion I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/training-grounds-expansion-i-3",
+      "retrieved_at": "2026-08-26T17:08:11.364336+00:00"
+    },
+    {
+      "node_id": "12007",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "training-specialization-i-3",
+      "name": "Training Specialization I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/training-specialization-i-3",
+      "retrieved_at": "2026-08-26T17:08:15.844758+00:00"
+    },
+    {
+      "node_id": "12008",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "bloody-battle-ii-2",
+      "name": "Bloody Battle II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/bloody-battle-ii-2",
+      "retrieved_at": "2026-08-26T17:05:22.713392+00:00"
+    },
+    {
+      "node_id": "12009",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "rapid-assault-ii-2",
+      "name": "Rapid Assault II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-assault-ii-2",
+      "retrieved_at": "2026-08-26T17:07:34.024258+00:00"
+    },
+    {
+      "node_id": "12010",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "high-alert-ii-2",
+      "name": "High Alert II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/high-alert-ii-2",
+      "retrieved_at": "2026-08-26T17:06:38.391218+00:00"
+    },
+    {
+      "node_id": "12011",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "barracks-expansion",
+      "name": "Barracks Expansion",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/barracks-expansion",
+      "retrieved_at": "2026-08-26T17:05:12.951223+00:00"
+    },
+    {
+      "node_id": "12012",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "lightning-march-i-2",
+      "name": "Lightning March I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/lightning-march-i-2",
+      "retrieved_at": "2026-08-26T17:06:48.251875+00:00"
+    },
+    {
+      "node_id": "12013",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "bloody-battle-iii-2",
+      "name": "Bloody Battle III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/bloody-battle-iii-2",
+      "retrieved_at": "2026-08-26T17:05:24.261736+00:00"
+    },
+    {
+      "node_id": "12014",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "rapid-assault-iii-2",
+      "name": "Rapid Assault III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/rapid-assault-iii-2",
+      "retrieved_at": "2026-08-26T17:07:35.546266+00:00"
+    },
+    {
+      "node_id": "12015",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "high-alert-iii-2",
+      "name": "High Alert III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/high-alert-iii-2",
+      "retrieved_at": "2026-08-26T17:06:39.895209+00:00"
+    },
+    {
+      "node_id": "12016",
+      "branch": "Offensive Tactics",
+      "source_branch": "Offensive Tactics",
+      "slug": "critical-strike-i-2",
+      "name": "Critical Strike I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/critical-strike-i-2",
+      "retrieved_at": "2026-08-26T17:05:45.190692+00:00"
+    },
+    {
+      "node_id": "13001",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "extra-infirmaries",
+      "name": "Extra Infirmaries",
+      "max_level": 1,
+      "source_url": "https://lastasylumdatabase.com/science/extra-infirmaries",
+      "retrieved_at": "2026-08-26T17:06:05.497981+00:00"
+    },
+    {
+      "node_id": "13002",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "burn-the-boats-i-2",
+      "name": "Burn the Boats I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/burn-the-boats-i-2",
+      "retrieved_at": "2026-08-26T17:05:32.473459+00:00"
+    },
+    {
+      "node_id": "13003",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "counterattack-i-2",
+      "name": "Counterattack I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/counterattack-i-2",
+      "retrieved_at": "2026-08-26T17:05:39.247800+00:00"
+    },
+    {
+      "node_id": "13004",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "defensive-stance-i-2",
+      "name": "Defensive Stance I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/defensive-stance-i-2",
+      "retrieved_at": "2026-08-26T16:44:11.993404+00:00"
+    },
+    {
+      "node_id": "13005",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "fortifications",
+      "name": "Fortifications",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/fortifications",
+      "retrieved_at": "2026-08-26T17:06:09.887986+00:00"
+    },
+    {
+      "node_id": "13006",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "infirmary-expansion-i-3",
+      "name": "Infirmary Expansion I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/infirmary-expansion-i-3",
+      "retrieved_at": "2026-08-26T17:06:44.409000+00:00"
+    },
+    {
+      "node_id": "13007",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "fast-healing-2",
+      "name": "Fast Healing",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/fast-healing-2",
+      "retrieved_at": "2026-08-26T17:06:09.265442+00:00"
+    },
+    {
+      "node_id": "13008",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "burn-the-boats-ii-2",
+      "name": "Burn the Boats II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/burn-the-boats-ii-2",
+      "retrieved_at": "2026-08-26T17:05:33.962243+00:00"
+    },
+    {
+      "node_id": "13009",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "counterattack-ii-2",
+      "name": "Counterattack II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/counterattack-ii-2",
+      "retrieved_at": "2026-08-26T17:05:40.724359+00:00"
+    },
+    {
+      "node_id": "13010",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "defensive-stance-ii-2",
+      "name": "Defensive Stance II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/defensive-stance-ii-2",
+      "retrieved_at": "2026-08-26T17:05:58.726642+00:00"
+    },
+    {
+      "node_id": "13011",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "resource-protection",
+      "name": "Resource Protection",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/resource-protection",
+      "retrieved_at": "2026-08-26T17:07:47.361059+00:00"
+    },
+    {
+      "node_id": "13012",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "lightning-march-i-3",
+      "name": "Lightning March I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/lightning-march-i-3",
+      "retrieved_at": "2026-08-26T17:06:49.014600+00:00"
+    },
+    {
+      "node_id": "13013",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "burn-the-boats-iii-2",
+      "name": "Burn the Boats III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/burn-the-boats-iii-2",
+      "retrieved_at": "2026-08-26T17:05:35.457443+00:00"
+    },
+    {
+      "node_id": "13014",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "counterattack-iii-2",
+      "name": "Counterattack III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/counterattack-iii-2",
+      "retrieved_at": "2026-08-26T17:05:42.229077+00:00"
+    },
+    {
+      "node_id": "13015",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "defensive-stance-iii-2",
+      "name": "Defensive Stance III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/defensive-stance-iii-2",
+      "retrieved_at": "2026-08-26T17:05:59.505855+00:00"
+    },
+    {
+      "node_id": "13016",
+      "branch": "Defensive Tactics",
+      "source_branch": "Defensive Tactics",
+      "slug": "battlefield-veteran-2",
+      "name": "Battlefield Veteran",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/battlefield-veteran-2",
+      "retrieved_at": "2026-08-26T17:05:17.458186+00:00"
+    },
+    {
+      "node_id": "16001",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-hp-i-2",
+      "name": "Warrior: HP I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-hp-i-2",
+      "retrieved_at": "2026-08-26T17:08:52.588879+00:00"
+    },
+    {
+      "node_id": "16002",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-atk-i-2",
+      "name": "Warrior: ATK I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-atk-i-2",
+      "retrieved_at": "2026-08-26T17:08:42.096819+00:00"
+    },
+    {
+      "node_id": "16003",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-def-i-2",
+      "name": "Warrior: DEF I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-def-i-2",
+      "retrieved_at": "2026-08-26T17:08:47.367816+00:00"
+    },
+    {
+      "node_id": "16004",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-hp-i",
+      "name": "Warrior Synergy: HP I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-hp-i",
+      "retrieved_at": "2026-08-26T17:09:00.867612+00:00"
+    },
+    {
+      "node_id": "16005",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-atk-i",
+      "name": "Warrior Synergy: ATK I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-atk-i",
+      "retrieved_at": "2026-08-26T17:08:56.372284+00:00"
+    },
+    {
+      "node_id": "16006",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-def-i",
+      "name": "Warrior Synergy: DEF I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-def-i",
+      "retrieved_at": "2026-08-26T17:08:57.870534+00:00"
+    },
+    {
+      "node_id": "16007",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-dmg-i",
+      "name": "Warrior Synergy: DMG I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-dmg-i",
+      "retrieved_at": "2026-08-26T17:08:59.394009+00:00"
+    },
+    {
+      "node_id": "16008",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-cmd-i",
+      "name": "Warrior: CMD I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-cmd-i",
+      "retrieved_at": "2026-08-26T17:08:45.093096+00:00"
+    },
+    {
+      "node_id": "16009",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-hp-ii-2",
+      "name": "Warrior: HP II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-hp-ii-2",
+      "retrieved_at": "2026-08-26T16:44:23.241473+00:00"
+    },
+    {
+      "node_id": "16010",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-atk-ii-2",
+      "name": "Warrior: ATK II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-atk-ii-2",
+      "retrieved_at": "2026-08-26T17:08:43.574400+00:00"
+    },
+    {
+      "node_id": "16011",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-def-ii-2",
+      "name": "Warrior: DEF II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-def-ii-2",
+      "retrieved_at": "2026-08-26T17:08:48.745693+00:00"
+    },
+    {
+      "node_id": "16012",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-dmg-i",
+      "name": "Warrior: DMG I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-dmg-i",
+      "retrieved_at": "2026-08-26T17:08:50.405910+00:00"
+    },
+    {
+      "node_id": "16013",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-ultimate-guard-i",
+      "name": "Warrior: Ultimate Guard I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-ultimate-guard-i",
+      "retrieved_at": "2026-08-26T17:09:02.363525+00:00"
+    },
+    {
+      "node_id": "16014",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-hp-ii",
+      "name": "Warrior Synergy: HP II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-hp-ii",
+      "retrieved_at": "2026-08-26T17:09:01.630609+00:00"
+    },
+    {
+      "node_id": "16015",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-atk-ii",
+      "name": "Warrior Synergy: ATK II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-atk-ii",
+      "retrieved_at": "2026-08-26T17:08:57.097733+00:00"
+    },
+    {
+      "node_id": "16016",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-def-ii",
+      "name": "Warrior Synergy: DEF II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-def-ii",
+      "retrieved_at": "2026-08-26T17:08:58.589602+00:00"
+    },
+    {
+      "node_id": "16017",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-synergy-dmg-ii",
+      "name": "Warrior Synergy: DMG II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-synergy-dmg-ii",
+      "retrieved_at": "2026-08-26T17:09:00.111489+00:00"
+    },
+    {
+      "node_id": "16018",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-cmd-ii",
+      "name": "Warrior: CMD II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-cmd-ii",
+      "retrieved_at": "2026-08-26T17:08:45.848969+00:00"
+    },
+    {
+      "node_id": "16019",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-hp-iii",
+      "name": "Warrior: HP III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-hp-iii",
+      "retrieved_at": "2026-08-26T17:08:54.116118+00:00"
+    },
+    {
+      "node_id": "16020",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-atk-iii",
+      "name": "Warrior: ATK III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-atk-iii",
+      "retrieved_at": "2026-08-26T17:08:44.326854+00:00"
+    },
+    {
+      "node_id": "16021",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-def-iii",
+      "name": "Warrior: DEF III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-def-iii",
+      "retrieved_at": "2026-08-26T17:08:49.585816+00:00"
+    },
+    {
+      "node_id": "16022",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-dmg-ii",
+      "name": "Warrior: DMG II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-dmg-ii",
+      "retrieved_at": "2026-08-26T17:08:51.009874+00:00"
+    },
+    {
+      "node_id": "16023",
+      "branch": "Warrior Mastery",
+      "source_branch": "Warrior Mastery",
+      "slug": "warrior-ultimate-guard-ii",
+      "name": "Warrior: Ultimate Guard II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warrior-ultimate-guard-ii",
+      "retrieved_at": "2026-08-26T17:09:03.153867+00:00"
+    },
+    {
+      "node_id": "17001",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-hp-i-2",
+      "name": "Ranger: HP I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-hp-i-2",
+      "retrieved_at": "2026-08-26T17:07:20.516142+00:00"
+    },
+    {
+      "node_id": "17002",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-atk-i-2",
+      "name": "Ranger: ATK I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-atk-i-2",
+      "retrieved_at": "2026-08-26T17:07:10.019996+00:00"
+    },
+    {
+      "node_id": "17003",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-def-i-2",
+      "name": "Ranger: DEF I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-def-i-2",
+      "retrieved_at": "2026-08-26T17:07:15.253679+00:00"
+    },
+    {
+      "node_id": "17004",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-hp-i",
+      "name": "Ranger Synergy: HP I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-hp-i",
+      "retrieved_at": "2026-08-26T17:07:28.756625+00:00"
+    },
+    {
+      "node_id": "17005",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-atk-i",
+      "name": "Ranger Synergy: ATK I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-atk-i",
+      "retrieved_at": "2026-08-26T17:07:24.264894+00:00"
+    },
+    {
+      "node_id": "17006",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-def-i",
+      "name": "Ranger Synergy: DEF I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-def-i",
+      "retrieved_at": "2026-08-26T17:07:25.765314+00:00"
+    },
+    {
+      "node_id": "17007",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-dmg-i",
+      "name": "Ranger Synergy: DMG I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-dmg-i",
+      "retrieved_at": "2026-08-26T17:07:27.279504+00:00"
+    },
+    {
+      "node_id": "17008",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-cmd-i",
+      "name": "Ranger: CMD I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-cmd-i",
+      "retrieved_at": "2026-08-26T17:07:12.909456+00:00"
+    },
+    {
+      "node_id": "17009",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-hp-ii-2",
+      "name": "Ranger: HP II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-hp-ii-2",
+      "retrieved_at": "2026-08-26T16:44:18.013992+00:00"
+    },
+    {
+      "node_id": "17010",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-atk-ii-2",
+      "name": "Ranger: ATK II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-atk-ii-2",
+      "retrieved_at": "2026-08-26T17:07:11.516900+00:00"
+    },
+    {
+      "node_id": "17011",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-def-ii-2",
+      "name": "Ranger: DEF II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-def-ii-2",
+      "retrieved_at": "2026-08-26T17:07:16.738311+00:00"
+    },
+    {
+      "node_id": "17012",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-dmg-i",
+      "name": "Ranger: DMG I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-dmg-i",
+      "retrieved_at": "2026-08-26T17:07:18.289880+00:00"
+    },
+    {
+      "node_id": "17013",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-ultimate-guard-i",
+      "name": "Ranger: Ultimate Guard I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-ultimate-guard-i",
+      "retrieved_at": "2026-08-26T17:07:30.266598+00:00"
+    },
+    {
+      "node_id": "17014",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-hp-ii",
+      "name": "Ranger Synergy: HP II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-hp-ii",
+      "retrieved_at": "2026-08-26T17:07:29.418927+00:00"
+    },
+    {
+      "node_id": "17015",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-atk-ii",
+      "name": "Ranger Synergy: ATK II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-atk-ii",
+      "retrieved_at": "2026-08-26T17:07:24.904883+00:00"
+    },
+    {
+      "node_id": "17016",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-def-ii",
+      "name": "Ranger Synergy: DEF II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-def-ii",
+      "retrieved_at": "2026-08-26T17:07:26.584414+00:00"
+    },
+    {
+      "node_id": "17017",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-synergy-dmg-ii",
+      "name": "Ranger Synergy: DMG II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-synergy-dmg-ii",
+      "retrieved_at": "2026-08-26T17:07:28.028868+00:00"
+    },
+    {
+      "node_id": "17018",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-cmd-ii",
+      "name": "Ranger: CMD II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-cmd-ii",
+      "retrieved_at": "2026-08-26T17:07:13.778707+00:00"
+    },
+    {
+      "node_id": "17019",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-hp-iii",
+      "name": "Ranger: HP III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-hp-iii",
+      "retrieved_at": "2026-08-26T17:07:22.026033+00:00"
+    },
+    {
+      "node_id": "17020",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-atk-iii",
+      "name": "Ranger: ATK III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-atk-iii",
+      "retrieved_at": "2026-08-26T17:07:12.263864+00:00"
+    },
+    {
+      "node_id": "17021",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-def-iii",
+      "name": "Ranger: DEF III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-def-iii",
+      "retrieved_at": "2026-08-26T17:07:17.523706+00:00"
+    },
+    {
+      "node_id": "17022",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-dmg-ii",
+      "name": "Ranger: DMG II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-dmg-ii",
+      "retrieved_at": "2026-08-26T17:07:19.027313+00:00"
+    },
+    {
+      "node_id": "17023",
+      "branch": "Ranger Mastery",
+      "source_branch": "Ranger Mastery",
+      "slug": "ranger-ultimate-guard-ii",
+      "name": "Ranger: Ultimate Guard II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/ranger-ultimate-guard-ii",
+      "retrieved_at": "2026-08-26T17:07:31.028111+00:00"
+    },
+    {
+      "node_id": "18001",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-hp-i-2",
+      "name": "Warlock: HP I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-hp-i-2",
+      "retrieved_at": "2026-08-26T17:08:30.108882+00:00"
+    },
+    {
+      "node_id": "18002",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-atk-i-2",
+      "name": "Warlock: ATK I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-atk-i-2",
+      "retrieved_at": "2026-08-26T17:08:20.229567+00:00"
+    },
+    {
+      "node_id": "18003",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-def-i-2",
+      "name": "Warlock: DEF I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-def-i-2",
+      "retrieved_at": "2026-08-26T17:08:24.864762+00:00"
+    },
+    {
+      "node_id": "18004",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-hp-i",
+      "name": "Warlock Synergy: HP I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-hp-i",
+      "retrieved_at": "2026-08-26T17:08:38.367061+00:00"
+    },
+    {
+      "node_id": "18005",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-atk-i",
+      "name": "Warlock Synergy: ATK I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-atk-i",
+      "retrieved_at": "2026-08-26T17:08:33.863257+00:00"
+    },
+    {
+      "node_id": "18006",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-def-i",
+      "name": "Warlock Synergy: DEF I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-def-i",
+      "retrieved_at": "2026-08-26T17:08:35.347004+00:00"
+    },
+    {
+      "node_id": "18007",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-dmg-i",
+      "name": "Warlock Synergy: DMG I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-dmg-i",
+      "retrieved_at": "2026-08-26T17:08:36.859820+00:00"
+    },
+    {
+      "node_id": "18008",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-cmd-i",
+      "name": "Warlock: CMD I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-cmd-i",
+      "retrieved_at": "2026-08-26T17:08:22.603767+00:00"
+    },
+    {
+      "node_id": "18009",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-hp-ii-2",
+      "name": "Warlock: HP II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-hp-ii-2",
+      "retrieved_at": "2026-08-26T16:44:22.489667+00:00"
+    },
+    {
+      "node_id": "18010",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-atk-ii-2",
+      "name": "Warlock: ATK II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-atk-ii-2",
+      "retrieved_at": "2026-08-26T17:08:21.069975+00:00"
+    },
+    {
+      "node_id": "18011",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-def-ii-2",
+      "name": "Warlock: DEF II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-def-ii-2",
+      "retrieved_at": "2026-08-26T17:08:26.341518+00:00"
+    },
+    {
+      "node_id": "18012",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-dmg-i",
+      "name": "Warlock: DMG I",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-dmg-i",
+      "retrieved_at": "2026-08-26T17:08:27.850915+00:00"
+    },
+    {
+      "node_id": "18013",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-ultimate-guard-i",
+      "name": "Warlock: Ultimate Guard I",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-ultimate-guard-i",
+      "retrieved_at": "2026-08-26T17:08:39.821558+00:00"
+    },
+    {
+      "node_id": "18014",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-hp-ii",
+      "name": "Warlock Synergy: HP II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-hp-ii",
+      "retrieved_at": "2026-08-26T17:08:39.122923+00:00"
+    },
+    {
+      "node_id": "18015",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-atk-ii",
+      "name": "Warlock Synergy: ATK II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-atk-ii",
+      "retrieved_at": "2026-08-26T17:08:34.621036+00:00"
+    },
+    {
+      "node_id": "18016",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-def-ii",
+      "name": "Warlock Synergy: DEF II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-def-ii",
+      "retrieved_at": "2026-08-26T17:08:36.133916+00:00"
+    },
+    {
+      "node_id": "18017",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-synergy-dmg-ii",
+      "name": "Warlock Synergy: DMG II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-synergy-dmg-ii",
+      "retrieved_at": "2026-08-26T17:08:37.618761+00:00"
+    },
+    {
+      "node_id": "18018",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-cmd-ii",
+      "name": "Warlock: CMD II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-cmd-ii",
+      "retrieved_at": "2026-08-26T17:08:23.375522+00:00"
+    },
+    {
+      "node_id": "18019",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-hp-iii",
+      "name": "Warlock: HP III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-hp-iii",
+      "retrieved_at": "2026-08-26T17:08:31.609469+00:00"
+    },
+    {
+      "node_id": "18020",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-atk-iii",
+      "name": "Warlock: ATK III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-atk-iii",
+      "retrieved_at": "2026-08-26T17:08:21.883827+00:00"
+    },
+    {
+      "node_id": "18021",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-def-iii",
+      "name": "Warlock: DEF III",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-def-iii",
+      "retrieved_at": "2026-08-26T17:08:27.140530+00:00"
+    },
+    {
+      "node_id": "18022",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-dmg-ii",
+      "name": "Warlock: DMG II",
+      "max_level": 5,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-dmg-ii",
+      "retrieved_at": "2026-08-26T17:08:28.595396+00:00"
+    },
+    {
+      "node_id": "18023",
+      "branch": "Warlock Mastery",
+      "source_branch": "Warlock Mastery",
+      "slug": "warlock-ultimate-guard-ii",
+      "name": "Warlock: Ultimate Guard II",
+      "max_level": 10,
+      "source_url": "https://lastasylumdatabase.com/science/warlock-ultimate-guard-ii",
+      "retrieved_at": "2026-08-26T17:08:40.601791+00:00"
+    }
+  ]
+}

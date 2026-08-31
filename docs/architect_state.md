@@ -3,8 +3,9 @@
 ## Canonical checkpoint
 
 - Branch: `main`.
-- State recorded against commit `7a64af4` (Commando research dataset and
-  canonical integration checkpoint; prior Shadow Observer v0.2 hardening:
+- State recorded against commit `81dd56a` (research manifest, regression suite,
+  normalization utility, and canonical integration checkpoint; prior Shadow
+  Observer v0.2 hardening:
   foreground safety, structured diagnostics, conservative recognition, and
   timing observability).
 - Canonical repository:
@@ -35,7 +36,9 @@ Role names describe responsibilities, not models or providers.
 - **Research corpus and database**: targeted and explicit full-corpus science
   ingestion can normalize source-backed research nodes, levels, times, power,
   costs, and provenance into JSON/SQLite. Validation rejects malformed or
-  incomplete source shapes.
+  incomplete source shapes. The active [research normalization utility](../tools/normalize_research_export.py)
+  supports the complete 18-tree corpus, and the [research source manifest](research_source_manifest.md)
+  defines the provenance contract.
 - **Building data**: the planner has confirmed Server 283 milestone inputs for
   Sanctuary/Training Grounds/Research Lab progression. A general canonical
   building database is not yet present.
@@ -57,7 +60,8 @@ Role names describe responsibilities, not models or providers.
   OCR/recognition/storage failures, and records per-stage timing totals. State
   recognition uses conservative multi-anchor rules so map labels do not claim
   building detail states.
-- **Shadow Observer v0.3**: capture-only operation writes durable `frame.png` /
+- **Shadow Observer v0.3+ hardening closed / passive live acceptance complete**:
+  PASS WITH PERCEPTION LIMITATIONS. Capture-only operation writes durable `frame.png` /
   `capture.json` directories to a local filesystem spool, with atomic inbox
   visibility and no capture-side OCR. A single bounded worker recovers orphaned
   processing directories, validates PNG evidence, reuses one lazy RapidOCR
@@ -74,9 +78,9 @@ Role names describe responsibilities, not models or providers.
 - **Asynchronous agent signals**: ADR-012 defines the passive, single-writer
   Markdown blackboard in [docs/agent_signals/](agent_signals/); `DRIFT` and
   `CONTEXT_HEALTH` signals require direct escalation to Matt.
-- **Canonical Commando research data**: the verified Elite Troop / Commando
-  slice is normalized into [data/research/](../data/research/) with separate
-  node, upgrade-cost, prerequisite, and Matt_S283 state layers.
+- **Canonical research data**: the verified Elite Troop / Commando slice and
+  the complete 18-tree corpus are normalized under [data/research/](../data/research/)
+  with separate node, upgrade-cost, prerequisite, and Matt_S283 state layers.
 - **Control-room workflow**: one canonical shared-main repository has ATLAS,
   SCOUT, and PROBE workspace wrappers with local `Doctor PowerShell` profiles;
   the three-window launcher remains the supported fallback.
@@ -128,9 +132,9 @@ Role names describe responsibilities, not models or providers.
 
 ## Highest-value open loops
 
-- Complete the first bounded Shadow Observer live acceptance and assess actual
-  foreground detection, OCR quality, screen classification, evidence retention,
-  timing quality, and safe failure behavior against the v0.2 schema.
+- Extend the accepted Shadow Observer evidence review beyond the bounded live
+  session, especially foreground detection, OCR quality, and screen
+  classification under additional observed states.
 - Build the eventual narrow adapter from validated raw observations to
   normalized facts and account snapshots; do not bypass the evidence boundary.
 - Expand direct client verification of research effects, prerequisite edges,
@@ -138,8 +142,8 @@ Role names describe responsibilities, not models or providers.
 - Connect accepted account snapshots to planner inputs while preserving fact
   provenance and explicit missing-input limitations.
 
-**Immediate next acceptance target:** Shadow Observer live acceptance and
-observation quality on the installed client, beginning with a bounded session.
+**Immediate next acceptance target:** Build the narrow adapter from validated
+Shadow Observer observations to normalized account facts and snapshots.
 
 ## Re-grounding rule
 
