@@ -7,6 +7,12 @@ from .deficit import (
     calculate_deficit,
     estimate_timeline,
 )
+from .economic_bridge import (
+    AcquisitionOption,
+    PackCoverageResult,
+    evaluate_pack_scroll_efficiency,
+    solve_minimum_cost_scroll_coverage,
+)
 from .resolver import (
     MissingPrerequisite,
     PathTotals,
@@ -34,4 +40,8 @@ __all__ = [
     "TimelineProjection",
     "calculate_deficit",
     "estimate_timeline",
+    "AcquisitionOption",
+    "PackCoverageResult",
+    "evaluate_pack_scroll_efficiency",
+    "solve_minimum_cost_scroll_coverage",
 ]
